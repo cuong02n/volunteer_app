@@ -13,16 +13,13 @@ import vn.edu.hust.volunteer_backend.model.response.AuthenticationResponse;
 @Service
 public class AuthService {
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final JWTService jwtService;
     private final AuthenticationManager authenticationManager;
 
     public AuthService(UserRepository userRepository,
-                       PasswordEncoder passwordEncoder,
                        JWTService jwtService,
                        AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
     }
@@ -30,7 +27,7 @@ public class AuthService {
     public AuthenticationResponse register(RegisterRequest request) {
         User user = User.builder()
                 .email(request.getUsername())
-                .password(passwordEncoder.encode(request.getPassword()))
+                .password(request.getPassword()) // TODO encode password
                 .role(User.Role.USER)
                 .build();
         userRepository.save(user);

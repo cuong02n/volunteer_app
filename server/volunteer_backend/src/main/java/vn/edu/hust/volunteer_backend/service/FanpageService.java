@@ -1,6 +1,6 @@
 package vn.edu.hust.volunteer_backend.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import vn.edu.hust.volunteer_backend.model.Fanpage;
 import vn.edu.hust.volunteer_backend.model.FanpageRepository;
@@ -9,13 +9,9 @@ import java.util.List;
 
 
 @Service
+@AllArgsConstructor
 public class FanpageService {
-    private final FanpageRepository fanpageRepository;
-
-    @Autowired
-    public FanpageService(FanpageRepository fanpageRepository, UserService userService) {
-        this.fanpageRepository = fanpageRepository;
-    }
+    FanpageRepository fanpageRepository;
 
     public List<Fanpage> getAllFanpage() {
         return fanpageRepository.findAll();

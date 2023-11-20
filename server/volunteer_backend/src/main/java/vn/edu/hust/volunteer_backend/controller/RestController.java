@@ -61,5 +61,10 @@ public class RestController {
         }
         return ResponseEntity.ok("ok ok ok");
     }
+
+    @GetMapping("/test/{id}")
+    public String test(@PathVariable("id") int id){
+        return "id = "+ id;
+    }
 }
 

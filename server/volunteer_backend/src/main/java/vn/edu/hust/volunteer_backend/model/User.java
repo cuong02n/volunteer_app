@@ -1,32 +1,28 @@
 package vn.edu.hust.volunteer_backend.model;
 
-import jakarta.jws.soap.SOAPBinding;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Bean;
-import org.springframework.http.RequestEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import vn.edu.hust.volunteer_backend.util.GsonUtil;
 
-import java.lang.invoke.TypeDescriptor;
 import java.util.Collection;
 
+@Data
+@Builder
+@AllArgsConstructor
 @Entity
 @Table(name = "user")
-@Builder
-@Getter
-@Setter
 public class User implements UserDetails {
-    public enum Role{
+    public enum Role {
         USER,
         ADMIN
-    }
-
+}
     private static final Logger logger = LoggerFactory.getLogger(User.class);
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -71,7 +67,7 @@ public class User implements UserDetails {
         logger.info("Updated user: " + email);
     }
 
-    User(){
+    User() {
         logger.info("User Object created");
     }
 
@@ -120,4 +116,5 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return false;
     }
+
 }
