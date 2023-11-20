@@ -22,4 +22,6 @@ public class Fanpage {
     public long create_time;
     @Column(name = "subscriber")
     public int subscriber;
+
+
 }

@@ -3,14 +3,14 @@ package vn.edu.hust.volunteer_backend.controller;
 import com.google.gson.JsonObject;
 import org.hibernate.annotations.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.diagnostics.FailureAnalysis;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import vn.edu.hust.volunteer_backend.model.Fanpage;
 import vn.edu.hust.volunteer_backend.model.FanpageRepository;
 import vn.edu.hust.volunteer_backend.model.User;
@@ -40,19 +40,26 @@ public class RestController {
         return userRepository.findAll().toString();
     }
 
-    @PostMapping("/create_user")
-    public User createUser(@RequestBody String body) {
-        User user = GsonUtil.fromGson(body, User.class);
-        userRepository.save(user);
-        return user;
+    @PostMapping("/register")
+    public ResponseEntity<?> regis(@RequestBody RequestEntity<JsonObject> body) {
+        JsonObject jsonObject = body.getBody();
+        System.out.println(jsonObject);
+        return ResponseEntity.ok("ok nha");
     }
 
-    @PostMapping("test_fanpage")
-    public Fanpage getFanpage(@RequestBody String body) {
-        int leaderId = GsonUtil.fromGson(body, JsonObject.class).get("leader_id").getAsInt();
-        var x = fanpageRepository.findFanpageByLeaderId(leaderId);
-        System.out.println(x);
-        return x;
+    @PostMapping("/test_fanpage")
+    public String getFanpage(@RequestBody String body) {
+        var x = fanpageRepository.findTopSubscriberFanpage(2);
+        System.out.println(GsonUtil.toJson(x));
+        return "aaa";
+    }
+
+    @GetMapping("/top_subscriber_fanpage")
+    public ResponseEntity<?> getTopSubscriberFanpage(@RequestParam int top) {
+        if (top > 100) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok("ok ok ok");
     }
 }
 
