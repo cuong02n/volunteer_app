@@ -24,14 +24,14 @@ public class AuthenticationController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
         // Kiểm tra trường thông tin rỗng
         if (request.getFullname().isEmpty() || request.getEmail().isEmpty() || request.getPassword().isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new AuthenticationResponse("All fields must be filled in."));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("All fields must be filled in.");
         }
 
         if (userService.existsByEmail(request.getEmail())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new AuthenticationResponse("Email is already registered."));
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email is already registered.");
         }
 
         return ResponseEntity.ok(service.register(request));
