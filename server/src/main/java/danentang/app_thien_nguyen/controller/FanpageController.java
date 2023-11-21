@@ -31,8 +31,8 @@ public class FanpageController {
     private final UserService userService;
     private final HttpServletRequest request;
 
-    @GetMapping("/api/fanpages")
-    @Operation(summary = "Get fanpages", security = @SecurityRequirement(name = "bearerAuth"))
+    @GetMapping("/api/fanpage")
+    @Operation(summary = "Get fanpage", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<?> getAllFanpages(
             @RequestParam(name = "userId", required = false) Integer userId) {
         try {
@@ -74,7 +74,8 @@ public class FanpageController {
             //   }
             Fanpage newFanpage = Fanpage.builder().fanpageName(fanpageRequest.getFanpageName())
                     .leaderId(leaderId)
-                    .status(fanpageRequest.getStatus()).createTime(fanpageRequest.getCreateTime())
+                    .status(fanpageRequest.getStatus())
+                    .createTime(fanpageRequest.getCreateTime())
                     .subscriber(fanpageRequest.getSubscriber())
                     .build();
             Fanpage fanpage = fanpageService.saveFanpage(newFanpage);
