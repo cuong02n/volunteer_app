@@ -27,6 +27,8 @@ public class FanpageService {
             fanpageExample.setLeaderId(leaderId);
         }
 
+        System.out.println("in getFanpagesByCriteria");
+
         ExampleMatcher matcher = ExampleMatcher.matching();
         Example<Fanpage> example = Example.of(fanpageExample, matcher);
 

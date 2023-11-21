@@ -73,19 +73,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
     }
 
-    // private boolean isWhitelisted(HttpServletRequest request) {
-    // String requestURI = request.getRequestURI();
-    // return whitelist.stream().anyMatch(requestURI::matches);
-    // }
-
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-//        String requestURI = request.getRequestURI();
-//        return whitelist.stream().anyMatch();
-////        return whitelist.stream().anyMatch(pattern -> pathMatcher.match(pattern, requestURI));
-//
-        System.out.println("yes");
-        return true;
+        String requestURI = request.getRequestURI();
+        return whitelist.stream().anyMatch(pattern -> pathMatcher.match(pattern, requestURI));
     }
 
 }

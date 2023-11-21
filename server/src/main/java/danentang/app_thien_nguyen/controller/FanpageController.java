@@ -39,6 +39,7 @@ public class FanpageController {
             @RequestParam(name = "userId", required = false) Integer userId) {
         try {
             List<Fanpage> fanpages = fanpageService.getFanpagesByCriteria(userId);
+            System.out.println(fanpages);
             return ResponseEntity.ok(fanpages);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
