@@ -1,0 +1,281 @@
+{
+	"info": {
+		"_postman_id": "cef9c076-68c1-4c4f-b4a8-ec6e1e24fcc3",
+		"name": "Dan nen tang",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16654554",
+		"_collection_link": "https://grey-crater-39460.postman.co/workspace/Team-Workspace~e84b7d3e-2cd7-4162-8039-a70958f2d499/collection/16654554-cef9c076-68c1-4c4f-b4a8-ec6e1e24fcc3?action=share&source=collection_link&creator=16654554"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"ngocnamk3er\",\r\n    \"email\": \"ngocnamk3er123456@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Authenticate",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"ngocnamk3er122\",\r\n    \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/auth/authenticate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Fanpage",
+			"item": [
+				{
+					"name": "Get all fanpages",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/fanpages",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"fanpages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get fanpages/{id}",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get all fanpages of userId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/fanpages?userId=1002",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"fanpages"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "1002"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post new fanpage",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"fanpageName\": \"new xxxxx\",\r\n  \"status\": 0,\r\n  \"createTime\": \"2023-11-16\",  // Định dạng ISO 8601 cho LocalDate\r\n  \"subscriber\": 1000\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/fanpages",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"fanpages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete fanpage/{id}",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWTtoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/fanpages/1351",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"fanpages",
+								"1351"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put fanpage/{id}",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"fanpageName\": \"new fanpage after put1\",\r\n  \"status\": 0,\r\n  \"createTime\": \"2023-11-16\",  // Định dạng ISO 8601 cho LocalDate\r\n  \"subscriber\": 1000\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/fanpages/803",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"fanpages",
+								"803"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Demo Secret Controller",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Swagger",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MTAwMiwic3ViIjoibmdvY25hbWh1c3QiLCJpYXQiOjE3MDAzOTA1NTQsImV4cCI6MTcwMDM5MTk5NH0.gwyJi4aEXXHhgnqGwgb1kkwH3BzeU1Uj0kGaySMypO0",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "JWTtoken",
+			"value": "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MTAwMiwic3ViIjoibmdvY25hbWh1c3QiLCJpYXQiOjE3MDAzNjM1NjMsImV4cCI6MTcwMDM2NTAwM30.HBliGjAguCtpJYqGqhLagmMwpVlwWPMfg57PIqaXajU",
+			"type": "string",
+			"disabled": true
+		}
+	]
+}
