@@ -41,7 +41,7 @@ public class Fanpage {
     private Integer status;
 
     @Column(name = "create_time")
-    private Date createTime;
+    private Long createTime;
 
     @Column(name = "subscriber")
     private Integer subscriber;

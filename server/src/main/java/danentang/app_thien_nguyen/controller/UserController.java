@@ -49,13 +49,13 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Put fanpages/{id}", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "Put user/{id}", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<?> updateUser(@PathVariable Integer id, @RequestBody User userRequest) {
         String userIdStr = request.getAttribute("userId").toString();
         Integer userId = Integer.valueOf(userIdStr);
 
         try {
-            if (userId != id) {
+            if (!userId.equals(id)) {
                  return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("UNAUTHORIZED");
             }else{
                 User existUser = userService.findById(userId).orElseThrow();

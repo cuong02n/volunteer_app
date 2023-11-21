@@ -38,7 +38,9 @@ public class UserService implements UserDetailsService {
     // Thực hiện cập nhật thông tin User, hiện tại chỉ được cập nhật username
         existingUser.setUsername(userRequest.getUsername());
         // Cập nhật các trường khác nếu cần
-
+        System.out.println("existingUser : ");
+        System.out.println(existingUser);
+        System.out.println("---------------");
         // Lưu User đã cập nhật
         return userRepository.save(existingUser);
     } 
