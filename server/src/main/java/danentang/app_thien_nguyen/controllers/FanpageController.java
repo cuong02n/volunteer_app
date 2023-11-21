@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,6 +29,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @RestController
+@RequestMapping("/api/fanpages")
 @RequiredArgsConstructor
 @ResponseBody
 public class FanpageController {
@@ -36,7 +38,7 @@ public class FanpageController {
     private final UserService userService;
     private final HttpServletRequest request;
 
-    @GetMapping("/api/fanpages")
+    @GetMapping
     @Operation(summary = "Get fanpages", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<?> getAllFanpages(
             @RequestParam(name = "userId", required = false) Integer userId) {
@@ -48,7 +50,7 @@ public class FanpageController {
         }
     }
 
-    @GetMapping("/api/fanpages/{id}")
+    @GetMapping("/{id}")
     @Operation(summary = "Get fanpages/{id}", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<?> getFanpageById(@PathVariable Integer id) {
         try {
@@ -59,7 +61,7 @@ public class FanpageController {
         }
     }
 
-    @PostMapping("/api/fanpages")
+    @PostMapping
     @Operation(summary = "Post new fanpage", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<?> createFanpage(@RequestBody Fanpage fanpageRequest) {
         System.out.println("in post request fanpage");
@@ -90,7 +92,7 @@ public class FanpageController {
         }
     }
 
-    @PutMapping("/api/fanpages/{id}")
+    @PutMapping("/{id}")
     @Operation(summary = "Put fanpages/{id}", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<Object> updateFanpage(@PathVariable Integer id, @RequestBody Fanpage fanpageRequest) {
         String userIdStr = request.getAttribute("userId").toString();
@@ -125,7 +127,7 @@ public class FanpageController {
         }
     }
 
-    @DeleteMapping("/api/fanpages/{id}")
+    @DeleteMapping("/{id}")
     @Operation(summary = "Delete fanpages/{id}", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<String> deleteFanpage(@PathVariable Integer id) {
         String userIdStr = request.getAttribute("userId").toString();

@@ -1,5 +1,6 @@
 package danentang.app_thien_nguyen.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,6 +28,10 @@ public class UserService implements UserDetailsService{
 
     public Optional<User> findById(Integer userId) {
         return userRepository.findById(userId);
+    }
+
+    public List<User> findAll(){
+        return userRepository.findAll();
     }
 
     @Override
