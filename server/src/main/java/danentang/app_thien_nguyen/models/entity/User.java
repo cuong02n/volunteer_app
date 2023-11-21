@@ -34,9 +34,10 @@ public class User implements UserDetails {
   @Id
   @GeneratedValue
   private Integer id;
-  private String username;
+  private String fullname;
   private String email;
   private String password;
+  private String username;//Chỉ khai báo cho hợp lệ chứ không dùng đến
 
   @Enumerated(EnumType.STRING)
   private Role role;
@@ -53,10 +54,10 @@ public class User implements UserDetails {
     return password;
   }
 
-  @Override
-  public String getUsername() {
-    return username;
-  }
+  // @Override
+  // public String getUsername() {
+  //   return null;
+  // }
 
   //Các trường sau đây chỉ phục vụ cho xác thực, hiện tại chưa cần quan tâm
 
@@ -82,5 +83,11 @@ public class User implements UserDetails {
   @JsonIgnore
   public boolean isEnabled() {
     return true;
+  }
+
+  @Override
+  @JsonIgnore//Ignore vì mình không dùng đến Username mà chỉ khai báo cho có
+  public String getUsername() {
+    return username;
   }
 }

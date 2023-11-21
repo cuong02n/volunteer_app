@@ -26,7 +26,7 @@ public class AuthenticationController {
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {
         // Kiểm tra trường thông tin rỗng
-        if (request.getUsername().isEmpty() || request.getEmail().isEmpty() || request.getPassword().isEmpty()) {
+        if (request.getFullname().isEmpty() || request.getEmail().isEmpty() || request.getPassword().isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new AuthenticationResponse("All fields must be filled in."));
         }
 
