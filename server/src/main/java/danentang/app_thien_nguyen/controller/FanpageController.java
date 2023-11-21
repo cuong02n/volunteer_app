@@ -38,6 +38,7 @@ public class FanpageController {
     public ResponseEntity<?> getAllFanpages(
             @RequestParam(name = "userId", required = false) Integer userId) {
         try {
+            System.out.println("email ----" + request.getAttribute("email"));
             List<Fanpage> fanpages = fanpageService.getFanpagesByCriteria(userId);
             System.out.println(fanpages);
             return ResponseEntity.ok(fanpages);
@@ -64,17 +65,16 @@ public class FanpageController {
         try {
             String leaderIdStr = request.getAttribute("userId").toString();
             Integer leaderId = Integer.valueOf(leaderIdStr);
-            //Kiểm tra xem user có tồn tại không nếu ko có thì throw
+            // Kiểm tra xem user có tồn tại không nếu ko có thì throw
             // User leader = userService.findById(leaderId).orElseThrow();
 
-
-            //chỉ lấy các trường sau ở request và tạo fanpage mới
+            // chỉ lấy các trường sau ở request và tạo fanpage mới
             // {
-            //     "fanpageName": "string",
-            //     "status": 0,
-            //     "createTime": Date,
-            //     "subscriber": 1000
-            //   }
+            // "fanpageName": "string",
+            // "status": 0,
+            // "createTime": Date,
+            // "subscriber": 1000
+            // }
             Fanpage newFanpage = Fanpage.builder().fanpageName(fanpageRequest.getFanpageName())
                     .leaderId(leaderId)
                     .status(fanpageRequest.getStatus())
@@ -102,22 +102,22 @@ public class FanpageController {
 
             Fanpage existingFanpage = fanpageService.getFanpageById(id);
 
-            //Kiểm tra xem user/{userId} có sở hữu fanpage này không
+            // Kiểm tra xem user/{userId} có sở hữu fanpage này không
             if (!existingFanpage.getLeaderId().equals(userId)) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN)
                         .body("You don't have permission to update this fanpage.");
             }
 
             // Thực hiện cập nhật thông tin fanpage
-            //chỉ lấy các trường sau ở request và sửa fanpage
+            // chỉ lấy các trường sau ở request và sửa fanpage
             // {
-            //     "fanpageName": "string",
-            //     "status": 0,
-            //     "subscriber": 1000
-            //   }
+            // "fanpageName": "string",
+            // "status": 0,
+            // "subscriber": 1000
+            // }
             Fanpage updatedFanpage = fanpageService.updateFanpage(existingFanpage, fanpageRequest);
 
-                // Trả về đối tượng FanpageResponse đã cập nhật và mã trạng thái OK
+            // Trả về đối tượng FanpageResponse đã cập nhật và mã trạng thái OK
             return ResponseEntity.ok(updatedFanpage);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

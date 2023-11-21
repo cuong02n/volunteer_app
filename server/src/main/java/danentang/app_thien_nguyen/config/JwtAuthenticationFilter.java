@@ -22,14 +22,16 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import danentang.app_thien_nguyen.models.entity.User;
 import danentang.app_thien_nguyen.service.JwtService;
+import danentang.app_thien_nguyen.service.UserService;
 
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-    private final UserDetailsService userDetailsService;
+    private final UserService userDetailsService;
     private final AntPathMatcher pathMatcher = new AntPathMatcher();
 
     private final List<String> whitelist = Arrays.asList(
@@ -45,15 +47,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain) throws IOException {
         String authHeader = request.getHeader("Authorization");
         String jwt;
-        String userName;
+        String email;
         int userId;
 
         try {
             jwt = authHeader.substring(7);
-            userName = jwtService.extractUsername(jwt);
+            email = jwtService.extractEmail(jwt);
+            System.out.println("check email extracted from jwt" + email);
             userId = jwtService.extractUserId(jwt);
-            if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = this.userDetailsService.loadUserByUsername(userName);
+            System.out.println("check email extracted from jwt" + userId);
+            if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                User userDetails = this.userDetailsService.loadUserByUsername(email);
+                System.out.println("userDetails : " + userDetails);
                 if (jwtService.isTokenValid(jwt, userDetails)) {
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                             userDetails,
@@ -63,7 +68,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
             }
-            request.setAttribute("userName", userName);
+            request.setAttribute("email", email);
             request.setAttribute("userId", userId);
             filterChain.doFilter(request, response);
         } catch (Exception e) {
