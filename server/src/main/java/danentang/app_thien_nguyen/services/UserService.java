@@ -34,6 +34,15 @@ public class UserService implements UserDetailsService{
         return userRepository.findAll();
     }
 
+    public User update(User existingUser, User userRequest) {
+    // Thực hiện cập nhật thông tin User, hiện tại chỉ được cập nhật username
+        existingUser.setUsername(userRequest.getUsername());
+        // Cập nhật các trường khác nếu cần
+
+        // Lưu User đã cập nhật
+        return userRepository.save(existingUser);
+    } 
+
     @Override
       public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         System.out.println("in load user by username " + username);

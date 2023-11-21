@@ -60,12 +60,12 @@ public class UserController {
                  return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("UNAUTHORIZED");
             }else{
                 User existUser = userService.findById(userId).orElseThrow();
+                User updatedUser = userService.update(existUser, userRequest);
+                return ResponseEntity.ok(updatedUser);
             }   
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-
-        return null;
     }
 }
