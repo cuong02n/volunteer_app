@@ -38,7 +38,6 @@ public class FanpageController {
     public ResponseEntity<?> getAllFanpages(
             @RequestParam(name = "userId", required = false) Integer userId) {
         try {
-            System.out.println("email ----" + request.getAttribute("email"));
             List<Fanpage> fanpages = fanpageService.getFanpagesByCriteria(userId);
             System.out.println(fanpages);
             return ResponseEntity.ok(fanpages);

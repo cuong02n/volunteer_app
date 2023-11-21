@@ -2,7 +2,6 @@ package danentang.app_thien_nguyen.models.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,7 +22,7 @@ import lombok.NoArgsConstructor;
 public class Event {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "id")
     private Integer id;
 
@@ -36,11 +35,12 @@ public class Event {
     @Column(name = "target", nullable = false, columnDefinition = "INT DEFAULT 0")
     private Integer target;
 
-    @ManyToOne
-    @JoinColumn(name = "fanpage_id", nullable = false, foreignKey = @ForeignKey(name = "FK_event_fanpage"))
-    private Fanpage fanpage;
+    @Column(name = "fanpage_id", nullable = false)
+    private Integer fanpage_id;
 
     @Column(name = "status", nullable = false, columnDefinition = "INT DEFAULT 0")
     private Integer status;
+
+    // Các getters và setters
 
 }
