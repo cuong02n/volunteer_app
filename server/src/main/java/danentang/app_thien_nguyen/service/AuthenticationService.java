@@ -1,17 +1,15 @@
-package danentang.app_thien_nguyen.services;
+package danentang.app_thien_nguyen.service;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import danentang.app_thien_nguyen.models.DataModels.Role;
-import danentang.app_thien_nguyen.models.DataModels.User;
-import danentang.app_thien_nguyen.models.ReqModels.AuthenticationRequest;
-import danentang.app_thien_nguyen.models.ReqModels.RegisterRequest;
-import danentang.app_thien_nguyen.models.ResModels.AuthenticationResponse;
-import danentang.app_thien_nguyen.repositories.UserRepository;
+import danentang.app_thien_nguyen.models.entity.User;
+import danentang.app_thien_nguyen.models.request.AuthenticationRequest;
+import danentang.app_thien_nguyen.models.request.RegisterRequest;
+import danentang.app_thien_nguyen.models.response.AuthenticationResponse;
+import danentang.app_thien_nguyen.repository.UserRepository;
 
 @Service
 public class AuthenticationService {
@@ -33,7 +31,7 @@ public class AuthenticationService {
         .username(request.getUsername())
         .email(request.getEmail())
         .password(passwordEncoder.encode(request.getPassword()))
-        .role(Role.USER)
+        .role(User.Role.USER)
         .build();
     repository.save(user);
     var jwtToken = jwtService.generateToken(user);

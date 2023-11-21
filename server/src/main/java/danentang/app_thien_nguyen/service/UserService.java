@@ -1,4 +1,4 @@
-package danentang.app_thien_nguyen.services;
+package danentang.app_thien_nguyen.service;
 
 import java.util.Optional;
 
@@ -7,8 +7,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import danentang.app_thien_nguyen.models.DataModels.User;
-import danentang.app_thien_nguyen.repositories.UserRepository;
+import danentang.app_thien_nguyen.models.entity.User;
+import danentang.app_thien_nguyen.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
 

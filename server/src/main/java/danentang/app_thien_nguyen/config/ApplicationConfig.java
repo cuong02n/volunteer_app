@@ -10,8 +10,8 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import danentang.app_thien_nguyen.repositories.UserRepository;
-import danentang.app_thien_nguyen.services.UserService;
+import danentang.app_thien_nguyen.repository.UserRepository;
+import danentang.app_thien_nguyen.service.UserService;
 
 @Configuration
 @RequiredArgsConstructor

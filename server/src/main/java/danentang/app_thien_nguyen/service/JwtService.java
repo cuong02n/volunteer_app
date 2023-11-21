@@ -1,4 +1,4 @@
-package danentang.app_thien_nguyen.services;
+package danentang.app_thien_nguyen.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -13,7 +13,7 @@ import java.util.function.Function;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import danentang.app_thien_nguyen.models.DataModels.User;
+import danentang.app_thien_nguyen.models.entity.User;
 
 // import danentang.app_thien_nguyen.user.User;
 

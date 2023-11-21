@@ -1,12 +1,10 @@
-package danentang.app_thien_nguyen.models.DataModels;
+package danentang.app_thien_nguyen.models.entity;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.Collection;
 import java.util.List;
@@ -25,6 +23,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Entity
 @Table(name = "user")
 public class User implements UserDetails {
+  public enum Role {
+    USER,
+    ADMIN
+  }
+
 
   @Id
   @GeneratedValue
