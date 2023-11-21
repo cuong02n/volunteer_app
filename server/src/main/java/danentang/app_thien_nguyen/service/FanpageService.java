@@ -1,17 +1,13 @@
-package danentang.app_thien_nguyen.services;
+package danentang.app_thien_nguyen.service;
 
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
-import danentang.app_thien_nguyen.models.DataModels.Fanpage;
-import danentang.app_thien_nguyen.models.DataModels.User;
-import danentang.app_thien_nguyen.repositories.FanpageRepository;
+import danentang.app_thien_nguyen.models.entity.Fanpage;
+import danentang.app_thien_nguyen.repository.FanpageRepository;
 import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

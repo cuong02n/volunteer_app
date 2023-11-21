@@ -3,7 +3,8 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-
+# application.properties
+application.properties
 ### STS ###
 .apt_generated
 .classpath
@@ -18,6 +19,8 @@ target/
 *.iws
 *.iml
 *.ipr
+
+/src/main/resources
 
 ### NetBeans ###
 /nbproject/private/

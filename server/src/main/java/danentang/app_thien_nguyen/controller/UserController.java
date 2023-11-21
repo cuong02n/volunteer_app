@@ -1,9 +1,5 @@
-package danentang.app_thien_nguyen.controllers;
+package danentang.app_thien_nguyen.controller;
 
-import danentang.app_thien_nguyen.models.DataModels.Fanpage;
-import danentang.app_thien_nguyen.models.DataModels.User;
-import danentang.app_thien_nguyen.repositories.UserRepository;
-import danentang.app_thien_nguyen.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,6 +15,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import danentang.app_thien_nguyen.models.entity.User;
+import danentang.app_thien_nguyen.service.UserService;
 
 import java.util.List;
 import java.util.stream.Collectors;

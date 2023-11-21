@@ -1,4 +1,4 @@
-package danentang.app_thien_nguyen.services;
+package danentang.app_thien_nguyen.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,14 +8,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import danentang.app_thien_nguyen.models.DataModels.User;
-import danentang.app_thien_nguyen.repositories.UserRepository;
+import danentang.app_thien_nguyen.models.entity.User;
+import danentang.app_thien_nguyen.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
 
 @Service
 @RequiredArgsConstructor
-public class UserService implements UserDetailsService{
+public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
 
     public boolean existsByUsername(String username) {
@@ -44,9 +44,8 @@ public class UserService implements UserDetailsService{
     } 
 
     @Override
-      public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         System.out.println("in load user by username " + username);
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-      }
+        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
 }
