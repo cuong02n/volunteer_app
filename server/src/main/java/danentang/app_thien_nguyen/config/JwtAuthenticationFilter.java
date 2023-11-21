@@ -43,10 +43,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain) throws IOException {
-        final String authHeader = request.getHeader("Authorization");
-        final String jwt;
-        final String userName;
-        final Integer userId;
+        String authHeader = request.getHeader("Authorization");
+        String jwt;
+        String userName;
+        int userId;
 
         try {
             jwt = authHeader.substring(7);
@@ -84,8 +84,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 //        return whitelist.stream().anyMatch();
 ////        return whitelist.stream().anyMatch(pattern -> pathMatcher.match(pattern, requestURI));
 //
-        System.out.println("no");
-        return false;
+        System.out.println("yes");
+        return true;
     }
 
 }
