@@ -11,9 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import vn.edu.hust.volunteer_app.models.request.AuthenticationRequest;
 import vn.edu.hust.volunteer_app.models.request.RegisterRequest;
+import vn.edu.hust.volunteer_app.models.request.RegisterVerifyRequest;
 import vn.edu.hust.volunteer_app.models.response.AuthenticationResponse;
 import vn.edu.hust.volunteer_app.service.AuthenticationService;
+import vn.edu.hust.volunteer_app.service.OtpService;
 import vn.edu.hust.volunteer_app.service.UserService;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,11 +26,11 @@ public class AuthenticationController {
 
     private final AuthenticationService service;
     private final UserService userService;
-
+    private final OtpService otpService;
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {
-        if (request.getUsername().isEmpty() || request.getEmail().isEmpty() || request.getPassword().isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new AuthenticationResponse("All fields must be filled in."));
+        if (request.getName().isEmpty() || request.getEmail().isEmpty() || request.getPassword().isEmpty()) {
+            return ResponseEntity.status(BAD_REQUEST).body(new AuthenticationResponse("All fields must be filled in."));
         }
 
         if (userService.existsByEmail(request.getEmail())) {
@@ -34,6 +38,18 @@ public class AuthenticationController {
         }
 
         return ResponseEntity.ok(service.register(request));
+    }
+    @PostMapping("/verify_register")
+    public ResponseEntity<AuthenticationResponse> verifyRegister(@RequestBody RegisterVerifyRequest request){
+        if(request.getOtp().isEmpty() || request.getEmail().isEmpty()){
+            return ResponseEntity.status(BAD_REQUEST).body(new AuthenticationResponse("All fields must be filled in."));
+        }
+        if(otpService.checkRegisterOTP(request.getEmail(),request.getOtp())){
+            userService.verifiedRegister(request.getEmail());
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new AuthenticationResponse("OTP was expired or OTP not valid"));
+
     }
 
     @PostMapping("/authenticate")

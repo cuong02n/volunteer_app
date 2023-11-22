@@ -29,12 +29,9 @@ public class JwtService {
     }
 
     public Integer extractUserId(String token) {
-        return extractClaim(token, new Function<Claims, Integer>() {
-            @Override
-            public Integer apply(Claims claims) {
-                // Lấy giá trị của "id" từ claims và ép kiểu sang Long
-                return (Integer) claims.get("id");
-            }
+        return extractClaim(token, claims -> {
+            // Lấy giá trị của "id" từ claims và ép kiểu sang Long
+            return (Integer) claims.get("id");
         });
     }
 

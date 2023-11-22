@@ -23,6 +23,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import vn.edu.hust.volunteer_app.service.JwtService;
 
+import static vn.edu.hust.volunteer_app.config.ApplicationConfig.WHITE_LIST;
+
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -30,29 +32,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
     private final AntPathMatcher pathMatcher = new AntPathMatcher();
-
-    private final List<String> whitelist = Arrays.asList(
-            "/test",
-            "/api/v1/auth/*",
-            "/swagger-ui/**",
-            "/v3/api-docs/**");
-
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain) throws IOException {
         String authHeader = request.getHeader("Authorization");
-        String jwt;
-        String userName;
-        int userId;
 
         try {
-            jwt = authHeader.substring(7);
-            userName = jwtService.extractUsername(jwt);
-            userId = jwtService.extractUserId(jwt);
-            if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = this.userDetailsService.loadUserByUsername(userName);
+            String jwt = authHeader.substring(7);
+            String email = jwtService.extractUsername(jwt);
+            int userId = jwtService.extractUserId(jwt);
+            if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = this.userDetailsService.loadUserByUsername(email);
                 if (jwtService.isTokenValid(jwt, userDetails)) {
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                             userDetails,
@@ -62,8 +54,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
             }
-            request.setAttribute("userName", userName);
-            request.setAttribute("userId", userId);
+            request.setAttribute("email", email);
+            request.setAttribute("user_id", userId);
             filterChain.doFilter(request, response);
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -78,10 +70,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     // }
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+    protected boolean shouldNotFilter(HttpServletRequest request) {
         String requestURI = request.getRequestURI();
-        return whitelist.stream().anyMatch(pattern -> pathMatcher.match(pattern, requestURI));
-
+        return Arrays.stream(WHITE_LIST).anyMatch(pattern -> pathMatcher.match(pattern, requestURI));
     }
 
 }

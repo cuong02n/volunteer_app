@@ -22,6 +22,9 @@ public class UserService implements UserDetailsService {
         return userRepository.existsByEmail(email);
     }
 
+    public void verifiedRegister(String email){
+        userRepository.updateUserStatusOK(email);
+    }
     public Optional<User> findUserById(Integer userId) {
         return userRepository.findById(userId);
     }
@@ -29,6 +32,6 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         System.out.println("in load user by email " + email);
-        return userRepository.findByUsername(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }

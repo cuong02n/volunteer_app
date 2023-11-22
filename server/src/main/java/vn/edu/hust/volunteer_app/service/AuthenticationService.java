@@ -21,11 +21,10 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-    private final EmailService emailService;
     private final OtpService otpService;
-
     public AuthenticationResponse register(RegisterRequest request) {
         User user = User.builder()
+                .name(request.getName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(User.Role.USER)
@@ -33,6 +32,8 @@ public class AuthenticationService {
         repository.save(user);
 
         RegisterOtp otp = otpService.generateRegisterOTP(user.getEmail());
+        otpService.save(otp);
+        otpService.sendRegisterOTP(otp);
 
         String jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
@@ -43,9 +44,9 @@ public class AuthenticationService {
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getUsername(),
+                        request.getEmail(),
                         request.getPassword()));
-        var user = repository.findByUsername(request.getUsername())
+        var user = repository.findByEmail(request.getEmail())
                 .orElseThrow();
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
