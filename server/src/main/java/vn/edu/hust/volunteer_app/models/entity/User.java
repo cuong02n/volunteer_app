@@ -12,6 +12,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -35,42 +37,60 @@ public class User implements UserDetails {
   private String email;
   @Column(name = "password")
   private String password;
+  // private String username;//Chỉ khai báo cho hợp lệ chứ không dùng đến
 
   @Enumerated(EnumType.STRING)
   private Role role;
 
   @Override
+  @JsonIgnore
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return List.of(new SimpleGrantedAuthority(role.name()));
   }
 
   @Override
+  @JsonIgnore
   public String getPassword() {
     return password;
   }
 
-  @Override
-  public String getUsername() {
+  public String getEmail() {
     return email;
   }
 
   @Override
+  @JsonIgnore
   public boolean isAccountNonExpired() {
     return true;
   }
 
   @Override
+  @JsonIgnore
   public boolean isAccountNonLocked() {
     return true;
   }
 
   @Override
+  @JsonIgnore
   public boolean isCredentialsNonExpired() {
     return true;
   }
 
   @Override
+  @JsonIgnore
   public boolean isEnabled() {
     return true;
   }
+
+  @Override
+  @JsonIgnore
+  public String getUsername() {
+    return email;
+  }
+
+  // @Override
+  // @JsonIgnore//Ignore vì mình không dùng đến Username mà chỉ khai báo cho có
+  // public String getUsername() {
+  //   return username;
+  // }
 }

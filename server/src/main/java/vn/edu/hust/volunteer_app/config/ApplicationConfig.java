@@ -1,6 +1,9 @@
 package vn.edu.hust.volunteer_app.config;
 
 import lombok.RequiredArgsConstructor;
+import vn.edu.hust.volunteer_app.repository.UserRepository;
+import vn.edu.hust.volunteer_app.service.UserService;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

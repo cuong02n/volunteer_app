@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import vn.edu.hust.volunteer_app.models.entity.Fanpage;
 import vn.edu.hust.volunteer_app.repository.FanpageRepository;
 import lombok.RequiredArgsConstructor;
+import vn.edu.hust.volunteer_app.models.entity.Fanpage;
+import vn.edu.hust.volunteer_app.repository.FanpageRepository;
 
 import java.util.List;
 
@@ -26,6 +28,8 @@ public class FanpageService {
         if (leaderId != null) {
             fanpageExample.setLeaderId(leaderId);
         }
+
+        System.out.println("in getFanpagesByCriteria");
 
         ExampleMatcher matcher = ExampleMatcher.matching();
         Example<Fanpage> example = Example.of(fanpageExample, matcher);

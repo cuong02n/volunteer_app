@@ -20,6 +20,11 @@ target/
 *.iws
 *.iml
 *.ipr
+<<<<<<< HEAD
+=======
+
+/src/main/resources
+>>>>>>> namk3er
 
 ### NetBeans ###
 /nbproject/private/
