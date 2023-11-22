@@ -6,7 +6,7 @@ class FanpagePageAppBar extends SliverAppBar {
           pinned: true,
           title: Builder(builder: (context) {
             return Container(
-              padding: const EdgeInsets.only(bottom: 10, left: 30, right: 30),
+              padding: const EdgeInsets.only(bottom: 10, left: 30, right: 30, top: 10),
               decoration: BoxDecoration(
                   border: Border(
                       bottom: BorderSide(

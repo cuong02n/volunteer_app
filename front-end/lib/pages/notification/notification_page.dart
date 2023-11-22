@@ -2,6 +2,7 @@ import 'dart:html';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 import 'package:thien_nguyen_app/theme/theme.dart';
 import 'package:thien_nguyen_app/widgets/notification_badge.dart';
 
@@ -47,7 +48,7 @@ class NotificationPage extends StatelessWidget {
             return Dismissible(
               key: GlobalKey(),
               child: NotificationBadge(
-                avatar: Icon(Icons.account_circle),
+                avatar: Icon(Icons.account_circle, size: 10.w),
                 content: content,
               ),
             );

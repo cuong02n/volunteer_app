@@ -12,7 +12,7 @@ class AppIcon extends StatelessWidget {
       path,
       width: size,
       height: size,
-      fit: BoxFit.fitWidth,
+      fit: BoxFit.fill,
     ),);
   }
 }

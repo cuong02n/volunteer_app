@@ -10,7 +10,7 @@ import 'package:thien_nguyen_app/configs/route_name.dart';
 ///cho các trang dùng thanh điều hướng dưới.
 abstract class AppRouter {
   static final router =
-      GoRouter(routes: _route, initialLocation: RoutePath.login);
+      GoRouter(routes: _route, initialLocation: RoutePath.home);
 
   static final _route = [
     StatefulShellRoute(
@@ -56,19 +56,24 @@ abstract class AppRouter {
     ]),
     StatefulShellBranch(routes: [
       GoRoute(
+          name: RouteName.notification,
           path: RoutePath.notification,
           pageBuilder: (context, state) =>
               _getPage(child: NotificationPage(), state: state))
     ]),
     StatefulShellBranch(routes: [
       GoRoute(
+          name: RouteName.page,
           path: RoutePath.page,
           pageBuilder: (context, state) =>
               _getPage(child: FanpagePage(), state: state))
     ]),
     StatefulShellBranch(routes: [
       GoRoute(
-          path: RoutePath.settings, builder: (context, state) => Error404Page()),
+          name: RouteName.settings,
+          path: RoutePath.settings,
+          pageBuilder: (context, state) =>
+              _getPage(child: SettingsPage(), state: state)),
       GoRoute(
           path: RoutePath.user,
           pageBuilder: (context, state) =>
