@@ -7,12 +7,12 @@ class LoginPageBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 100.h,
-      child: Column(
+      child: const Column(
         children: [
           LoginPageBackground(),
           LoginPageLogo(),
-          Flexible(child: LoginPageForm()),
-          Expanded(child: Align(
+          LoginPageForm(),
+          Flexible(child: Align(
             alignment: Alignment.bottomCenter,
             child: LoginPagePrivacy(),
           ))

@@ -14,7 +14,7 @@ abstract class AppRouter {
         builder: (context, state, navigationShell) => navigationShell,
         navigatorContainerBuilder: (context, navigationShell, pages) =>
             MainPage(pages: pages, navigationShell: navigationShell)),
-    GoRoute(path: RouteName.login, builder: (context, state) => const LoginPage()),
+    GoRoute(path: RouteName.login, builder: (context, state) => LoginPage()),
     GoRoute(
         path: RouteName.register, builder: (context, state) => Error404Page()),
     GoRoute(
