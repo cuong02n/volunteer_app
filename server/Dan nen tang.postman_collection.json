@@ -1,10 +1,9 @@
 {
 	"info": {
-		"_postman_id": "cef9c076-68c1-4c4f-b4a8-ec6e1e24fcc3",
+		"_postman_id": "3c1f6829-d848-4f84-99c9-475cb49cb78b",
 		"name": "Dan nen tang",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "16654554",
-		"_collection_link": "https://grey-crater-39460.postman.co/workspace/Team-Workspace~e84b7d3e-2cd7-4162-8039-a70958f2d499/collection/16654554-cef9c076-68c1-4c4f-b4a8-ec6e1e24fcc3?action=share&source=collection_link&creator=16654554"
+		"_exporter_id": "26927074"
 	},
 	"item": [
 		{
@@ -71,6 +70,23 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Verify Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"cuong2905say@gmail.com\",\r\n    \"OTP\":\"264779\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -101,7 +117,10 @@
 					"name": "Get fanpages/{id}",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				},
@@ -227,7 +246,10 @@
 			"name": "Demo Secret Controller",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": ""
+				}
 			},
 			"response": []
 		},
@@ -235,7 +257,10 @@
 			"name": "Swagger",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": ""
+				}
 			},
 			"response": []
 		}
