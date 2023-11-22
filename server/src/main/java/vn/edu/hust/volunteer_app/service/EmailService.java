@@ -11,11 +11,15 @@ public class EmailService {
     private final JavaMailSender javaMailSender;
 
     public void send(String to, String subject, String body) {
-        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setTo(to);
-        simpleMailMessage.setSubject(subject);
-        simpleMailMessage.setText(body);
-        javaMailSender.send(simpleMailMessage);
+        try {
+            SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+            simpleMailMessage.setTo(to);
+            simpleMailMessage.setSubject(subject);
+            simpleMailMessage.setText(body);
+            javaMailSender.send(simpleMailMessage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void send(String[] tos, String subject, String body) {
