@@ -56,7 +56,7 @@ public class FanpageController {
     public ResponseEntity<?> createFanpage(@RequestBody Fanpage fanpageRequest) {
         System.out.println("in post request fanpage");
         try {
-            String leaderIdStr = request.getAttribute("userId").toString();
+            String leaderIdStr = request.getAttribute("user_id").toString();
             Integer leaderId = Integer.valueOf(leaderIdStr);
             // Kiểm tra xem user có tồn tại không nếu ko có thì throw
             // User leader = userService.findById(leaderId).orElseThrow();
@@ -85,7 +85,7 @@ public class FanpageController {
     @PutMapping("/{id}")
     @Operation(summary = "Put fanpages/{id}", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<Object> updateFanpage(@PathVariable Integer id, @RequestBody Fanpage fanpageRequest) {
-        String userIdStr = request.getAttribute("userId").toString();
+        String userIdStr = request.getAttribute("user_id").toString();
         Integer userId = Integer.valueOf(userIdStr);
 
         System.out.println("=============================");
@@ -120,7 +120,7 @@ public class FanpageController {
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete fanpages/{id}", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<String> deleteFanpage(@PathVariable Integer id) {
-        String userIdStr = request.getAttribute("userId").toString();
+        String userIdStr = request.getAttribute("user_id").toString();
         Integer userId = Integer.valueOf(userIdStr);
 
         try {

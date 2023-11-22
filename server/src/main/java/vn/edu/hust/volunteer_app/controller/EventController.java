@@ -58,7 +58,7 @@ public class EventController {
     @PostMapping
     @Operation(summary = "Post new event", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<Event> createEvent(@RequestBody Event eventRequest) {
-        String userIdStr = request.getAttribute("userId").toString();
+        String userIdStr = request.getAttribute("user_id").toString();
         Integer userId = Integer.valueOf(userIdStr);
 
         try {

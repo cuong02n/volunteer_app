@@ -50,7 +50,7 @@ public class UserController {
     @PutMapping("/{id}")
     @Operation(summary = "Put user/{id}", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<?> updateUser(@PathVariable Integer id, @RequestBody User userRequest) {
-        String userIdStr = request.getAttribute("userId").toString();
+        String userIdStr = request.getAttribute("user_id").toString();
         Integer userId = Integer.valueOf(userIdStr);
 
         try {
