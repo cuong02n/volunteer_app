@@ -16,6 +16,7 @@ class RegisterPage extends Page {
   Route createRoute(BuildContext context) {
     return DialogRoute(
         context: context,
+        barrierColor: AppColor.white.withOpacity(0.75),
         settings: this,
         builder: (_) => const RegisterBody(),
     );

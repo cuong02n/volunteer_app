@@ -61,12 +61,13 @@ abstract class AppTypology {
     fontSize: 16,
     height: 24/16,
     letterSpacing: 0.1,
-    fontWeight: FontWeight.bold
+    fontWeight: FontWeight.w700
   );
 
   static const TextStyle titleSmall = TextStyle(
     fontSize: 14,
-    height: 20/14
+    height: 20/14,
+    fontWeight: FontWeight.w600
   );
 
   static const TextStyle labelLarge = TextStyle(

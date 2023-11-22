@@ -34,8 +34,6 @@ abstract class AppRouter {
         path: RoutePath.anotherUser,
         builder: (context, state) => Error404Page()),
     GoRoute(
-        path: RoutePath.settings, builder: (context, state) => Error404Page()),
-    GoRoute(
         path: RoutePath.newPage, builder: (context, state) => Error404Page()),
     GoRoute(
         path: RoutePath.specificPage,
@@ -60,15 +58,17 @@ abstract class AppRouter {
       GoRoute(
           path: RoutePath.notification,
           pageBuilder: (context, state) =>
-              _getPage(child: Error404Page(), state: state))
+              _getPage(child: NotificationPage(), state: state))
     ]),
     StatefulShellBranch(routes: [
       GoRoute(
           path: RoutePath.page,
           pageBuilder: (context, state) =>
-              _getPage(child: Error404Page(), state: state))
+              _getPage(child: FanpagePage(), state: state))
     ]),
     StatefulShellBranch(routes: [
+      GoRoute(
+          path: RoutePath.settings, builder: (context, state) => Error404Page()),
       GoRoute(
           path: RoutePath.user,
           pageBuilder: (context, state) =>

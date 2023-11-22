@@ -14,7 +14,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage>
     with
-        TickerProviderStateMixin {
+        TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   late TabController _controller;
 
   final _items = [
@@ -38,6 +38,7 @@ class _MainPageState extends State<MainPage>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       bottomNavigationBar: NavigationBar(
         selectedIndex: widget.navigationShell.currentIndex,
@@ -58,4 +59,7 @@ class _MainPageState extends State<MainPage>
       _controller.animateTo(index);
     });
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

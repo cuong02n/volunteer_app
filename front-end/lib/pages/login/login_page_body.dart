@@ -6,7 +6,7 @@ class LoginPageBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 100.h - 10,
+      height: 100.h - 20,
       child: const Column(
         children: [
           LoginPageBackground(),

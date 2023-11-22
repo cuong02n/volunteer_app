@@ -10,7 +10,9 @@ abstract class AppTheme {
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(
         seedColor: AppColor.orange,
-        primary: AppColor.orange
+        primary: AppColor.orange,
+        secondary: AppColor.grey,
+        surfaceTint: AppColor.white
       ),
       textTheme: AppTypology.textTheme,
       filledButtonTheme: FilledButtonThemeData(
@@ -25,7 +27,8 @@ abstract class AppTheme {
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10)
       )
-    )
+    ),
+    cardColor: AppColor.white
   );
 
   static ThemeData darkTheme = ThemeData.from(
