@@ -36,8 +36,8 @@ public class AuthenticationController {
         if (userService.existsByEmail(request.getEmail())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new AuthenticationResponse("Email is already registered."));
         }
-
-        return ResponseEntity.ok(service.register(request));
+        service.register(request);
+        return ResponseEntity.ok().build();
     }
     @PostMapping("/verify_register")
     public ResponseEntity<AuthenticationResponse> verifyRegister(@RequestBody RegisterVerifyRequest request){
