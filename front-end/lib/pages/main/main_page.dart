@@ -5,24 +5,57 @@ class MainPage extends StatefulWidget {
   final List<Widget> pages;
   final StatefulNavigationShell navigationShell;
 
-
-  const MainPage({super.key, required this.pages, required this.navigationShell});
+  const MainPage(
+      {super.key, required this.pages, required this.navigationShell});
 
   @override
   State<MainPage> createState() => _MainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
-  final _items = <BottomNavigationBarItem>[
+class _MainPageState extends State<MainPage>
+    with
+        TickerProviderStateMixin {
+  late TabController _controller;
 
+  final _items = [
+    const NavigationDestination(icon: Icon(Icons.home), label: "Trang chủ"),
+    const NavigationDestination(icon: Icon(Icons.notifications), label: "Thông báo"),
+    const NavigationDestination(icon: Icon(Icons.tab), label: "Fanpage"),
+    const NavigationDestination(icon: Icon(Icons.account_circle), label: "Cá nhân"),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TabController(length: widget.pages.length, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        items: _items,
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: widget.navigationShell.currentIndex,
+        onDestinationSelected: _switchTab,
+        destinations: _items,
+      ),
+      body: TabBarView(
+        controller: _controller,
+        physics: const NeverScrollableScrollPhysics(),
+        children: widget.pages,
       ),
     );
+  }
+
+  void _switchTab(int index) {
+    setState(() {
+      widget.navigationShell.goBranch(index);
+      _controller.animateTo(index);
+    });
   }
 }
