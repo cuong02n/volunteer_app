@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 part 'color.dart';
-
 part 'typology.dart';
+part 'extension.dart';
 
+///Chuẩn design của app (Theme)
 abstract class AppTheme {
   static ThemeData lightTheme = ThemeData(
       useMaterial3: true,

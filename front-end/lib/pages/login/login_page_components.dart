@@ -43,7 +43,6 @@ class LoginPageForm extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 2.5.w),
         child: Column(
-          //mainAxisSize: MainAxisSize.min,
           children: [
             TextFormField(
               decoration: InputDecoration(
@@ -74,7 +73,7 @@ class LoginPageForm extends StatelessWidget {
                 TextSpan(
                     text: "Tạo tài khoản",
                     mouseCursor: MaterialStateMouseCursor.clickable,
-                    recognizer: TapGestureRecognizer()..onTap = _register,
+                    recognizer: TapGestureRecognizer()..onTap = _register(context),
                     style: AppTypology.textButtonLabel)
               ])),
             ),
@@ -88,7 +87,9 @@ class LoginPageForm extends StatelessWidget {
 
   void _signIn() {}
 
-  void _register() {}
+  VoidCallback _register(BuildContext context) => () {
+    context.pushNamed(RouteName.register);
+  };
 }
 
 class LoginPagePrivacy extends StatelessWidget {

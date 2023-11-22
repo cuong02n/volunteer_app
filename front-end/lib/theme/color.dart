@@ -1,5 +1,6 @@
 part of 'theme.dart';
 
+/// Các màu sắc chủ đạo
 abstract class AppColor {
   static const Color orange = Color(0xFFFF5555);
   static const Color black = Color(0xFF000000);

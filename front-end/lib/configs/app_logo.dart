@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+///Logo app
 class AppLogo extends StatelessWidget {
   late final Size size;
 

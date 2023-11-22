@@ -1,5 +1,6 @@
 part of 'theme.dart';
 
+///Nơi lưu kiểu phông của app
 abstract class AppTypology {
   static const TextTheme textTheme = TextTheme(
     displayLarge: displayLarge,
@@ -59,7 +60,8 @@ abstract class AppTypology {
   static const TextStyle titleMedium = TextStyle(
     fontSize: 16,
     height: 24/16,
-    letterSpacing: 0.1
+    letterSpacing: 0.1,
+    fontWeight: FontWeight.bold
   );
 
   static const TextStyle titleSmall = TextStyle(
@@ -112,3 +114,4 @@ abstract class AppTypology {
   static final TextStyle textButtonLabel =
       labelLarge.copyWith(color: AppColor.orange);
 }
+
