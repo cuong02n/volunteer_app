@@ -10,7 +10,9 @@ import 'package:thien_nguyen_app/configs/route_name.dart';
 ///cho các trang dùng thanh điều hướng dưới.
 abstract class AppRouter {
   static final router =
-      GoRouter(routes: _route, initialLocation: RoutePath.home);
+      GoRouter(routes: _route, initialLocation: RoutePath.home, navigatorKey: _rootKey);
+
+  static final _rootKey = GlobalKey<NavigatorState>();
 
   static final _route = [
     StatefulShellRoute(
@@ -21,6 +23,7 @@ abstract class AppRouter {
     GoRoute(
         name: RouteName.login,
         path: RoutePath.login,
+        parentNavigatorKey: _rootKey,
         builder: (context, state) => LoginPage(),
         routes: [
           GoRoute(
@@ -29,22 +32,30 @@ abstract class AppRouter {
               pageBuilder: (context, state) => RegisterPage()),
         ]),
     GoRoute(
+        parentNavigatorKey: _rootKey,
+        path: RoutePath.specificPage,
+        builder: (context, state) => ChildPagePage()),
+    GoRoute(
+        parentNavigatorKey: _rootKey,
         path: RoutePath.status, builder: (context, state) => Error404Page()),
     GoRoute(
+        parentNavigatorKey: _rootKey,
         path: RoutePath.anotherUser,
         builder: (context, state) => Error404Page()),
     GoRoute(
-        path: RoutePath.newPage, builder: (context, state) => Error404Page()),
-    GoRoute(
-        path: RoutePath.specificPage,
-        builder: (context, state) => Error404Page()),
-    GoRoute(
+        parentNavigatorKey: _rootKey,
         path: RoutePath.helpAndSupport,
-        builder: (context, state) => Error404Page()),
+        name: RouteName.helpAndSupport,
+        builder: (context, state) => HelpPage()),
     GoRoute(
+        parentNavigatorKey: _rootKey,
+        name: RouteName.privacyPolicy,
         path: RoutePath.privacyPolicy,
-        builder: (context, state) => Error404Page()),
-    GoRoute(path: RoutePath.terms, builder: (context, state) => Error404Page())
+        builder: (context, state) => PrivacyPage()),
+    GoRoute(
+        parentNavigatorKey: _rootKey,
+        name: RouteName.terms,
+        path: RoutePath.terms, builder: (context, state) => TermsPage())
   ];
 
   static final _homeRoute = [
@@ -66,7 +77,15 @@ abstract class AppRouter {
           name: RouteName.page,
           path: RoutePath.page,
           pageBuilder: (context, state) =>
-              _getPage(child: FanpagePage(), state: state))
+              _getPage(child: FanpagePage(), state: state),
+          routes: [
+            GoRoute(
+                parentNavigatorKey: _rootKey,
+                name: RoutePath.newPage,
+                path: RoutePath.newPage,
+                pageBuilder: (context, state) => NewPagePage()),
+          ]
+      )
     ]),
     StatefulShellBranch(routes: [
       GoRoute(
@@ -75,9 +94,10 @@ abstract class AppRouter {
           pageBuilder: (context, state) =>
               _getPage(child: SettingsPage(), state: state)),
       GoRoute(
+        name: RouteName.user,
           path: RoutePath.user,
           pageBuilder: (context, state) =>
-              _getPage(child: Error404Page(), state: state),
+              _getPage(child: UserPage(), state: state),
           routes: [
             GoRoute(
                 path: RoutePath.edit,

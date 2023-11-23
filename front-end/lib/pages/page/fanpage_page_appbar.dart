@@ -41,8 +41,8 @@ class FanpagePageAppBar extends SliverAppBar {
         );
 
   static VoidCallback _newPage(BuildContext context) {
-    return () {
-
+    return () async {
+      var result = await context.push("/my-page/new");
     };
   }
 }

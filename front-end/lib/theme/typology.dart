@@ -80,6 +80,7 @@ abstract class AppTypology {
     fontSize: 12,
     height: 16/12,
     letterSpacing: 0.5,
+    fontWeight: FontWeight.w600
   );
 
   static const TextStyle labelSmall = TextStyle(

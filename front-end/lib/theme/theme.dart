@@ -23,6 +23,14 @@ abstract class AppTheme {
           )
         )
       ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+              shape: ContinuousRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              backgroundColor: AppColor.white
+          )
+      ),
     inputDecorationTheme: InputDecorationTheme(
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10)

@@ -3,7 +3,12 @@ abstract class RoutePath {
   //Main branch
   static String home = "/";
   static String notification = "/notification";
-  static String page = "/page";
+
+  static String page = "/my-page";
+  static String newPage = "new";
+
+  static String specificPage = "/page/:pageID";
+
   static String user = "/user";
   static String settings = "/settings";
   static String account = "/account";
@@ -16,8 +21,6 @@ abstract class RoutePath {
   static String register = "new";
 
   static String status = "/status";
-  static String specificPage = "/page/:pageID";
-  static String newPage = "/page/new";
   //Sub branch
   static String edit = "edit";
 }

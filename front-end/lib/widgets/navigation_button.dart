@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:thien_nguyen_app/theme/theme.dart';
 
 class NavigationButton extends StatelessWidget {
-  final Widget icon;
+  final Widget? icon;
   final String title;
   final void Function()? onPressed;
 
   const NavigationButton(
       {super.key,
-      required this.icon,
+      this.icon,
       required this.title,
       this.onPressed});
 
@@ -18,7 +18,7 @@ class NavigationButton extends StatelessWidget {
       margin: const EdgeInsets.all(5),
       child: Row(
         children: [
-          Padding(padding: const EdgeInsets.only(right: 10), child: icon),
+          icon != null ? Padding(padding: const EdgeInsets.only(right: 10), child: icon): const SizedBox(),
           Expanded(
             child: InkWell(
               onTap: onPressed,
