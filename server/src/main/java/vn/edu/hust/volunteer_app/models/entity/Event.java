@@ -41,6 +41,8 @@ public class Event {
     @Column(name = "status", nullable = false, columnDefinition = "INT DEFAULT 0")
     private Integer status;
 
+    @Column(name = "image", length = 255)
+    private String image;
     // Các getters và setters
 
 }

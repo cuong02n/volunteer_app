@@ -26,7 +26,6 @@ public class User implements UserDetails {
     ADMIN
   }
 
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
@@ -37,7 +36,12 @@ public class User implements UserDetails {
   private String email;
   @Column(name = "password")
   private String password;
-  // private String username;//Chỉ khai báo cho hợp lệ chứ không dùng đến
+
+  @Column(name = "cover_image", length = 255)
+  private String cover_image;
+
+  @Column(name = "avatar_image", length = 255)
+  private String avatar_image;
 
   @Enumerated(EnumType.STRING)
   private Role role;
@@ -89,8 +93,9 @@ public class User implements UserDetails {
   }
 
   // @Override
-  // @JsonIgnore//Ignore vì mình không dùng đến Username mà chỉ khai báo cho có
+  // @JsonIgnore//Ignore vì mình không dùng đến Username mà chỉ khai báo
+  // cho có
   // public String getUsername() {
-  //   return username;
+  // return username;
   // }
 }

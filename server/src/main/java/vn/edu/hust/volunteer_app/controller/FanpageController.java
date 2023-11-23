@@ -73,6 +73,8 @@ public class FanpageController {
                     .status(fanpageRequest.getStatus())
                     .createTime(fanpageRequest.getCreateTime())
                     .subscriber(fanpageRequest.getSubscriber())
+                    .avatar_image(fanpageRequest.getAvatar_image())
+                    .cover_image(fanpageRequest.getCover_image())
                     .build();
             Fanpage fanpage = fanpageService.saveFanpage(newFanpage);
 

@@ -55,6 +55,7 @@ public class EventService {
         existingEvent.setTitle(eventRequest.getTitle());
         existingEvent.setContent(eventRequest.getContent());
         existingEvent.setTarget(eventRequest.getTarget());
+        existingEvent.setImage(eventRequest.getImage());
         // Cập nhật các trường khác nếu cần
 
         // Lưu Fanpage đã cập nhật

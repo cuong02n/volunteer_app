@@ -55,6 +55,8 @@ public class FanpageService {
         existingFanpage.setFanpageName(fanpageRequest.getFanpageName());
         existingFanpage.setSubscriber(fanpageRequest.getSubscriber());
         existingFanpage.setStatus(fanpageRequest.getStatus());
+        existingFanpage.setAvatar_image(fanpageRequest.getAvatar_image());
+        existingFanpage.setCover_image(fanpageRequest.getCover_image());
         // Cập nhật các trường khác nếu cần
 
         // Lưu Fanpage đã cập nhật

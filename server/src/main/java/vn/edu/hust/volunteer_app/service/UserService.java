@@ -37,6 +37,8 @@ public class UserService implements UserDetailsService {
     public User update(User existingUser, User userRequest) {
     // Thực hiện cập nhật thông tin User, hiện tại chỉ được cập nhật username
         existingUser.setName(userRequest.getName());
+        existingUser.setAvatar_image(userRequest.getAvatar_image());
+        existingUser.setCover_image(userRequest.getCover_image());
         // Cập nhật các trường khác nếu cần
         System.out.println("existingUser : ");
         System.out.println(existingUser);
