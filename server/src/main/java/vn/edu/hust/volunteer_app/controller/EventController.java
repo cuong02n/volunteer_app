@@ -1,5 +1,18 @@
 package vn.edu.hust.volunteer_app.controller;
 
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,13 +21,6 @@ import vn.edu.hust.volunteer_app.models.entity.Event;
 import vn.edu.hust.volunteer_app.models.entity.Fanpage;
 import vn.edu.hust.volunteer_app.service.EventService;
 import vn.edu.hust.volunteer_app.service.FanpageService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/events")
@@ -27,16 +33,36 @@ public class EventController {
 
     @GetMapping
     @Operation(summary = "Get events", security = @SecurityRequirement(name = "bearerAuth"))
-    public ResponseEntity<List<Event>> getAllEvents(
+    public ResponseEntity<List<Event>> getEvents(
             @RequestParam(name = "fanpageId", required = false) Integer fanpageId,
-            @RequestParam(name = "page", required = false) Integer page,
-            @RequestParam(name = "pageSize", required = false) Integer pageSize) {
+            @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
+            @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
         try {
+            // Validate input parameters
+            if (page < 0 || pageSize <= 0) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+
             List<Event> events;
-            events = eventService.getAllEvents();
+
+            if (fanpageId != null) {
+                // If fanpageId is provided, get events for that fanpage
+                events = eventService.getEventsByFanpageId(fanpageId);
+            } else {
+                // If fanpageId is not provided, get all events
+                events = eventService.getEventsByPage(page, pageSize);
+            }
+
+            // Check if events list is empty
+            if (events.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+            }
+
             return ResponseEntity.ok(events);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            // Log the exception for debugging purposes
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
@@ -82,4 +108,33 @@ public class EventController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
         }
     }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "Put new event", security = @SecurityRequirement(name = "bearerAuth"))
+    public ResponseEntity<Event> putEvent(@PathVariable Integer id, @RequestBody Event eventRequest) {
+        String userIdStr = request.getAttribute("user_id").toString();
+        Integer userId = Integer.valueOf(userIdStr);
+
+        try {
+            // Kiểm tra xem sự kiện có tồn tại với id được cung cấp hay không
+            Event existingEvent = eventService.getEventById(id).orElse(null);
+            if (existingEvent == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // Kiểm tra xem userId có trùng với leader_id của Fanpage của sự kiện hay không
+            Fanpage fanpage = fanpageService.getFanpageById(existingEvent.getFanpage_id());
+            if (!fanpage.getLeaderId().equals(userId)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            }
+
+
+            // Lưu sự kiện sau khi cập nhật
+            Event updatedEvent = eventService.updateEvent(existingEvent, eventRequest);
+            return ResponseEntity.ok(updatedEvent);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+        }
+    }
+
 }
