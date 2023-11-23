@@ -48,21 +48,28 @@ public class EventService {
         return eventRepository.save(event);
     }
 
-    //Update sự kiện 
+    // Update sự kiện
     public Event updateEvent(Event existingEvent, Event eventRequest) {
 
         // Thực hiện cập nhật thông tin Fanpage
-        existingEvent.setTitle(eventRequest.getTitle());
-        existingEvent.setContent(eventRequest.getContent());
-        existingEvent.setTarget(eventRequest.getTarget());
-        existingEvent.setImage(eventRequest.getImage());
+        if (eventRequest.getTitle() != null) {
+            existingEvent.setTitle(eventRequest.getTitle());
+        }
+        if (eventRequest.getContent() != null) {
+            existingEvent.setContent(eventRequest.getContent());
+        }
+        if(eventRequest.getTarget()!=null){
+            existingEvent.setTarget(eventRequest.getTarget());
+        }
+        if(eventRequest.getImage()!=null){
+            existingEvent.setImage(eventRequest.getImage());
+        }
         // Cập nhật các trường khác nếu cần
 
         // Lưu Fanpage đã cập nhật
         return eventRepository.save(existingEvent);
 
     }
-
 
     // Xóa sự kiện theo ID
     public void deleteEvent(Integer eventId) {
