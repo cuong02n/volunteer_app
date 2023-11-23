@@ -10,6 +10,8 @@ abstract class RoutePath {
   static String specificPage = "/page/:pageID";
 
   static String user = "/user";
+  static String edit = "edit";
+
   static String settings = "/settings";
   static String account = "/account";
   static String helpAndSupport = "/help-and-support";
@@ -21,8 +23,6 @@ abstract class RoutePath {
   static String register = "new";
 
   static String status = "/status";
-  //Sub branch
-  static String edit = "edit";
 }
 
 ///Tên các trang trong app

@@ -13,24 +13,24 @@ class FanpageChoice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: _goToFanpage(context),
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5.w),
-        height: 180,
-        decoration:
-            BoxDecoration(
-                border: Border.all(color: context.appTheme.colorScheme.secondary),
-                borderRadius: BorderRadius.circular(10), boxShadow: [
-          BoxShadow(
-            color: context.appTheme.colorScheme.primary,
-          ),
-          BoxShadow(
-            color: context.appTheme.colorScheme.background,
-            blurRadius: 4,
-            spreadRadius: 0, // changes position of shadow
-          ),
-        ]),
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5.w),
+      height: 180,
+      decoration:
+          BoxDecoration(
+              border: Border.all(color: context.appTheme.colorScheme.secondary),
+              borderRadius: BorderRadius.circular(10), boxShadow: [
+        BoxShadow(
+          color: context.appTheme.colorScheme.primary,
+        ),
+        BoxShadow(
+          color: context.appTheme.colorScheme.background,
+          blurRadius: 4,
+          spreadRadius: 0, // changes position of shadow
+        ),
+      ]),
+      child: InkWell(
+        onTap: _goToFanpage(context),
         child: Row(
           children: [
             Container(

@@ -60,9 +60,11 @@ class SettingsPage extends StatelessWidget {
   }
 
   void _editProfile() {
+    _context.push("/user/edit");
   }
 
   void _accountSettings() {
+    _context.pushNamed(RouteName.account);
   }
 
   void _help() {

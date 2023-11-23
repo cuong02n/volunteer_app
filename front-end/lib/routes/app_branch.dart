@@ -37,6 +37,11 @@ abstract class AppRouter {
         builder: (context, state) => ChildPagePage()),
     GoRoute(
         parentNavigatorKey: _rootKey,
+        name: RouteName.account,
+        path: RoutePath.account,
+        builder: (context, state) => AccountPage()),
+    GoRoute(
+        parentNavigatorKey: _rootKey,
         path: RoutePath.status, builder: (context, state) => Error404Page()),
     GoRoute(
         parentNavigatorKey: _rootKey,
@@ -100,9 +105,10 @@ abstract class AppRouter {
               _getPage(child: UserPage(), state: state),
           routes: [
             GoRoute(
+                parentNavigatorKey: _rootKey,
                 path: RoutePath.edit,
-                pageBuilder: (context, state) =>
-                    _getPage(child: Error404Page(), state: state))
+                builder: (context, state) =>
+                    EditUserPage())
           ])
     ]),
   ];

@@ -12,6 +12,8 @@ export 'page/child_page//child_page.dart';
 
 export 'settings/settings_page.dart';
 export 'user/user_page.dart';
+export 'user/edit/edit_user.dart';
+export 'account/account_page.dart';
 
 export 'help/help_page.dart';
 export 'privacy_and_terms/privacy_page.dart';
