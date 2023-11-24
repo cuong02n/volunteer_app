@@ -10,6 +10,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
+import vn.edu.hust.volunteer_app.models.entity.User;
+import vn.edu.hust.volunteer_app.service.JwtService;
+import vn.edu.hust.volunteer_app.service.UserService;
 
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,7 +33,7 @@ import static vn.edu.hust.volunteer_app.config.ApplicationConfig.WHITE_LIST;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-    private final UserDetailsService userDetailsService;
+    private final UserService userDetailsService;
     private final AntPathMatcher pathMatcher = new AntPathMatcher();
     @Override
     protected void doFilterInternal(
@@ -63,11 +66,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             response.getWriter().write(e.getMessage());
         }
     }
-
-    // private boolean isWhitelisted(HttpServletRequest request) {
-    // String requestURI = request.getRequestURI();
-    // return whitelist.stream().anyMatch(requestURI::matches);
-    // }
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {

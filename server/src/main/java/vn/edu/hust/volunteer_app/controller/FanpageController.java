@@ -13,8 +13,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import vn.edu.hust.volunteer_app.models.entity.Fanpage;
+import vn.edu.hust.volunteer_app.service.FanpageService;
+import vn.edu.hust.volunteer_app.service.UserService;
 
 @RestController
+@RequestMapping("/api/fanpages")
 @RequiredArgsConstructor
 @ResponseBody
 public class FanpageController {
@@ -23,19 +27,20 @@ public class FanpageController {
     private final UserService userService;
     private final HttpServletRequest request;
 
-    @GetMapping("/api/fanpage")
-    @Operation(summary = "Get fanpage", security = @SecurityRequirement(name = "bearerAuth"))
+    @GetMapping
+    @Operation(summary = "Get fanpages", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<?> getAllFanpages(
             @RequestParam(name = "userId", required = false) Integer userId) {
         try {
             List<Fanpage> fanpages = fanpageService.getFanpagesByCriteria(userId);
+            System.out.println(fanpages);
             return ResponseEntity.ok(fanpages);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
-    @GetMapping("/api/fanpages/{id}")
+    @GetMapping("/{id}")
     @Operation(summary = "Get fanpages/{id}", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<?> getFanpageById(@PathVariable Integer id) {
         try {
@@ -46,29 +51,30 @@ public class FanpageController {
         }
     }
 
-    @PostMapping("/api/fanpages")
+    @PostMapping
     @Operation(summary = "Post new fanpage", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<?> createFanpage(@RequestBody Fanpage fanpageRequest) {
         System.out.println("in post request fanpage");
         try {
-            String leaderIdStr = request.getAttribute("userId").toString();
+            String leaderIdStr = request.getAttribute("user_id").toString();
             Integer leaderId = Integer.valueOf(leaderIdStr);
-            //Kiểm tra xem user có tồn tại không nếu ko có thì throw
+            // Kiểm tra xem user có tồn tại không nếu ko có thì throw
             // User leader = userService.findById(leaderId).orElseThrow();
 
-
-            //chỉ lấy các trường sau ở request và tạo fanpage mới
+            // chỉ lấy các trường sau ở request và tạo fanpage mới
             // {
-            //     "fanpageName": "string",
-            //     "status": 0,
-            //     "createTime": Date,
-            //     "subscriber": 1000
-            //   }
+            // "fanpageName": "string",
+            // "status": 0,
+            // "createTime": Date,
+            // "subscriber": 1000
+            // }
             Fanpage newFanpage = Fanpage.builder().fanpageName(fanpageRequest.getFanpageName())
                     .leaderId(leaderId)
                     .status(fanpageRequest.getStatus())
                     .createTime(fanpageRequest.getCreateTime())
                     .subscriber(fanpageRequest.getSubscriber())
+                    .avatar_image(fanpageRequest.getAvatar_image())
+                    .cover_image(fanpageRequest.getCover_image())
                     .build();
             Fanpage fanpage = fanpageService.saveFanpage(newFanpage);
 
@@ -78,10 +84,10 @@ public class FanpageController {
         }
     }
 
-    @PutMapping("/api/fanpages/{id}")
+    @PutMapping("/{id}")
     @Operation(summary = "Put fanpages/{id}", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<Object> updateFanpage(@PathVariable Integer id, @RequestBody Fanpage fanpageRequest) {
-        String userIdStr = request.getAttribute("userId").toString();
+        String userIdStr = request.getAttribute("user_id").toString();
         Integer userId = Integer.valueOf(userIdStr);
 
         System.out.println("=============================");
@@ -91,32 +97,32 @@ public class FanpageController {
 
             Fanpage existingFanpage = fanpageService.getFanpageById(id);
 
-            //Kiểm tra xem user/{userId} có sở hữu fanpage này không
+            // Kiểm tra xem user/{userId} có sở hữu fanpage này không
             if (!existingFanpage.getLeaderId().equals(userId)) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN)
                         .body("You don't have permission to update this fanpage.");
             }
 
             // Thực hiện cập nhật thông tin fanpage
-            //chỉ lấy các trường sau ở request và sửa fanpage
+            // chỉ lấy các trường sau ở request và sửa fanpage
             // {
-            //     "fanpageName": "string",
-            //     "status": 0,
-            //     "subscriber": 1000
-            //   }
+            // "fanpageName": "string",
+            // "status": 0,
+            // "subscriber": 1000
+            // }
             Fanpage updatedFanpage = fanpageService.updateFanpage(existingFanpage, fanpageRequest);
 
-                // Trả về đối tượng FanpageResponse đã cập nhật và mã trạng thái OK
+            // Trả về đối tượng FanpageResponse đã cập nhật và mã trạng thái OK
             return ResponseEntity.ok(updatedFanpage);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
-    @DeleteMapping("/api/fanpages/{id}")
+    @DeleteMapping("/{id}")
     @Operation(summary = "Delete fanpages/{id}", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<String> deleteFanpage(@PathVariable Integer id) {
-        String userIdStr = request.getAttribute("userId").toString();
+        String userIdStr = request.getAttribute("user_id").toString();
         Integer userId = Integer.valueOf(userIdStr);
 
         try {

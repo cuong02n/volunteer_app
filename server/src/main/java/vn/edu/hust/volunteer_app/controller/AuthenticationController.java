@@ -28,27 +28,27 @@ public class AuthenticationController {
     private final UserService userService;
     private final OtpService otpService;
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
         if (request.getName().isEmpty() || request.getEmail().isEmpty() || request.getPassword().isEmpty()) {
-            return ResponseEntity.status(BAD_REQUEST).body(new AuthenticationResponse("All fields must be filled in."));
+            return ResponseEntity.status(BAD_REQUEST).body("All fields must be filled in.");
         }
 
         if (userService.existsByEmail(request.getEmail())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new AuthenticationResponse("Email is already registered."));
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email is already registered.");
         }
         service.register(request);
         return ResponseEntity.ok().build();
     }
     @PostMapping("/verify_register")
-    public ResponseEntity<AuthenticationResponse> verifyRegister(@RequestBody RegisterVerifyRequest request){
+    public ResponseEntity<?> verifyRegister(@RequestBody RegisterVerifyRequest request){
         if(request.getOtp().isEmpty() || request.getEmail().isEmpty()){
-            return ResponseEntity.status(BAD_REQUEST).body(new AuthenticationResponse("All fields must be filled in."));
+            return ResponseEntity.status(BAD_REQUEST).body("All fields must be filled in.");
         }
         if(otpService.checkRegisterOTP(request.getEmail(),request.getOtp())){
             userService.verifiedRegister(request.getEmail());
             return ResponseEntity.ok().build();
         }
-        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new AuthenticationResponse("OTP was expired or OTP not valid"));
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("OTP was expired or OTP not valid");
 
     }
 
