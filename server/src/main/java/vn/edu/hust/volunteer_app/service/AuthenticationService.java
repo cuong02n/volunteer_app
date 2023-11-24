@@ -22,7 +22,7 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final OtpService otpService;
-    public void register(RegisterRequest request) {
+    public String register(RegisterRequest request) {
         User user = User.builder()
                 .name(request.getName())
                 .email(request.getEmail())
@@ -33,7 +33,7 @@ public class AuthenticationService {
 
         RegisterOtp otp = otpService.generateRegisterOTP(user.getEmail());
         otpService.save(otp);
-        otpService.sendRegisterOTP(otp);
+        return otpService.sendRegisterOTP(otp);
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {

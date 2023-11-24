@@ -1,7 +1,9 @@
 package vn.edu.hust.volunteer_app.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+import lombok.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +30,7 @@ public class AuthenticationController {
     private final UserService userService;
     private final OtpService otpService;
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<?> register(@RequestBody @Valid RegisterRequest request) {
         if (request.getName().isEmpty() || request.getEmail().isEmpty() || request.getPassword().isEmpty()) {
             return ResponseEntity.status(BAD_REQUEST).body("All fields must be filled in.");
         }
@@ -36,8 +38,7 @@ public class AuthenticationController {
         if (userService.existsByEmail(request.getEmail())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Email is already registered.");
         }
-        service.register(request);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(service.register(request));
     }
     @PostMapping("/verify_register")
     public ResponseEntity<?> verifyRegister(@RequestBody RegisterVerifyRequest request){
@@ -56,5 +57,4 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
         return ResponseEntity.ok(service.authenticate(request));
     }
-
 }

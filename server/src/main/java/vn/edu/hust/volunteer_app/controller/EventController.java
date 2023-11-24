@@ -2,6 +2,7 @@ package vn.edu.hust.volunteer_app.controller;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,10 +39,10 @@ public class EventController {
             @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
             @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
         try {
-            // Validate input parameters
-            if (page < 0 || pageSize <= 0) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-            }
+//            Validate input parameters
+//            if (page < 0 || pageSize <= 0) {
+//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+//            }
 
             List<Event> events;
 
@@ -52,16 +53,14 @@ public class EventController {
                 // If fanpageId is not provided, get all events
                 events = eventService.getEventsByPage(page, pageSize);
             }
-
-            // Check if events list is empty
-            if (events.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
-            }
+//            Check if events list is empty
+//            if (events.isEmpty()) {
+//                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+//            }
 
             return ResponseEntity.ok(events);
         } catch (Exception e) {
             // Log the exception for debugging purposes
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -81,9 +80,10 @@ public class EventController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/new_event")
     @Operation(summary = "Post new event", security = @SecurityRequirement(name = "bearerAuth"))
-    public ResponseEntity<Event> createEvent(@RequestBody Event eventRequest) {
+    public ResponseEntity<Event> createEvent(@RequestBody @Valid Event eventRequest) {
+        eventRequest.setStatus(0);
         String userIdStr = request.getAttribute("user_id").toString();
         Integer userId = Integer.valueOf(userIdStr);
 
@@ -94,14 +94,14 @@ public class EventController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
             }
 
-            System.out.println("fanpage.getLeaderId() :" + fanpage.getLeaderId());
-            System.out.println("userId :" + userId);
-            // Kiểm tra xem userId có trùng với leader_id của Fanpage hay không
+//            System.out.println("fanpage.getLeaderId() :" + fanpage.getLeaderId());
+//            System.out.println("userId :" + userId);
+//            Kiểm tra xem userId có trùng với leader_id của Fanpage hay không
             if (!fanpage.getLeaderId().equals(userId)) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
             }
 
-            // Lưu sự kiện nếu tất cả các điều kiện đều đúng
+//            Lưu sự kiện nếu tất cả các điều kiện đều đúng
             Event newEvent = eventService.saveEvent(eventRequest);
             return new ResponseEntity<>(newEvent, HttpStatus.OK);
         } catch (Exception e) {
@@ -135,6 +135,11 @@ public class EventController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
         }
+    }
+
+    @PostMapping("/admin/verify/{id}")
+    @Operation(summary = "admin verify event")
+    public ResponseEntity<Event> verifyEvent(@PathVariable int id,){
     }
 
 }

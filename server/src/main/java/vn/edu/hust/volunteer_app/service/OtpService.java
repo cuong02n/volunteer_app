@@ -17,8 +17,8 @@ public class OtpService {
         return new RegisterOtp(email, System.currentTimeMillis() + ApplicationConfig.EXPIRED_REGISTER_OTP, StringUtil.randomOTP());
     }
 
-    public void sendRegisterOTP(RegisterOtp registerOtp) {
-        emailService.send(registerOtp.getEmail(), "OTP for registration Volunteer app", registerOtp.getOTP());
+    public String sendRegisterOTP(RegisterOtp registerOtp) {
+        return emailService.send(registerOtp.getEmail(), "OTP for registration Volunteer app", registerOtp.getOTP());
     }
 
     public void save(RegisterOtp registerOtp) {

@@ -1,5 +1,7 @@
 package vn.edu.hust.volunteer_app.models.request;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,8 +12,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegisterRequest {
+    @Size(min = 5, max = 100)
+    private String name;
+    @Email
+    private String email;
 
-  private String name;
-  private String email;
-  private String password;
+    private String password;
 }
