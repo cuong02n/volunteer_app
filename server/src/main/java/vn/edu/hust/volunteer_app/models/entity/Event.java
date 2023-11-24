@@ -20,6 +20,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Event {
+    public enum STATUS {
+        NOT_VERIFY(0),
+        VERIFIED(1),
+        SUSPENDED(2);
+        final int code;
+
+        STATUS(int code) {
+            this.code = code;
+        }
+
+        public int getValue() {
+            return code;
+        }
+    }
 
     @Id
     @GeneratedValue

@@ -22,6 +22,7 @@ import vn.edu.hust.volunteer_app.models.entity.Event;
 import vn.edu.hust.volunteer_app.models.entity.Fanpage;
 import vn.edu.hust.volunteer_app.service.EventService;
 import vn.edu.hust.volunteer_app.service.FanpageService;
+import vn.edu.hust.volunteer_app.service.UserService;
 
 @RestController
 @RequestMapping("/api/events")
@@ -31,6 +32,7 @@ public class EventController {
     private final EventService eventService;
     private final HttpServletRequest request;
     private final FanpageService fanpageService;
+    private final UserService userService;
 
     @GetMapping
     @Operation(summary = "Get events", security = @SecurityRequirement(name = "bearerAuth"))
@@ -139,7 +141,14 @@ public class EventController {
 
     @PostMapping("/admin/verify/{id}")
     @Operation(summary = "admin verify event")
-    public ResponseEntity<Event> verifyEvent(@PathVariable int id,){
+    public ResponseEntity<Event> verifyEvent(@PathVariable int id) {
+        // TODO: check admin role
+        Event event = eventService.getEventById(id).orElse(null);
+        if (event == null || event.getStatus() != 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        eventService.setEventStatusVerified(event.getId());
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
 }

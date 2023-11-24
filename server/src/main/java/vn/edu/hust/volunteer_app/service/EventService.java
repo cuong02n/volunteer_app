@@ -37,7 +37,9 @@ public class EventService {
     public List<Event> getEventsByFanpageId(Integer fanpageId) {
         return eventRepository.findByFanpageId(fanpageId);
     }
-
+    public void setEventStatusVerified(int eventId){
+        eventRepository.updateStatusById(Event.STATUS.VERIFIED.getValue(),eventId);
+    }
     // Lấy một sự kiện theo ID
     public Optional<Event> getEventById(Integer eventId) {
         return eventRepository.findById(eventId);

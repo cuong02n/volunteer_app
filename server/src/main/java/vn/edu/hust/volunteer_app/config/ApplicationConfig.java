@@ -21,7 +21,7 @@ import vn.edu.hust.volunteer_app.service.UserService;
 public class ApplicationConfig {
     public static final long EXPIRED_REGISTER_OTP = 2 * 60 * 1000;
     public static final String[] WHITE_LIST = {
-            "/api/events",
+            "/api/events/**",
             "/test",
             "/api/v1/auth/*",
             "/swagger-ui/**",
