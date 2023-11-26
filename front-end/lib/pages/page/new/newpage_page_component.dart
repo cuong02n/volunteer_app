@@ -22,6 +22,13 @@ class NewPageForm extends StatelessWidget {
                 labelText: "Giới thiệu về tổ chức"),
           ),
           const SizedBox(height: 10),
+          ImagePickerField(
+            title: "Thêm ảnh đại diện",
+          ),
+          const SizedBox(height: 10),
+          ImagePickerField(
+            title: "Thêm ảnh bìa",
+          ),
           const SizedBox(height: 10),
           FilledButton(
               onPressed: _confirm,

@@ -38,6 +38,7 @@ dependencies:
   go_router: ^12.1.1
   sizer: ^2.0.15
   flutter_markdown: ^0.6.18+2
+  image_picker: ^1.0.4
 
 dev_dependencies:
   flutter_test:

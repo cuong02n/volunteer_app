@@ -17,7 +17,7 @@ abstract class AppTheme {
       textTheme: AppTypology.textTheme,
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
-          padding: const EdgeInsets.symmetric(vertical: 20),
+          padding: const EdgeInsets.symmetric(vertical: 10),
           shape: ContinuousRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           )
@@ -32,6 +32,7 @@ abstract class AppTheme {
           )
       ),
     inputDecorationTheme: InputDecorationTheme(
+      isDense: true,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10)
       )
