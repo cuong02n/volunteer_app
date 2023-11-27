@@ -36,7 +36,10 @@ class NewPageBody extends StatelessWidget {
                     constraints: BoxConstraints(maxHeight: 80.h),
                     child: ScrollConfiguration(
                         behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
-                        child: SingleChildScrollView(child: NewPageForm()))),
+                        child: SingleChildScrollView(child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: NewPageForm(),
+                        )))),
                 const SizedBox(height: 10),
               ],
             ),

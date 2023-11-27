@@ -53,7 +53,7 @@ class _ImagePickerFieldState extends State<ImagePickerField> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(widget.title),
+                Text(widget.title, style: context.appTheme.textTheme.labelLarge,),
                 OutlinedButton(onPressed: _chooseFile, child: Text("Chọn file"))
               ],
             ),
