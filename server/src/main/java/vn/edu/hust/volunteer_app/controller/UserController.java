@@ -4,19 +4,18 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import vn.edu.hust.volunteer_app.models.entity.User;
+import vn.edu.hust.volunteer_app.service.CloudinaryImageService;
 import vn.edu.hust.volunteer_app.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,6 +27,27 @@ public class UserController {
 
     private final UserService userService;
     private final HttpServletRequest request;
+    Logger logger = LoggerFactory.getLogger(UserController.class);
+    @PostMapping("/{id}/update_cover_image")
+    public ResponseEntity<?> updateUserCoverImage(@PathVariable Integer id, @RequestParam("image") MultipartFile file) {
+        try{
+            String url = userService.setCoverImage(id,file);
+            return ResponseEntity.ok(url);
+        }catch (Exception e){
+            logger.debug(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+    @PostMapping("/{id}/update_avatar_image")
+    public ResponseEntity<?> updateUserAvatarImage(@PathVariable Integer id, @RequestParam("image") MultipartFile file) {
+        try{
+            String url = userService.setCoverImage(id,file);
+            return ResponseEntity.ok(url);
+        }catch (Exception e){
+            logger.debug(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
 
     @GetMapping
     @Operation(summary = "Get all users", security = @SecurityRequirement(name = "bearerAuth"))
@@ -55,7 +75,7 @@ public class UserController {
 
         try {
             if (!userId.equals(id)) {
-                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("UNAUTHORIZED");
+                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("unauthorized");
             }else{
                 User existUser = userService.findUserById(userId).orElseThrow();
                 User updatedUser = userService.update(existUser, userRequest);

@@ -5,17 +5,13 @@ import jakarta.persistence.*;
 import java.util.Collection;
 import java.util.List;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.web.bind.annotation.RestController;
 
 @Data
 @Builder
@@ -39,10 +35,10 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
     @Column(name = "cover_image", length = 255)
-    private String cover_image;
+    private String coverImage;
 
     @Column(name = "avatar_image", length = 255)
-    private String avatar_image;
+    private String avatarImage;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -88,10 +84,4 @@ public class User implements UserDetails {
         return email;
     }
 
-    // @Override
-    // @JsonIgnore//Ignore vì mình không dùng đến Username mà chỉ khai báo
-    // cho có
-    // public String getUsername() {
-    // return username;
-    // }
 }
