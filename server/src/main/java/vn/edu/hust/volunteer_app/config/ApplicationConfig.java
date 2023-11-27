@@ -3,10 +3,7 @@ package vn.edu.hust.volunteer_app.config;
 import com.cloudinary.Cloudinary;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import vn.edu.hust.volunteer_app.repository.UserRepository;
-import vn.edu.hust.volunteer_app.service.CloudinaryImageService;
-import vn.edu.hust.volunteer_app.service.UserService;
-
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,7 +12,6 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import vn.edu.hust.volunteer_app.repository.UserRepository;
 import vn.edu.hust.volunteer_app.service.UserService;
 
@@ -37,6 +33,7 @@ public class ApplicationConfig {
     };
 
     UserRepository userRepository;
+
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -46,15 +43,17 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public Cloudinary getCloudinary(){
+    public Cloudinary getCloudinary(
+            @Value("${cloudinary.cloud_name}") String cloudName,
+            @Value("${cloudinary.api_key}") String apiKey,
+            @Value("${cloudinary.api_secret}") String apiSecret
+    ) {
         Map config = new HashMap();
-        config.put("cloud_name","");
-        config.put("api_key","");
-        config.put("api_secret","");
-        config.put("secure",true);
-        Cloudinary cloudinary = new Cloudinary(config);
-        System.out.println(cloudinary.getUserAgent());
-        return cloudinary;
+        config.put("cloud_name", cloudName);
+        config.put("api_key", apiKey);
+        config.put("api_secret", apiSecret);
+        config.put("secure", true);
+        return new Cloudinary(config);
     }
 
     @Bean
