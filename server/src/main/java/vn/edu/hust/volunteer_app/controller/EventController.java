@@ -34,12 +34,24 @@ public class EventController {
     private final CloudinaryImageService cloudinaryImageService;
 
     /**
-     * @param fanpageId : get Event of FanpageId, if there is no fanpageId, return all VERIFIED events
-     * @return List of VALID EVENT
+     *
+     * @param id : pass null (ignore in param list) for not filter
+     * @param title : pass null (ignore in param list) for not filter
+     * @param content : pass null (ignore in param list) for not filter
+     * @param minTarget : pass null (ignore in param list) for not filter
+     * @param maxTarget : pass null (ignore in param list) for not filter
+     * @param fanpageId : pass null (ignore in param list) for not filter
+     * @param startTime : pass null (ignore in param list) for not filter
+     * @param endTime : pass null (ignore in param list) for not filter
+     * @param status : must be 0 or 1,
+     *               0 : not verified (use for admin)
+     *               1 : verified (use for user)
+     *
+     * @return : List Event (Json format) valid with that filter
      */
     @GetMapping("/get_event")
-    @Operation(summary = "Get verified EVENT", security = @SecurityRequirement(name = "bearerAuth"))
-    public ResponseEntity<List<Event>> getVerifiedEvent(
+    @Operation(summary = "Get Event by Criteria", security = @SecurityRequirement(name = "bearerAuth"))
+    public ResponseEntity<List<Event>> getEvent(
             @RequestParam(name = "id",required = false) Integer id,
             @RequestParam(name = "title" ,required = false) String title,
             @RequestParam(name = "content" ,required = false) String content,
@@ -48,28 +60,13 @@ public class EventController {
             @RequestParam(name = "fanpage_id", required = false) Integer fanpageId,
             @RequestParam(name = "start_time",required = false) Integer startTime,
             @RequestParam(name = "end_time",required = false) Integer endTime,
-            @RequestParam(name = "status",required = false) Integer status
+            @RequestParam(name = "status") Integer status
     ) {
         try {
             List<Event> events = eventService.getEventByCriteria(id, title, content, minTarget, maxTarget, fanpageId, startTime, endTime, status);
             return ResponseEntity.ok(events);
         } catch (Exception e) {
             logger.error("{}", ExceptionUtils.getStackTrace(e));
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
-
-    @GetMapping("/{id}")
-    @Operation(summary = "Get events/{id}", security = @SecurityRequirement(name = "bearerAuth"))
-    public ResponseEntity<Event> getEventById(@PathVariable Integer id) {
-        try {
-            Event event = eventService.getEventById(id).orElse(null);
-            if (event != null) {
-                return ResponseEntity.ok(event);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -139,7 +136,7 @@ public class EventController {
     @Operation(summary = "Update Image for Event", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<?> updateEventImage(@PathVariable Integer id, @RequestParam("image") @ValidImage MultipartFile multipartFile) {
         try {
-            Map result = cloudinaryImageService.upload(multipartFile);
+            Map<?,?> result = cloudinaryImageService.upload(multipartFile);
             if (result.get("url") != null) {
                 String url = String.valueOf(result.get("url"));
                 eventService.setImageByEventId(id, url);
