@@ -24,6 +24,7 @@ import java.util.Map;
 public class ApplicationConfig {
     public static final long EXPIRED_REGISTER_OTP = 2 * 60 * 1000;
     public static final String[] WHITE_LIST = {
+            "/api/events/**",
             "/api/users/**",
             "/api/events/**",
             "/test",

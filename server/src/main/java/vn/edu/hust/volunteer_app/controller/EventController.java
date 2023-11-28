@@ -1,71 +1,80 @@
 package vn.edu.hust.volunteer_app.controller;
 
-import java.util.List;
-
-import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import vn.edu.hust.volunteer_app.annotation.ValidImage;
 import vn.edu.hust.volunteer_app.models.entity.Event;
 import vn.edu.hust.volunteer_app.models.entity.Fanpage;
+import vn.edu.hust.volunteer_app.service.CloudinaryImageService;
 import vn.edu.hust.volunteer_app.service.EventService;
 import vn.edu.hust.volunteer_app.service.FanpageService;
-import vn.edu.hust.volunteer_app.service.UserService;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/events")
 @RequiredArgsConstructor
 public class EventController {
+    Logger logger = LoggerFactory.getLogger(EventController.class);
 
     private final EventService eventService;
     private final HttpServletRequest request;
     private final FanpageService fanpageService;
-    private final UserService userService;
+    private final CloudinaryImageService cloudinaryImageService;
 
-    @GetMapping
-    @Operation(summary = "Get events", security = @SecurityRequirement(name = "bearerAuth"))
-    public ResponseEntity<List<Event>> getEvents(
-            @RequestParam(name = "fanpageId", required = false) Integer fanpageId,
-            @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
-            @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+    /**
+     * @param fanpageId : get Event of Fanpage Id, if there is no fanpageId, return all VERIFIED events
+     * @return List of VALID EVENT
+     */
+    @GetMapping("/get_verified_event")
+    @Operation(summary = "Get verified EVENT", security = @SecurityRequirement(name = "bearerAuth"))
+    public ResponseEntity<List<Event>> getVerifiedEvent(
+            @RequestParam(name = "fanpageId", required = false) Integer fanpageId) {
         try {
-//            Validate input parameters
-//            if (page < 0 || pageSize <= 0) {
-//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-//            }
-
             List<Event> events;
 
             if (fanpageId != null) {
-                // If fanpageId is provided, get events for that fanpage
-                events = eventService.getEventsByFanpageId(fanpageId);
+                events = eventService.getVerifiedEventsByFanpageId(fanpageId);
             } else {
-                // If fanpageId is not provided, get all events
-                events = eventService.getEventsByPage(page, pageSize);
+                events = eventService.getVerifiedEvent();
             }
-//            Check if events list is empty
-//            if (events.isEmpty()) {
-//                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
-//            }
-
             return ResponseEntity.ok(events);
         } catch (Exception e) {
-            // Log the exception for debugging purposes
+            logger.error("{}", ExceptionUtils.getStackTrace(e));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+    @GetMapping("/get_unverified_event")
+    @Operation(summary = "Get unverified EVENT", security = @SecurityRequirement(name = "bearerAuth"))
+    public ResponseEntity<List<Event>> getUnVerifiedEvent(
+            @RequestParam(name = "fanpageId", required = false) Integer fanpageId) {
+        try {
+            List<Event> events;
+
+            if (fanpageId != null) {
+                events = eventService.getVerifiedEventsByFanpageId(fanpageId);
+            } else {
+                events = eventService.getVerifiedEvent();
+            }
+            return ResponseEntity.ok(events);
+        } catch (Exception e) {
+            logger.error("{}", ExceptionUtils.getStackTrace(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
 
     @GetMapping("/{id}")
     @Operation(summary = "Get events/{id}", security = @SecurityRequirement(name = "bearerAuth"))
@@ -149,6 +158,23 @@ public class EventController {
         }
         eventService.setEventStatusVerified(event.getId());
         return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
+
+    // TODO: verify
+    @PostMapping("/{id}/update_image")
+    @Operation(summary = "Update Image for Event", security = @SecurityRequirement(name = "bearerAuth"))
+    public ResponseEntity<?> updateEventImage(@PathVariable Integer id, @RequestParam("image") @ValidImage MultipartFile multipartFile) {
+        try {
+            Map result = cloudinaryImageService.upload(multipartFile);
+            if (result.get("url") != null) {
+                String url = String.valueOf(result.get("url"));
+                eventService.setImageByEventId(id, url);
+                return ResponseEntity.ok().body(url);
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
 }

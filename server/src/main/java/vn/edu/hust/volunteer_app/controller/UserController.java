@@ -33,6 +33,7 @@ public class UserController {
     Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @PostMapping( "/{id}/update_cover_image")
+    @Operation(summary = "update User Cover Image", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<?> updateUserCoverImage(@PathVariable Integer id, @RequestParam("image") @ValidImage MultipartFile file) {
         try {
             String url = userService.setCoverImage(id, file);
@@ -44,6 +45,7 @@ public class UserController {
     }
 
     @PostMapping( "/{id}/update_avatar_image")
+    @Operation(summary = "update User Avatar Image", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<?> updateUserAvatarImage(@PathVariable Integer id, @RequestParam("image") @ValidImage MultipartFile file) {
         try {
             String url = userService.setCoverImage(id, file);

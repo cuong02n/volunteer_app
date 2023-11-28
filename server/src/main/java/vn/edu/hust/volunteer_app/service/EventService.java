@@ -1,12 +1,9 @@
 package vn.edu.hust.volunteer_app.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import vn.edu.hust.volunteer_app.models.entity.Event;
-import vn.edu.hust.volunteer_app.models.entity.Fanpage;
 import vn.edu.hust.volunteer_app.repository.EventRepository;
 
 import java.util.List;
@@ -27,19 +24,28 @@ public class EventService {
         return eventRepository.findAll();
     }
 
-    // Lấy danh sách sự kiện theo trang và kích thước trang
-    public List<Event> getEventsByPage(Integer index, Integer pageSize) {
-        Page<Event> page = eventRepository.findAll(PageRequest.of(index, pageSize));
-        return page.getContent();
+    public List<Event> getVerifiedEvent() {
+        return eventRepository.getFanpageByStatus(Event.STATUS.VERIFIED.getValue());
     }
 
+    // Lấy danh sách sự kiện theo trang và kích thước trang
+
+
     // Lấy danh sách sự kiện theo fanpageId
-    public List<Event> getEventsByFanpageId(Integer fanpageId) {
-        return eventRepository.findByFanpageId(fanpageId);
+    public List<Event> getVerifiedEventsByFanpageId(Integer fanpageId) {
+        return eventRepository.findEventByFanpageIdAndStatus(fanpageId);
     }
-    public void setEventStatusVerified(int eventId){
-        eventRepository.updateStatusById(Event.STATUS.VERIFIED.getValue(),eventId);
+
+    public void setEventStatusVerified(int eventId) {
+        eventRepository.updateStatusById(Event.STATUS.VERIFIED.getValue(), eventId);
     }
+
+    public void setImageByEventId(int eventId, String imageUrl) {
+        Event event = getEventById(eventId).orElseThrow();
+        event.setImage(imageUrl);
+        saveEvent(event);
+    }
+
     // Lấy một sự kiện theo ID
     public Optional<Event> getEventById(Integer eventId) {
         return eventRepository.findById(eventId);
@@ -60,10 +66,10 @@ public class EventService {
         if (eventRequest.getContent() != null) {
             existingEvent.setContent(eventRequest.getContent());
         }
-        if(eventRequest.getTarget()!=null){
+        if (eventRequest.getTarget() != null) {
             existingEvent.setTarget(eventRequest.getTarget());
         }
-        if(eventRequest.getImage()!=null){
+        if (eventRequest.getImage() != null) {
             existingEvent.setImage(eventRequest.getImage());
         }
         // Cập nhật các trường khác nếu cần
@@ -77,6 +83,8 @@ public class EventService {
     public void deleteEvent(Integer eventId) {
         eventRepository.deleteById(eventId);
     }
+
+
 
     // Các phương thức khác có thể thêm theo nhu cầu của bạn
 
