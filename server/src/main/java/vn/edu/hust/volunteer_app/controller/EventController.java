@@ -34,47 +34,30 @@ public class EventController {
     private final CloudinaryImageService cloudinaryImageService;
 
     /**
-     * @param fanpageId : get Event of Fanpage Id, if there is no fanpageId, return all VERIFIED events
+     * @param fanpageId : get Event of FanpageId, if there is no fanpageId, return all VERIFIED events
      * @return List of VALID EVENT
      */
-    @GetMapping("/get_verified_event")
+    @GetMapping("/get_event")
     @Operation(summary = "Get verified EVENT", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<List<Event>> getVerifiedEvent(
-            @RequestParam(name = "fanpageId", required = false) Integer fanpageId) {
+            @RequestParam(name = "id",required = false) Integer id,
+            @RequestParam(name = "title" ,required = false) String title,
+            @RequestParam(name = "content" ,required = false) String content,
+            @RequestParam(name = "min_target",required = false) Integer minTarget,
+            @RequestParam(name = "max_target",required = false) Integer maxTarget,
+            @RequestParam(name = "fanpage_id", required = false) Integer fanpageId,
+            @RequestParam(name = "start_time",required = false) Integer startTime,
+            @RequestParam(name = "end_time",required = false) Integer endTime,
+            @RequestParam(name = "status",required = false) Integer status
+    ) {
         try {
-            List<Event> events;
-
-            if (fanpageId != null) {
-                events = eventService.getVerifiedEventsByFanpageId(fanpageId);
-            } else {
-                events = eventService.getVerifiedEvent();
-            }
+            List<Event> events = eventService.getEventByCriteria(id, title, content, minTarget, maxTarget, fanpageId, startTime, endTime, status);
             return ResponseEntity.ok(events);
         } catch (Exception e) {
             logger.error("{}", ExceptionUtils.getStackTrace(e));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-
-    @GetMapping("/get_unverified_event")
-    @Operation(summary = "Get unverified EVENT", security = @SecurityRequirement(name = "bearerAuth"))
-    public ResponseEntity<List<Event>> getUnVerifiedEvent(
-            @RequestParam(name = "fanpageId", required = false) Integer fanpageId) {
-        try {
-            List<Event> events;
-
-            if (fanpageId != null) {
-                events = eventService.getVerifiedEventsByFanpageId(fanpageId);
-            } else {
-                events = eventService.getVerifiedEvent();
-            }
-            return ResponseEntity.ok(events);
-        } catch (Exception e) {
-            logger.error("{}", ExceptionUtils.getStackTrace(e));
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
-
 
     @GetMapping("/{id}")
     @Operation(summary = "Get events/{id}", security = @SecurityRequirement(name = "bearerAuth"))
@@ -99,21 +82,17 @@ public class EventController {
         Integer userId = Integer.valueOf(userIdStr);
 
         try {
-            // Kiểm tra xem có Fanpage tồn tại với fanpage_id được cung cấp hay không
-            Fanpage fanpage = fanpageService.getFanpageById(eventRequest.getFanpage_id());
-            if (fanpage == null) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-            }
+            Fanpage fanpage = fanpageService.getFanpageById(eventRequest.getFanpageId());
+            if (fanpage == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
-//            System.out.println("fanpage.getLeaderId() :" + fanpage.getLeaderId());
-//            System.out.println("userId :" + userId);
-//            Kiểm tra xem userId có trùng với leader_id của Fanpage hay không
-            if (!fanpage.getLeaderId().equals(userId)) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-            }
+            if (!fanpage.getLeaderId().equals(userId)) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
-//            Lưu sự kiện nếu tất cả các điều kiện đều đúng
+
+            // set status to un verify
+            eventRequest.setStatus(Event.STATUS.NOT_VERIFY.getValue());
+
             Event newEvent = eventService.saveEvent(eventRequest);
+
             return new ResponseEntity<>(newEvent, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
@@ -121,26 +100,21 @@ public class EventController {
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Put new event", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "Put event", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<Event> putEvent(@PathVariable Integer id, @RequestBody Event eventRequest) {
         String userIdStr = request.getAttribute("user_id").toString();
         Integer userId = Integer.valueOf(userIdStr);
 
         try {
-            // Kiểm tra xem sự kiện có tồn tại với id được cung cấp hay không
             Event existingEvent = eventService.getEventById(id).orElse(null);
             if (existingEvent == null) {
                 return ResponseEntity.notFound().build();
             }
 
-            // Kiểm tra xem userId có trùng với leader_id của Fanpage của sự kiện hay không
-            Fanpage fanpage = fanpageService.getFanpageById(existingEvent.getFanpage_id());
+            Fanpage fanpage = fanpageService.getFanpageById(existingEvent.getFanpageId());
             if (!fanpage.getLeaderId().equals(userId)) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
             }
-
-
-            // Lưu sự kiện sau khi cập nhật
             Event updatedEvent = eventService.updateEvent(existingEvent, eventRequest);
             return ResponseEntity.ok(updatedEvent);
         } catch (Exception e) {

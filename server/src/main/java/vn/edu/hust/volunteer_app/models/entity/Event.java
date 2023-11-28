@@ -1,13 +1,6 @@
 package vn.edu.hust.volunteer_app.models.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,9 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Event {
     public enum STATUS {
-        NOT_VERIFY(0),
-        VERIFIED(1),
-        SUSPENDED(2);
+        NOT_VERIFY(0), VERIFIED(1);
         final int code;
 
         STATUS(int code) {
@@ -45,18 +36,19 @@ public class Event {
 
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
-
+    @Column(name = "progress")
+    private Integer progress;
     @Column(name = "target", nullable = false, columnDefinition = "INT DEFAULT 0")
     private Integer target;
-
+    @Column(name = "start_time")
+    private Long startTime;
+    @Column(name = "end_time")
+    private Long endTime;
     @Column(name = "fanpage_id", nullable = false)
-    private Integer fanpage_id;
-
+    private Integer fanpageId;
     @Column(name = "status", nullable = false, columnDefinition = "INT DEFAULT 0")
     private Integer status;
-
-    @Column(name = "image", length = 255)
+    @Column(name = "image")
     private String image;
-    // Các getters và setters
 
 }
