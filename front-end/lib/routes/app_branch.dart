@@ -4,13 +4,15 @@ import 'package:go_router/go_router.dart';
 import 'package:thien_nguyen_app/pages/pages.dart';
 import 'package:thien_nguyen_app/configs/route_name.dart';
 
+import '../pages/home/home_page.dart';
+
 ///Nơi lưu trữ GoRouter của app, các trang (Page) xong sẽ được xuất vào pages.dart
 ///và được gọi trong các GoRoute (tùy thuộc vào mục đích sử dụng sẽ dùng builder
 ///hoặc pageBuilder tương ứng. StatefulShellRoute là trường hợp đặc biệt để điều hướng
 ///cho các trang dùng thanh điều hướng dưới.
 abstract class AppRouter {
-  static final router =
-      GoRouter(routes: _route, initialLocation: RoutePath.home, navigatorKey: _rootKey);
+  static final router = GoRouter(
+      routes: _route, initialLocation: RoutePath.home, navigatorKey: _rootKey);
 
   static final _rootKey = GlobalKey<NavigatorState>();
 
@@ -42,7 +44,8 @@ abstract class AppRouter {
         builder: (context, state) => AccountPage()),
     GoRoute(
         parentNavigatorKey: _rootKey,
-        path: RoutePath.status, builder: (context, state) => Error404Page()),
+        path: RoutePath.status,
+        builder: (context, state) => Error404Page()),
     GoRoute(
         parentNavigatorKey: _rootKey,
         path: RoutePath.anotherUser,
@@ -60,7 +63,8 @@ abstract class AppRouter {
     GoRoute(
         parentNavigatorKey: _rootKey,
         name: RouteName.terms,
-        path: RoutePath.terms, builder: (context, state) => TermsPage())
+        path: RoutePath.terms,
+        builder: (context, state) => TermsPage())
   ];
 
   static final _homeRoute = [
@@ -68,7 +72,7 @@ abstract class AppRouter {
       GoRoute(
           path: RoutePath.home,
           pageBuilder: (context, state) =>
-              _getPage(child: Error404Page(), state: state))
+              _getPage(child: HomePage(), state: state))
     ]),
     StatefulShellBranch(routes: [
       GoRoute(
@@ -89,8 +93,7 @@ abstract class AppRouter {
                 name: RoutePath.newPage,
                 path: RoutePath.newPage,
                 pageBuilder: (context, state) => NewPagePage()),
-          ]
-      )
+          ])
     ]),
     StatefulShellBranch(routes: [
       GoRoute(
@@ -99,7 +102,7 @@ abstract class AppRouter {
           pageBuilder: (context, state) =>
               _getPage(child: SettingsPage(), state: state)),
       GoRoute(
-        name: RouteName.user,
+          name: RouteName.user,
           path: RoutePath.user,
           pageBuilder: (context, state) =>
               _getPage(child: UserPage(), state: state),
@@ -107,8 +110,7 @@ abstract class AppRouter {
             GoRoute(
                 parentNavigatorKey: _rootKey,
                 path: RoutePath.edit,
-                builder: (context, state) =>
-                    EditUserPage())
+                builder: (context, state) => EditUserPage())
           ])
     ]),
   ];
