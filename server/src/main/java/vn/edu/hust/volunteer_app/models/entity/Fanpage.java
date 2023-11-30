@@ -47,5 +47,4 @@ public class Fanpage {
 
     @Column(name = "avatar_image", length = 255)
     private String avatar_image;
-
 }

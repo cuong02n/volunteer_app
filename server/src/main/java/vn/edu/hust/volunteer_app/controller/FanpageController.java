@@ -90,9 +90,6 @@ public class FanpageController {
         String userIdStr = request.getAttribute("user_id").toString();
         Integer userId = Integer.valueOf(userIdStr);
 
-        System.out.println("=============================");
-        System.out.println(fanpageRequest);
-
         try {
 
             Fanpage existingFanpage = fanpageService.getFanpageById(id);

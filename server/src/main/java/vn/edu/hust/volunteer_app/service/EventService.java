@@ -1,12 +1,8 @@
 package vn.edu.hust.volunteer_app.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
 import vn.edu.hust.volunteer_app.models.entity.Event;
-import vn.edu.hust.volunteer_app.models.entity.Fanpage;
 import vn.edu.hust.volunteer_app.repository.EventRepository;
 
 import java.util.List;
@@ -22,25 +18,32 @@ public class EventService {
         this.eventRepository = eventRepository;
     }
 
-    // Lấy danh sách tất cả sự kiện
     public List<Event> getAllEvents() {
         return eventRepository.findAll();
     }
 
-    // Lấy danh sách sự kiện theo trang và kích thước trang
-    public List<Event> getEventsByPage(Integer index, Integer pageSize) {
-        Page<Event> page = eventRepository.findAll(PageRequest.of(index, pageSize));
-        return page.getContent();
+    public List<Event> getVerifiedEvent() {
+        return eventRepository.getFanpageByStatus(Event.STATUS.VERIFIED.getValue());
     }
 
-    // Lấy danh sách sự kiện theo fanpageId
-    public List<Event> getEventsByFanpageId(Integer fanpageId) {
-        return eventRepository.findByFanpageId(fanpageId);
+    public List<Event> getVerifiedEventsByFanpageId(Integer fanpageId) {
+        return eventRepository.findEventByFanpageIdAndStatus(fanpageId);
     }
-    public void setEventStatusVerified(int eventId){
-        eventRepository.updateStatusById(Event.STATUS.VERIFIED.getValue(),eventId);
+
+    public void setEventStatusVerified(int eventId) {
+        eventRepository.updateStatusById(Event.STATUS.VERIFIED.getValue(), eventId);
     }
-    // Lấy một sự kiện theo ID
+
+    public void setImageByEventId(int eventId, String imageUrl) {
+        Event event = getEventById(eventId).orElseThrow();
+        event.setImage(imageUrl);
+        saveEvent(event);
+    }
+
+    public List<Event> getEventByCriteria(Integer id, String title, String content, Integer minTarget, Integer maxTarget, Integer fanpageId, Integer startTime, Integer endTime, Integer status) {
+        return eventRepository.getEventByCriteria(id, title, content, minTarget, maxTarget, fanpageId, startTime, endTime, status);
+    }
+
     public Optional<Event> getEventById(Integer eventId) {
         return eventRepository.findById(eventId);
     }
@@ -53,31 +56,18 @@ public class EventService {
     // Update sự kiện
     public Event updateEvent(Event existingEvent, Event eventRequest) {
 
-        // Thực hiện cập nhật thông tin Fanpage
-        if (eventRequest.getTitle() != null) {
-            existingEvent.setTitle(eventRequest.getTitle());
-        }
-        if (eventRequest.getContent() != null) {
-            existingEvent.setContent(eventRequest.getContent());
-        }
-        if(eventRequest.getTarget()!=null){
-            existingEvent.setTarget(eventRequest.getTarget());
-        }
-        if(eventRequest.getImage()!=null){
-            existingEvent.setImage(eventRequest.getImage());
-        }
-        // Cập nhật các trường khác nếu cần
+        if (eventRequest.getTitle() != null) existingEvent.setTitle(eventRequest.getTitle());
+        if (eventRequest.getContent() != null) existingEvent.setContent(eventRequest.getContent());
+        if (eventRequest.getTarget() != null) existingEvent.setTarget(eventRequest.getTarget());
+        if (eventRequest.getStartTime() != null) existingEvent.setStartTime(eventRequest.getStartTime());
+        if (eventRequest.getEndTime() != null) existingEvent.setEndTime(eventRequest.getEndTime());
 
-        // Lưu Fanpage đã cập nhật
         return eventRepository.save(existingEvent);
 
     }
 
-    // Xóa sự kiện theo ID
     public void deleteEvent(Integer eventId) {
         eventRepository.deleteById(eventId);
     }
-
-    // Các phương thức khác có thể thêm theo nhu cầu của bạn
 
 }

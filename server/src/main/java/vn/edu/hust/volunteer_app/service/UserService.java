@@ -1,21 +1,29 @@
 package vn.edu.hust.volunteer_app.service;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.security.core.userdetails.UserDetails;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
+import org.springframework.web.multipart.MultipartFile;
 import vn.edu.hust.volunteer_app.models.entity.User;
 import vn.edu.hust.volunteer_app.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
+    private CloudinaryImageService cloudinaryImageService;
+
+    @Autowired
+    public void setCloudinaryImageService(CloudinaryImageService cloudinaryImageService) {
+        this.cloudinaryImageService = cloudinaryImageService;
+    }
 
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
@@ -33,25 +41,39 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
+    public String setCoverImage(Integer id, MultipartFile file) throws Exception {
+        User user = findUserById(id).orElseThrow();
+        Map data = cloudinaryImageService.upload(file);
+        String url = String.valueOf(data.get("url"));
+        user.setCoverImage(url);
+        userRepository.save(user);
+        return url;
+    }
+    public String setAvatarImage(Integer id, MultipartFile file) throws Exception {
+        User user = findUserById(id).orElseThrow();
+        Map data = cloudinaryImageService.upload(file);
+        String url = String.valueOf(data.get("url"));
+        user.setAvatarImage(url);
+        userRepository.save(user);
+        return url;
+    }
     public User update(User existingUser, User userRequest) {
         // Thực hiện cập nhật thông tin User, hiện tại chỉ được cập nhật username
         if (userRequest.getName() != null) {
             existingUser.setName(userRequest.getName());
         }
-        if (userRequest.getAvatar_image() != null) {
-            existingUser.setAvatar_image(userRequest.getAvatar_image());
-        }
-        if (userRequest.getCover_image() != null) {
-            existingUser.setCover_image(userRequest.getCover_image());
-        }
-        // Lưu User đã cập nhật
+//        if (userRequest.getAvatarImage() != null) {
+//            existingUser.setAvatarImage(userRequest.getAvatarImage());
+//        }
+//        if (userRequest.getCoverImage() != null) {
+//            existingUser.setCoverImage(userRequest.getCoverImage());
+//        }
         return userRepository.save(existingUser);
     }
 
     @Override
     public User loadUserByUsername(String email) throws UsernameNotFoundException {// loadUserByUsername(Dung emails là
-                                                                                   // Username )
-        System.out.println("in load user by username " + email);
+        // Username )
         return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }
