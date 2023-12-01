@@ -16,6 +16,6 @@ public class RegisterRequest {
     private String name;
     @Email
     private String email;
-
+    @Size(min = 6,max = 100)
     private String password;
 }

@@ -1,21 +1,16 @@
 package vn.edu.hust.volunteer_app.controller;
 
-import java.util.List;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import vn.edu.hust.volunteer_app.models.entity.Fanpage;
-import vn.edu.hust.volunteer_app.service.FanpageService;
-import vn.edu.hust.volunteer_app.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import vn.edu.hust.volunteer_app.models.entity.Fanpage;
-import vn.edu.hust.volunteer_app.service.FanpageService;
-import vn.edu.hust.volunteer_app.service.UserService;
+import vn.edu.hust.volunteer_app.service.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/fanpages")

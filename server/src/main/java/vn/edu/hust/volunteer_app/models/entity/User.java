@@ -24,6 +24,10 @@ public class User implements UserDetails {
         USER,
         ADMIN
     }
+    public enum Status{
+        VERIFIED,
+        UNVERIFIED
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,9 +43,12 @@ public class User implements UserDetails {
 
     @Column(name = "avatar_image", length = 255)
     private String avatarImage;
-
+    @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @Override
     @JsonIgnore
