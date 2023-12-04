@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import vn.edu.hust.volunteer_app.annotation.ValidName;
 
 @Data
 @Builder
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RegisterRequest {
     @Size(min = 5, max = 100)
+    @ValidName
     private String name;
     @Email
     private String email;

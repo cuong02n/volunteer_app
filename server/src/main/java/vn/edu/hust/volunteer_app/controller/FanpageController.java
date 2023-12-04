@@ -73,7 +73,7 @@ public class FanpageController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Put fanpages/{id}", security = @SecurityRequirement(name = "bearerAuth"))
-    public ResponseEntity<Object> updateFanpage(@PathVariable Integer id, @RequestBody Fanpage fanpageRequest) {
+    public ResponseEntity<Object> updateFanpage(@PathVariable Integer id, @RequestBody @Valid Fanpage fanpageRequest) {
         String userIdStr = request.getAttribute("user_id").toString();
         Integer userId = Integer.valueOf(userIdStr);
 
@@ -97,7 +97,7 @@ public class FanpageController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete fanpages/{id}", security = @SecurityRequirement(name = "bearerAuth"))
-    public ResponseEntity<String> deleteFanpage(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteFanpage(@PathVariable Integer id) {
         String userIdStr = request.getAttribute("user_id").toString();
         Integer userId = Integer.valueOf(userIdStr);
 

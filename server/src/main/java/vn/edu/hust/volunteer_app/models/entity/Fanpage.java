@@ -24,8 +24,8 @@ public class Fanpage {
     private Integer id;
 
     @Column(name = "fanpage_name", unique = true)
-    @ValidName
     @Size(min = 5,max = 100)
+    @ValidName
     private String fanpageName;
 
     @JoinColumn(name = "leader_id")

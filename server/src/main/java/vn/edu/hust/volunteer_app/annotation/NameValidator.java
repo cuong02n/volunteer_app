@@ -5,7 +5,7 @@ import jakarta.validation.ConstraintValidatorContext;
 import jakarta.validation.Valid;
 import vn.edu.hust.volunteer_app.util.StringUtil;
 
-public class NameValidator implements ConstraintValidator<ValidName,String> {
+public class NameValidator implements ConstraintValidator<ValidName, String> {
     @Override
     public void initialize(ValidName constraintAnnotation) {
         ConstraintValidator.super.initialize(constraintAnnotation);
@@ -13,6 +13,12 @@ public class NameValidator implements ConstraintValidator<ValidName,String> {
 
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
-        return StringUtil.isName(s.trim());
+        assert s != null;
+        if (!StringUtil.isName(s.trim())) {
+            constraintValidatorContext.disableDefaultConstraintViolation();
+            constraintValidatorContext.buildConstraintViolationWithTemplate("Name not valid").addConstraintViolation();
+            return false;
+        }
+        return true;
     }
 }
