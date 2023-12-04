@@ -48,7 +48,7 @@ public class User implements UserDetails {
     private Role role;
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private User.Status status;
 
     @Override
     @JsonIgnore

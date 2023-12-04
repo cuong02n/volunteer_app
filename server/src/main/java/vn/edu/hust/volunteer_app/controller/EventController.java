@@ -74,7 +74,7 @@ public class EventController {
     @PostMapping("/new_event")
     @Operation(summary = "Post new event", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<Event> createEvent(@RequestBody @Valid Event eventRequest) {
-        eventRequest.setStatus(0);
+        eventRequest.setStatus(Event.STATUS.NOT_VERIFY);
         String userIdStr = request.getAttribute("user_id").toString();
         Integer userId = Integer.valueOf(userIdStr);
 
@@ -86,7 +86,7 @@ public class EventController {
 
 
             // set status to un verify
-            eventRequest.setStatus(Event.STATUS.NOT_VERIFY.getValue());
+            eventRequest.setStatus(Event.STATUS.NOT_VERIFY);
 
             Event newEvent = eventService.saveEvent(eventRequest);
 
@@ -124,7 +124,7 @@ public class EventController {
     public ResponseEntity<Event> verifyEvent(@PathVariable int id) {
         // TODO: check admin role
         Event event = eventService.getEventById(id).orElse(null);
-        if (event == null || event.getStatus() != 0) {
+        if (event == null || event.getStatus() != Event.STATUS.NOT_VERIFY) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
         eventService.setEventStatusVerified(event.getId());

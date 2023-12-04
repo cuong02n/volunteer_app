@@ -78,4 +78,12 @@ public class FanpageService {
         return fanpageRepository.findByLeaderId(userId);
     }
 
+    public boolean isExistByName(String fanpageName) {
+        return 0!=fanpageRepository.countAllByFanpageNameAndStatus(fanpageName,Fanpage.STATUS.VERIFIED.name());
+    }
+
+    public boolean isExistByNameAndStatus(String fanpageName, String name) {
+        return 0!=fanpageRepository.countAllByFanpageNameAndStatus(fanpageName,name);
+
+    }
 }

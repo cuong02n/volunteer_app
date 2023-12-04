@@ -3,6 +3,7 @@ package vn.edu.hust.volunteer_app.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,29 +49,20 @@ public class FanpageController {
 
     @PostMapping
     @Operation(summary = "Post new fanpage", security = @SecurityRequirement(name = "bearerAuth"))
-    public ResponseEntity<?> createFanpage(@RequestBody Fanpage fanpageRequest) {
+    public ResponseEntity<?> createFanpage(@RequestBody @Valid Fanpage fanpageRequest) {
         System.out.println("in post request fanpage");
         try {
             String leaderIdStr = request.getAttribute("user_id").toString();
             Integer leaderId = Integer.valueOf(leaderIdStr);
-            // Kiểm tra xem user có tồn tại không nếu ko có thì throw
-            // User leader = userService.findById(leaderId).orElseThrow();
 
-            // chỉ lấy các trường sau ở request và tạo fanpage mới
-            // {
-            // "fanpageName": "string",
-            // "status": 0,
-            // "createTime": Date,
-            // "subscriber": 1000
-            // }
             Fanpage newFanpage = Fanpage.builder().fanpageName(fanpageRequest.getFanpageName())
                     .leaderId(leaderId)
-                    .status(fanpageRequest.getStatus())
-                    .createTime(fanpageRequest.getCreateTime())
-                    .subscriber(fanpageRequest.getSubscriber())
-                    .avatar_image(fanpageRequest.getAvatar_image())
-                    .cover_image(fanpageRequest.getCover_image())
+                    .status(Fanpage.STATUS.NOT_VERIFY)
+                    .createTime(System.currentTimeMillis())
                     .build();
+            if(fanpageService.isExistByNameAndStatus(fanpageRequest.getFanpageName(),Fanpage.STATUS.VERIFIED.name())){
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Name must be unique");
+            }
             Fanpage fanpage = fanpageService.saveFanpage(newFanpage);
 
             return new ResponseEntity<>(fanpage, HttpStatus.OK);
@@ -95,16 +87,8 @@ public class FanpageController {
                         .body("You don't have permission to update this fanpage.");
             }
 
-            // Thực hiện cập nhật thông tin fanpage
-            // chỉ lấy các trường sau ở request và sửa fanpage
-            // {
-            // "fanpageName": "string",
-            // "status": 0,
-            // "subscriber": 1000
-            // }
             Fanpage updatedFanpage = fanpageService.updateFanpage(existingFanpage, fanpageRequest);
 
-            // Trả về đối tượng FanpageResponse đã cập nhật và mã trạng thái OK
             return ResponseEntity.ok(updatedFanpage);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -120,13 +104,11 @@ public class FanpageController {
         try {
             Fanpage existingFanpage = fanpageService.getFanpageById(id);
 
-            // Kiểm tra xem user/{userId} có quyền sở hữu fanpage này không
             if (!existingFanpage.getLeaderId().equals(userId)) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN)
                         .body("You don't have permission to delete this fanpage.");
             }
 
-            // Thực hiện xóa fanpage
             fanpageService.deleteFanpage(id);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
