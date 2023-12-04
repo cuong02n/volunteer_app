@@ -10,6 +10,7 @@ import vn.edu.hust.volunteer_app.models.entity.Fanpage;
 import vn.edu.hust.volunteer_app.repository.FanpageRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -37,8 +38,8 @@ public class FanpageService {
         return fanpageRepository.findAll(example);
     }
 
-    public Fanpage getFanpageById(Integer id) {
-        return fanpageRepository.findById(id).orElseThrow();
+    public Optional<Fanpage> getFanpageById(Integer id) {
+        return fanpageRepository.findById(id);
     }
 
     public Fanpage saveFanpage(Fanpage fanpage) {
@@ -84,6 +85,9 @@ public class FanpageService {
 
     public boolean isExistByNameAndStatus(String fanpageName, String name) {
         return 0!=fanpageRepository.countAllByFanpageNameAndStatus(fanpageName,name);
+    }
 
+    public void setFanpageStatusVerified(int fanpageId){
+        fanpageRepository.setFanpageStatusById(fanpageId,Fanpage.STATUS.VERIFIED.name());
     }
 }

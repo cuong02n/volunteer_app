@@ -49,7 +49,7 @@ public class ApplicationConfig {
             @Value("${cloudinary.api_key}") String apiKey,
             @Value("${cloudinary.api_secret}") String apiSecret
     ) {
-        Map config = new HashMap();
+        Map config = new HashMap<>();
         config.put("cloud_name", cloudName);
         config.put("api_key", apiKey);
         config.put("api_secret", apiSecret);

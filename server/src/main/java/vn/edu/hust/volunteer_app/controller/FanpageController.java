@@ -9,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.hust.volunteer_app.models.entity.Fanpage;
-import vn.edu.hust.volunteer_app.service.*;
+import vn.edu.hust.volunteer_app.models.entity.User;
+import vn.edu.hust.volunteer_app.service.FanpageService;
+import vn.edu.hust.volunteer_app.service.UserService;
 
 import java.util.List;
 
@@ -25,8 +27,7 @@ public class FanpageController {
 
     @GetMapping
     @Operation(summary = "Get fanpages", security = @SecurityRequirement(name = "bearerAuth"))
-    public ResponseEntity<?> getAllFanpages(
-            @RequestParam(name = "userId", required = false) Integer userId) {
+    public ResponseEntity<?> getAllFanpages(@RequestParam(name = "userId", required = false) Integer userId) {
         try {
             List<Fanpage> fanpages = fanpageService.getFanpagesByCriteria(userId);
             System.out.println(fanpages);
@@ -40,7 +41,7 @@ public class FanpageController {
     @Operation(summary = "Get fanpages/{id}", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<?> getFanpageById(@PathVariable Integer id) {
         try {
-            Fanpage fanpage = fanpageService.getFanpageById(id);
+            Fanpage fanpage = fanpageService.getFanpageById(id).orElseThrow();
             return ResponseEntity.ok(fanpage);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -55,12 +56,8 @@ public class FanpageController {
             String leaderIdStr = request.getAttribute("user_id").toString();
             Integer leaderId = Integer.valueOf(leaderIdStr);
 
-            Fanpage newFanpage = Fanpage.builder().fanpageName(fanpageRequest.getFanpageName())
-                    .leaderId(leaderId)
-                    .status(Fanpage.STATUS.NOT_VERIFY)
-                    .createTime(System.currentTimeMillis())
-                    .build();
-            if(fanpageService.isExistByNameAndStatus(fanpageRequest.getFanpageName(),Fanpage.STATUS.VERIFIED.name())){
+            Fanpage newFanpage = Fanpage.builder().fanpageName(fanpageRequest.getFanpageName()).leaderId(leaderId).status(Fanpage.STATUS.NOT_VERIFY).createTime(System.currentTimeMillis()).build();
+            if (fanpageService.isExistByNameAndStatus(fanpageRequest.getFanpageName(), Fanpage.STATUS.VERIFIED.name())) {
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Name must be unique");
             }
             Fanpage fanpage = fanpageService.saveFanpage(newFanpage);
@@ -79,12 +76,10 @@ public class FanpageController {
 
         try {
 
-            Fanpage existingFanpage = fanpageService.getFanpageById(id);
+            Fanpage existingFanpage = fanpageService.getFanpageById(id).orElseThrow();
 
-            // Kiểm tra xem user/{userId} có sở hữu fanpage này không
             if (!existingFanpage.getLeaderId().equals(userId)) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                        .body("You don't have permission to update this fanpage.");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You don't have permission to update this fanpage.");
             }
 
             Fanpage updatedFanpage = fanpageService.updateFanpage(existingFanpage, fanpageRequest);
@@ -102,11 +97,10 @@ public class FanpageController {
         Integer userId = Integer.valueOf(userIdStr);
 
         try {
-            Fanpage existingFanpage = fanpageService.getFanpageById(id);
+            Fanpage existingFanpage = fanpageService.getFanpageById(id).orElseThrow();
 
             if (!existingFanpage.getLeaderId().equals(userId)) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                        .body("You don't have permission to delete this fanpage.");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You don't have permission to delete this fanpage.");
             }
 
             fanpageService.deleteFanpage(id);
@@ -115,5 +109,20 @@ public class FanpageController {
         }
 
         return ResponseEntity.ok("Delete Successfully");
+    }
+
+    @PostMapping("/admin/verify/{id}")
+    @Operation(summary = "admin verify fanpage", security = @SecurityRequirement(name = "bearerAuth"))
+    public ResponseEntity<?> verifyEvent(@PathVariable int id) {
+        User user = userService.findUserById((int) request.getAttribute("user_id")).orElseThrow();
+        if (user.getRole() != User.Role.ADMIN) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("YOU MUST BE ADMIN");
+        }
+        Fanpage fanpage = fanpageService.getFanpageById(id).orElseThrow();
+        if (fanpage.getStatus() != Fanpage.STATUS.NOT_VERIFY) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        fanpageService.setFanpageStatusVerified(fanpage.getId());
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 }
