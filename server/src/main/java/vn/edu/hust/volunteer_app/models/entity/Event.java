@@ -39,7 +39,7 @@ public class Event {
     private Long endTime;
     @Column(name = "fanpage_id", nullable = false)
     private Integer fanpageId;
-    @Column(name = "status", nullable = false, columnDefinition = "INT DEFAULT 0")
+    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private Event.STATUS status;
     @Column(name = "image")

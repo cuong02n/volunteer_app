@@ -31,6 +31,9 @@ public class OtpService {
     public String sendRegisterOTP(RegisterOtp registerOtp) {
         return emailService.send(registerOtp.getEmail(), "OTP for registration Volunteer app", registerOtp.getOTP());
     }
+    public String sendResetPasswordOTP(ResetPasswordOtp resetPasswordOtp){
+        return emailService.send(resetPasswordOtp.getEmail(),"OTP for resetting your password in Volunteer app",resetPasswordOtp.getOTP());
+    }
 
     public void save(RegisterOtp registerOtp) {
         registerOtpRepository.save(registerOtp);
