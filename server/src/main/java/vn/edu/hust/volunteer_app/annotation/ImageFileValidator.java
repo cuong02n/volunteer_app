@@ -2,7 +2,6 @@ package vn.edu.hust.volunteer_app.annotation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import jakarta.validation.Valid;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;

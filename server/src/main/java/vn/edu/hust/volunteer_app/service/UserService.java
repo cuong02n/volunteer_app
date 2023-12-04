@@ -57,23 +57,21 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
         return url;
     }
+    public void setNewPassword(String email,String password){
+        User user = loadUserByUsername(email);
+        user.setPassword(password);
+        userRepository.save(user);
+    }
     public User update(User existingUser, User userRequest) {
-        // Thực hiện cập nhật thông tin User, hiện tại chỉ được cập nhật username
         if (userRequest.getName() != null) {
             existingUser.setName(userRequest.getName());
         }
-//        if (userRequest.getAvatarImage() != null) {
-//            existingUser.setAvatarImage(userRequest.getAvatarImage());
-//        }
-//        if (userRequest.getCoverImage() != null) {
-//            existingUser.setCoverImage(userRequest.getCoverImage());
-//        }
         return userRepository.save(existingUser);
     }
 
     @Override
     public User loadUserByUsername(String email) throws UsernameNotFoundException {// loadUserByUsername(Dung emails là
         // Username )
-        return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return userRepository.findByEmailAndStatus(email,User.Status.VERIFIED.name()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }

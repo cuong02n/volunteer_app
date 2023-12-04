@@ -75,7 +75,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Put user/{id}", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "Put user/{id} , exclude image, email and password, there are other apis", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<?> updateUser(@PathVariable Integer id, @RequestBody User userRequest) {
         String userIdStr = request.getAttribute("user_id").toString();
         Integer userId = Integer.valueOf(userIdStr);
@@ -93,5 +93,6 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
 
 }

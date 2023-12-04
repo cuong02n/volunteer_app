@@ -18,10 +18,10 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
     @Transactional
     @Modifying
     @Query(value = "UPDATE event set status = ?1 where id = ?2", nativeQuery = true)
-    void updateStatusById(int status,int id);
+    void updateStatusById(String status,int id);
 
     @Query(value = "select e from Event e where e.status = ?1",nativeQuery = true)
-    List<Event> getFanpageByStatus(int status);
+    List<Event> getFanpageByStatus(String status);
 
     @Query("""
             select e

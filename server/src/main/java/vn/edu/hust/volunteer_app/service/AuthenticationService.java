@@ -1,5 +1,7 @@
 package vn.edu.hust.volunteer_app.service;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,8 +33,7 @@ public class AuthenticationService {
                 .build();
         repository.save(user);
 
-        RegisterOtp otp = otpService.generateRegisterOTP(user.getEmail());
-        otpService.save(otp);
+        RegisterOtp otp = otpService.generateAndSaveRegisterOTP(user.getEmail());
         return otpService.sendRegisterOTP(otp);
     }
 
@@ -41,7 +42,7 @@ public class AuthenticationService {
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
                         request.getPassword()));
-        var user = repository.findByEmail(request.getEmail())
+        var user = repository.findByEmailAndStatus(request.getEmail(),User.Status.VERIFIED.name())
                 .orElseThrow();
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
@@ -49,4 +50,5 @@ public class AuthenticationService {
                 .userId(user.getId())
                 .build();
     }
+
 }

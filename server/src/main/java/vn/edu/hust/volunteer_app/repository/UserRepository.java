@@ -10,7 +10,7 @@ import vn.edu.hust.volunteer_app.models.entity.User;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
   
-  Optional<User> findByEmail(String email);
+  Optional<User> findByEmailAndStatus(String email,String status);
   boolean existsByEmail(String username);
   @Modifying
   @Transactional

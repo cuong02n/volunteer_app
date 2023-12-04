@@ -23,7 +23,7 @@ public class EventService {
     }
 
     public List<Event> getVerifiedEvent() {
-        return eventRepository.getFanpageByStatus(Event.STATUS.VERIFIED.getValue());
+        return eventRepository.getFanpageByStatus(Event.STATUS.VERIFIED.name());
     }
 
     public List<Event> getVerifiedEventsByFanpageId(Integer fanpageId) {
@@ -31,7 +31,7 @@ public class EventService {
     }
 
     public void setEventStatusVerified(int eventId) {
-        eventRepository.updateStatusById(Event.STATUS.VERIFIED.getValue(), eventId);
+        eventRepository.updateStatusById(Event.STATUS.VERIFIED.name(), eventId);
     }
 
     public void setImageByEventId(int eventId, String imageUrl) {
