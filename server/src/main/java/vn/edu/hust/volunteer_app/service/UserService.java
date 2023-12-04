@@ -43,7 +43,7 @@ public class UserService implements UserDetailsService {
 
     public String setCoverImage(Integer id, MultipartFile file) throws Exception {
         User user = findUserById(id).orElseThrow();
-        Map data = cloudinaryImageService.upload(file);
+        Map<?,?> data = cloudinaryImageService.upload(file);
         String url = String.valueOf(data.get("url"));
         user.setCoverImage(url);
         userRepository.save(user);
@@ -51,7 +51,7 @@ public class UserService implements UserDetailsService {
     }
     public String setAvatarImage(Integer id, MultipartFile file) throws Exception {
         User user = findUserById(id).orElseThrow();
-        Map data = cloudinaryImageService.upload(file);
+        Map<?,?> data = cloudinaryImageService.upload(file);
         String url = String.valueOf(data.get("url"));
         user.setAvatarImage(url);
         userRepository.save(user);
@@ -70,8 +70,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
-    public User loadUserByUsername(String email) throws UsernameNotFoundException {// loadUserByUsername(Dung emails là
-        // Username )
+    public User loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findByEmailAndStatus(email,User.Status.VERIFIED.name()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }

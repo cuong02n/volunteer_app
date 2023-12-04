@@ -13,6 +13,7 @@ import vn.edu.hust.volunteer_app.models.entity.User;
 import vn.edu.hust.volunteer_app.service.FanpageService;
 import vn.edu.hust.volunteer_app.service.UserService;
 
+import java.lang.annotation.Target;
 import java.util.List;
 
 @RestController
@@ -30,7 +31,6 @@ public class FanpageController {
     public ResponseEntity<?> getAllFanpages(@RequestParam(name = "userId", required = false) Integer userId) {
         try {
             List<Fanpage> fanpages = fanpageService.getFanpagesByCriteria(userId);
-            System.out.println(fanpages);
             return ResponseEntity.ok(fanpages);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -48,10 +48,9 @@ public class FanpageController {
         }
     }
 
-    @PostMapping
-    @Operation(summary = "Post new fanpage", security = @SecurityRequirement(name = "bearerAuth"))
+    @PostMapping()
+    @Operation(summary = "Create new fanpage", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<?> createFanpage(@RequestBody @Valid Fanpage fanpageRequest) {
-        System.out.println("in post request fanpage");
         try {
             String leaderIdStr = request.getAttribute("user_id").toString();
             Integer leaderId = Integer.valueOf(leaderIdStr);
