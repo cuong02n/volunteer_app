@@ -1,11 +1,11 @@
 # **INSTALL**
 ## 1. Environment
-- Jdk17 or later: [Download JDK](..%2F..%2F..%2F..%2F..%2FAppData%2FLocal%2FTemp%2FJava%20Downloads%20-%20Oracle.url) and import it to your project
+- Jdk17 or later: [Download JDK](https://www.oracle.com/java/technologies/downloads/) and import it to your project
 ## 2. Create application.properties file
 - In src/main, create directory resources
 - In src/main/resources, create application.properties
 ## 3. SQL
-- [Download MySql](..%2F..%2F..%2F..%2F..%2FAppData%2FLocal%2FTemp%2FMySQL%20--%20MySQL%20Downloads.url) or [A sample free MySql](..%2F..%2F..%2F..%2F..%2FAppData%2FLocal%2FTemp%2FFree%20MySQL%20Hosting.url)
+- [Download MySql](https://www.mysql.com/downloads/) or [A sample free MySql](https://www.freemysqlhosting.net/)
 - If you use local MySql, should create a database for this project
 - If you use a free Hosting Sql, They will give you _database name, username, password_
 - Add to application.properties your 
