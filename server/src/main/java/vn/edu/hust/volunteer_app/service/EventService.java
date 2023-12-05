@@ -40,7 +40,7 @@ public class EventService {
         saveEvent(event);
     }
 
-    public List<Event> getEventByCriteria(Integer id, String title, String content, Integer minTarget, Integer maxTarget, Integer fanpageId, Integer startTime, Integer endTime, Integer status) {
+    public List<Event> getEventByCriteria(Integer id, String title, String content, Integer minTarget, Integer maxTarget, Integer fanpageId, Integer startTime, Integer endTime, Event.STATUS status) {
         return eventRepository.getEventByCriteria(id, title, content, minTarget, maxTarget, fanpageId, startTime, endTime, status);
     }
 

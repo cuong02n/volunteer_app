@@ -1,11 +1,13 @@
 package vn.edu.hust.volunteer_app.controller;
 
+import com.sun.jdi.request.EventRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -35,6 +37,7 @@ public class EventController {
     private final FanpageService fanpageService;
     private final CloudinaryImageService cloudinaryImageService;
     private final UserService userService;
+    private final ModelMapper modelMapper;
     /**
      *
      * @param id : pass null (ignore in param list) for not filter
@@ -45,9 +48,7 @@ public class EventController {
      * @param fanpageId : pass null (ignore in param list) for not filter
      * @param startTime : pass null (ignore in param list) for not filter
      * @param endTime : pass null (ignore in param list) for not filter
-     * @param status : must be 0 or 1,
-     *               0 : not verified (use for admin)
-     *               1 : verified (use for user)
+     * @param status : must be VERIFIED or NOT_VERIFY
      *
      * @return : List Event (Json format) valid with that filter
      */
@@ -62,7 +63,7 @@ public class EventController {
             @RequestParam(name = "fanpage_id", required = false) Integer fanpageId,
             @RequestParam(name = "start_time",required = false) Integer startTime,
             @RequestParam(name = "end_time",required = false) Integer endTime,
-            @RequestParam(name = "status") Integer status
+            @RequestParam(name = "status") Event.STATUS status
     ) {
         try {
             List<Event> events = eventService.getEventByCriteria(id, title, content, minTarget, maxTarget, fanpageId, startTime, endTime, status);
@@ -75,20 +76,17 @@ public class EventController {
 
     @PostMapping("/new_event")
     @Operation(summary = "Post new event", security = @SecurityRequirement(name = "bearerAuth"))
-    public ResponseEntity<Event> createEvent(@RequestBody @Valid Event eventRequest) {
-        eventRequest.setStatus(Event.STATUS.NOT_VERIFY);
-        String userIdStr = request.getAttribute("user_id").toString();
-        Integer userId = Integer.valueOf(userIdStr);
+    public ResponseEntity<Event> createEvent(@RequestBody @Valid Event.Request requestRecord) {
+        Event eventRequest = Event.fromRequest(requestRecord);
+        Integer userId = (int)request.getAttribute("user_id");
 
         try {
             Fanpage fanpage = fanpageService.getFanpageById(eventRequest.getFanpageId()).orElseThrow();
-            if (fanpage == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
-            if (!fanpage.getLeaderId().equals(userId)) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            if (!fanpage.getLeaderId().equals(userId)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
-
-            // set status to un verify
             eventRequest.setStatus(Event.STATUS.NOT_VERIFY);
+            eventRequest.setFanpageId(fanpage.getId());
 
             Event newEvent = eventService.saveEvent(eventRequest);
 

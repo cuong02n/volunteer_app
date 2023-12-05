@@ -45,4 +45,16 @@ public class Event {
     @Column(name = "image")
     private String image;
 
+    public static Event fromRequest(Request request){
+        return Event.builder()
+                .fanpageId(request.fanpageId())
+                .title(request.title())
+                .content(request.content())
+                .progress(request.progress())
+                .target(request.target())
+                .startTime(request.startTime())
+                .endTime(request.endTime())
+                .build();
+    }
+    public record Request(Integer fanpageId,String title,String content,Integer progress,Integer target,Long startTime,Long endTime){}
 }

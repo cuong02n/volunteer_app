@@ -44,6 +44,9 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
                                    @Param("fanpage_id") Integer fanpageId,
                                    @Param("start_time") Integer startTime,
                                    @Param("end_time") Integer endTime,
-                                   @Param("status") Integer status
+                                   @Param("status") Event.STATUS status
     );
+
+    @Query("select e from Event e where e.status = :status")
+    List<Event> test(@Param("status") Event.STATUS status);
 }
