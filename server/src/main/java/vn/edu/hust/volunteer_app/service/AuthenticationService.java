@@ -30,6 +30,7 @@ public class AuthenticationService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(User.Role.USER)
+                .status(User.Status.NOT_VERIFY)
                 .build();
         repository.save(user);
 
@@ -38,11 +39,14 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
+        System.out.println("Check check 1");
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
                         request.getPassword()));
-        var user = repository.findByEmailAndStatus(request.getEmail(),User.Status.VERIFIED.name())
+
+        System.out.println("Check check 2");
+        var user = repository.findByEmailAndStatus(request.getEmail(),User.Status.VERIFIED)
                 .orElseThrow();
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()

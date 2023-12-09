@@ -22,21 +22,20 @@ import java.util.Map;
 
 @Configuration
 @RequiredArgsConstructor
-@AllArgsConstructor
 public class ApplicationConfig {
     public static final long EXPIRED_REGISTER_OTP = 2 * 60 * 1000;
-    public static final long EXPIRED_RESET_PASSWORD_OTP = 2*60*1000;
+    public static final long EXPIRED_RESET_PASSWORD_OTP = 2 * 60 * 1000;
     public static final String[] WHITE_LIST = {
-//            "/api/users/**",
-//            "/api/events/**",
-            "/api/v1/demo-controller/**",
-            "/test",
+            // "/api/users/**",
+            // "/api/events/**",
+            // "/api/v1/demo-controller/**",
+            // "/test",
             "/api/v1/auth/*",
             "/swagger-ui/**",
             "/v3/api-docs/**"
     };
 
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
@@ -45,8 +44,9 @@ public class ApplicationConfig {
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
+
     @Bean
-    public ModelMapper getModelMapper(){
+    public ModelMapper getModelMapper() {
         return new ModelMapper();
     }
 
@@ -54,8 +54,7 @@ public class ApplicationConfig {
     public Cloudinary getCloudinary(
             @Value("${cloudinary.cloud_name}") String cloudName,
             @Value("${cloudinary.api_key}") String apiKey,
-            @Value("${cloudinary.api_secret}") String apiSecret
-    ) {
+            @Value("${cloudinary.api_secret}") String apiSecret) {
         Map config = new HashMap<>();
         config.put("cloud_name", cloudName);
         config.put("api_key", apiKey);

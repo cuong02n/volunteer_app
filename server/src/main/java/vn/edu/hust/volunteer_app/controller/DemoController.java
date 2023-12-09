@@ -18,10 +18,19 @@ import vn.edu.hust.volunteer_app.repository.EventRepository;
 public class DemoController {
     private final HttpServletRequest request;
     final EventRepository eventRepository;
+
     @GetMapping("/test")
-    public ResponseEntity<?> test(@RequestParam("status") Event.STATUS status){
+    public ResponseEntity<?> test(@RequestParam("status") Event.STATUS status) {
         return ResponseEntity.ok().body(eventRepository.test(status));
     }
 
+    @GetMapping
+    @Operation(summary = "Demo secret controller", security = @SecurityRequirement(name = "bearerAuth"))
+    public ResponseEntity<String> sayHello() {
+        System.out.println(request.getAttribute("email"));
+
+        return ResponseEntity.ok().body("Hello user : " + request.getAttribute("email")
+                + " from 1234 secured endpoint, your id is : " + request.getAttribute("user_id"));
+    }
 
 }
