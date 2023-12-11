@@ -22,7 +22,7 @@ class EditUserPage extends StatelessWidget {
           children: [
             SingleChildScrollView(child: EditUserBody()),
             Container(
-                height: 40,
+                height: 50,
                 margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                 child: FilledButton(onPressed: _confirm, child: Center(child: Text("Cập nhật"),)))
           ],

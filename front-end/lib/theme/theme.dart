@@ -20,7 +20,7 @@ abstract class AppTheme {
           padding: const EdgeInsets.symmetric(vertical: 10),
           shape: ContinuousRectangleBorder(
             borderRadius: BorderRadius.circular(10),
-          )
+          ),
         )
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
