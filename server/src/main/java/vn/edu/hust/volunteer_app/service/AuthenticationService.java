@@ -19,40 +19,42 @@ import vn.edu.hust.volunteer_app.repository.UserRepository;
 @AllArgsConstructor
 
 public class AuthenticationService {
-    private final UserRepository repository;
-    private final PasswordEncoder passwordEncoder;
-    private final JwtService jwtService;
-    private final AuthenticationManager authenticationManager;
-    private final OtpService otpService;
-    public String register(RegisterRequest request) {
-        User user = User.builder()
-                .name(request.getName())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(User.Role.USER)
-                .status(User.Status.NOT_VERIFY)
-                .build();
-        repository.save(user);
+        private final UserRepository repository;
+        private final PasswordEncoder passwordEncoder;
+        private final JwtService jwtService;
+        private final AuthenticationManager authenticationManager;
+        private final OtpService otpService;
 
-        RegisterOtp otp = otpService.generateAndSaveRegisterOTP(user.getEmail());
-        return otpService.sendRegisterOTP(otp);
-    }
+        public String register(RegisterRequest request) {
+                User user = User.builder()
+                                .name(request.getName())
+                                .email(request.getEmail())
+                                .password(passwordEncoder.encode(request.getPassword()))
+                                .role(User.Role.USER)
+                                .status(User.Status.VERIFIED)
+                                .build();
+                repository.save(user);
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        System.out.println("Check check 1");
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()));
+                RegisterOtp otp = otpService.generateAndSaveRegisterOTP(user.getEmail());
+                return otpService.sendRegisterOTP(otp);
+        }
 
-        System.out.println("Check check 2");
-        var user = repository.findByEmailAndStatus(request.getEmail(),User.Status.VERIFIED)
-                .orElseThrow();
-        var jwtToken = jwtService.generateToken(user);
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .userId(user.getId())
-                .build();
-    }
+        public AuthenticationResponse authenticate(AuthenticationRequest request) {
+                System.out.println("Check check 1");
+                authenticationManager.authenticate(
+                                new UsernamePasswordAuthenticationToken(
+                                                request.getEmail(),
+                                                request.getPassword()));
+
+                System.out.println("Check check 2");
+                var user = repository.findByEmailAndStatus(request.getEmail(), User.Status.VERIFIED)
+                                .orElseThrow();
+
+                var jwtToken = jwtService.generateToken(user);
+                return AuthenticationResponse.builder()
+                                .token(jwtToken)
+                                .userId(user.getId())
+                                .build();
+        }
 
 }
