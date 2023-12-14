@@ -10,5 +10,6 @@ public interface ResetPasswordOtpRepository extends JpaRepository<ResetPasswordO
     @Query(value = "select count(*) from reset_password_otp r where r.email = ?1 AND r.otp = ?2 AND r.expired >= ?3",nativeQuery = true)
     int checkResetPasswordOTP(String email, String otp, long max_expired);
 
+    @Transactional
     void deleteByEmailAndOTP(String email,String otp);
 }

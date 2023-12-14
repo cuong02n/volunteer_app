@@ -3,6 +3,9 @@ package vn.edu.hust.volunteer_app.util;
 import static vn.edu.hust.volunteer_app.util.RandomUtil.random;
 
 public class StringUtil {
+    public static final String CHARSET_USERNAME = "0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
+    public static final String CHARSET_FULL_NAME = "0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM ";
+    public static final String CHARSET_PASSWORD = "0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM .,@";
     public static final String number = "0123456789";
     public static final String upperAlphabet = "ABCDEFGHIKLMNOPQRSTVXYZ";
     public static final String lowerAlphabet = upperAlphabet.toLowerCase();

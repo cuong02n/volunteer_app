@@ -17,6 +17,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
   boolean existsByEmail(String username);
   @Modifying
   @Transactional
-  @Query(value = "UPDATE `user` SET `status` = 1 WHERE `email` = ?1",nativeQuery = true)
-  void updateUserStatusOK(String email);
+  @Query(value = "update User u set u.status = :status where u.email = :email")
+  void updateStatusByEmail(User.Status status, String email);
 }

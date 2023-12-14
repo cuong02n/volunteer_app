@@ -1,8 +1,9 @@
 package vn.edu.hust.volunteer_app.service;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,15 +16,18 @@ import vn.edu.hust.volunteer_app.models.request.RegisterRequest;
 import vn.edu.hust.volunteer_app.models.response.AuthenticationResponse;
 import vn.edu.hust.volunteer_app.repository.UserRepository;
 
+import javax.swing.text.DefaultStyledDocument;
+
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 
 public class AuthenticationService {
-        private final UserRepository repository;
+        private final UserRepository userRepository;
         private final PasswordEncoder passwordEncoder;
         private final JwtService jwtService;
         private final AuthenticationManager authenticationManager;
         private final OtpService otpService;
+        Logger logger = LoggerFactory.getLogger(AuthenticationService.class);
 
         public String register(RegisterRequest request) {
                 User user = User.builder()
@@ -31,23 +35,23 @@ public class AuthenticationService {
                                 .email(request.getEmail())
                                 .password(passwordEncoder.encode(request.getPassword()))
                                 .role(User.Role.USER)
-                                .status(User.Status.VERIFIED)
+                                .status(User.Status.NOT_VERIFY)
                                 .build();
-                repository.save(user);
+                userRepository.save(user);
 
                 RegisterOtp otp = otpService.generateAndSaveRegisterOTP(user.getEmail());
                 return otpService.sendRegisterOTP(otp);
         }
 
         public AuthenticationResponse authenticate(AuthenticationRequest request) {
-                System.out.println("Check check 1");
+                logger.debug("authenticate");
                 authenticationManager.authenticate(
                                 new UsernamePasswordAuthenticationToken(
                                                 request.getEmail(),
                                                 request.getPassword()));
 
-                System.out.println("Check check 2");
-                var user = repository.findByEmailAndStatus(request.getEmail(), User.Status.VERIFIED)
+                logger.debug("after authenticate success");
+                var user = userRepository.findByEmailAndStatus(request.getEmail(), User.Status.VERIFIED)
                                 .orElseThrow();
 
                 var jwtToken = jwtService.generateToken(user);

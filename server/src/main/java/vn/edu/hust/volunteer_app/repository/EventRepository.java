@@ -27,8 +27,8 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
             select e
             from Event e
             where (:id is null or :id = e.id)
-            and (:title is null or e.title like '%:title%')
-            and (:content is null or e.content like '%:content%')
+            and (:title is null or e.title = :title)
+            and (:content is null or e.content = :content)
             and (:min_target is null or e.target >= :min_target)
             and (:max_target is null or e.target <= :max_target)
             and (:fanpage_id is null or e.fanpageId = :fanpage_id)

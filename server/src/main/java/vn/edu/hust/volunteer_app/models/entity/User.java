@@ -37,7 +37,6 @@ public class User implements UserDetails {
     @Column(name = "email")
     private String email;
     @Column(name = "password")
-    @JsonIgnore
     private String password;
     @Column(name = "cover_image", length = 255)
     private String coverImage;
@@ -46,7 +45,7 @@ public class User implements UserDetails {
     private String avatarImage;
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private User.Role role;
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private User.Status status;

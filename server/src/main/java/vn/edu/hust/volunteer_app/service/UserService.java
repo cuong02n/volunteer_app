@@ -1,6 +1,5 @@
 package vn.edu.hust.volunteer_app.service;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -31,7 +30,7 @@ public class UserService implements UserDetailsService {
     }
 
     public void verifiedRegister(String email) {
-        userRepository.updateUserStatusOK(email);
+        userRepository.updateStatusByEmail(User.Status.VERIFIED,email);
     }
 
     public Optional<User> findUserById(Integer userId) {
