@@ -13,7 +13,7 @@ public interface FanpageRepository extends JpaRepository<Fanpage, Integer> {
     List<Fanpage> findByLeaderId(Integer userId);
 
     @Query("SELECT count(*) FROM  Fanpage  f where f.fanpageName = :fanpageName AND f.status = :status")
-    int countAllByFanpageNameAndStatus(String fanpageName, String status);
+    int countAllByFanpageNameAndStatus(String fanpageName, Fanpage.STATUS status);
 
     @Query("UPDATE Fanpage SET status = :status where id=:fanpageId")
     @Transactional

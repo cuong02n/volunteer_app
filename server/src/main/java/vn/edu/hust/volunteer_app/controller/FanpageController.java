@@ -50,19 +50,27 @@ public class FanpageController {
 
     @PostMapping()
     @Operation(summary = "Create new fanpage", security = @SecurityRequirement(name = "bearerAuth"))
-    public ResponseEntity<?> createFanpage(@RequestBody @Valid Fanpage fanpageRequest) {
+    public ResponseEntity<?> createFanpage(@RequestBody Fanpage fanpageRequest) {
         try {
             String leaderIdStr = request.getAttribute("user_id").toString();
             Integer leaderId = Integer.valueOf(leaderIdStr);
 
-            Fanpage newFanpage = Fanpage.builder().fanpageName(fanpageRequest.getFanpageName()).leaderId(leaderId).status(Fanpage.STATUS.NOT_VERIFY).createTime(System.currentTimeMillis()).build();
-            if (fanpageService.isExistByNameAndStatus(fanpageRequest.getFanpageName(), Fanpage.STATUS.VERIFIED.name())) {
+            if (fanpageService.isExistByNameAndStatus(fanpageRequest.getFanpageName(), Fanpage.STATUS.VERIFIED)) {
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Name must be unique");
             }
+
+            Fanpage newFanpage = Fanpage.builder()
+                    .fanpageName(fanpageRequest.getFanpageName())
+                    .leaderId(leaderId)
+                    .status(Fanpage.STATUS.NOT_VERIFY)
+                    .createTime(System.currentTimeMillis())
+                    .build();
+
             Fanpage fanpage = fanpageService.saveFanpage(newFanpage);
 
             return new ResponseEntity<>(fanpage, HttpStatus.OK);
         } catch (Exception e) {
+//            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
