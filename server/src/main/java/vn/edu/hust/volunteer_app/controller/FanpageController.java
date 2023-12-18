@@ -50,19 +50,27 @@ public class FanpageController {
 
     @PostMapping()
     @Operation(summary = "Create new fanpage", security = @SecurityRequirement(name = "bearerAuth"))
-    public ResponseEntity<?> createFanpage(@RequestBody @Valid Fanpage fanpageRequest) {
+    public ResponseEntity<?> createFanpage(@RequestBody Fanpage fanpageRequest) {
         try {
             String leaderIdStr = request.getAttribute("user_id").toString();
             Integer leaderId = Integer.valueOf(leaderIdStr);
 
-            Fanpage newFanpage = Fanpage.builder().fanpageName(fanpageRequest.getFanpageName()).leaderId(leaderId).status(Fanpage.STATUS.NOT_VERIFY).createTime(System.currentTimeMillis()).build();
-            if (fanpageService.isExistByNameAndStatus(fanpageRequest.getFanpageName(), Fanpage.STATUS.VERIFIED.name())) {
+            if (fanpageService.isExistByNameAndStatus(fanpageRequest.getFanpageName(), Fanpage.STATUS.VERIFIED)) {
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Name must be unique");
             }
+
+            Fanpage newFanpage = Fanpage.builder()
+                    .fanpageName(fanpageRequest.getFanpageName())
+                    .leaderId(leaderId)
+                    .status(Fanpage.STATUS.NOT_VERIFY)
+                    .createTime(System.currentTimeMillis())
+                    .build();
+
             Fanpage fanpage = fanpageService.saveFanpage(newFanpage);
 
             return new ResponseEntity<>(fanpage, HttpStatus.OK);
         } catch (Exception e) {
+//            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
@@ -113,6 +121,7 @@ public class FanpageController {
     @PostMapping("/admin/verify/{id}")
     @Operation(summary = "admin verify fanpage", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<?> verifyEvent(@PathVariable int id) {
+        try{
         User user = userService.findUserById((int) request.getAttribute("user_id")).orElseThrow();
         if (user.getRole() != User.Role.ADMIN) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("YOU MUST BE ADMIN");
@@ -122,6 +131,9 @@ public class FanpageController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
         fanpageService.setFanpageStatusVerified(fanpage.getId());
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+        return ResponseEntity.status(HttpStatus.OK).body(null);}catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }

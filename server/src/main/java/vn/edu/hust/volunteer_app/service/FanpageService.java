@@ -39,7 +39,7 @@ public class FanpageService {
     }
 
     public Optional<Fanpage> getFanpageById(Integer id) {
-        return fanpageRepository.findById(id);
+        return fanpageRepository.findFanpageById(id);
     }
 
     public Fanpage saveFanpage(Fanpage fanpage) {
@@ -80,14 +80,14 @@ public class FanpageService {
     }
 
     public boolean isExistByName(String fanpageName) {
-        return 0!=fanpageRepository.countAllByFanpageNameAndStatus(fanpageName,Fanpage.STATUS.VERIFIED.name());
+        return 0!=fanpageRepository.countAllByFanpageNameAndStatus(fanpageName,Fanpage.STATUS.VERIFIED);
     }
 
-    public boolean isExistByNameAndStatus(String fanpageName, String name) {
-        return 0!=fanpageRepository.countAllByFanpageNameAndStatus(fanpageName,name);
+    public boolean isExistByNameAndStatus(String fanpageName, Fanpage.STATUS status) {
+        return 0!=fanpageRepository.countAllByFanpageNameAndStatus(fanpageName,status);
     }
 
     public void setFanpageStatusVerified(int fanpageId){
-        fanpageRepository.setFanpageStatusById(fanpageId,Fanpage.STATUS.VERIFIED.name());
+        fanpageRepository.setFanpageStatusById(fanpageId,Fanpage.STATUS.VERIFIED);
     }
 }

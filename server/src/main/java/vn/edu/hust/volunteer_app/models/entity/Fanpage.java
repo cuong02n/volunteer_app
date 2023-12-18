@@ -32,7 +32,7 @@ public class Fanpage {
     private Integer leaderId;
 
     @Column(name = "status")
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private Fanpage.STATUS status;
 
     @Column(name = "create_time")
