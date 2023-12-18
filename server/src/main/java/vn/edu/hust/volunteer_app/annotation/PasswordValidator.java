@@ -4,9 +4,9 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import vn.edu.hust.volunteer_app.util.StringUtil;
 
-public class PasswordValidator implements ConstraintValidator<com.dtvn.foodorderbackend.annotation.ValidPassword, String> {
+public class PasswordValidator implements ConstraintValidator<ValidPassword, String> {
     @Override
-    public void initialize(com.dtvn.foodorderbackend.annotation.ValidPassword constraintAnnotation) {
+    public void initialize(ValidPassword constraintAnnotation) {
         ConstraintValidator.super.initialize(constraintAnnotation);
     }
 

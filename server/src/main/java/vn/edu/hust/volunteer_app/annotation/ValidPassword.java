@@ -1,4 +1,4 @@
-package com.dtvn.foodorderbackend.annotation;
+package vn.edu.hust.volunteer_app.annotation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

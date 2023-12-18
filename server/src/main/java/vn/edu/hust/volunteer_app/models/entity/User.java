@@ -24,12 +24,14 @@ public class User implements UserDetails {
         USER,
         ADMIN
     }
-    public enum Status{
+
+    public enum Status {
         VERIFIED,
         NOT_VERIFY
     }
 
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "name")
@@ -59,6 +61,7 @@ public class User implements UserDetails {
     public String getPassword() {
         return password;
     }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
