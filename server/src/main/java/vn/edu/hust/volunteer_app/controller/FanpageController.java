@@ -13,7 +13,6 @@ import vn.edu.hust.volunteer_app.models.entity.User;
 import vn.edu.hust.volunteer_app.service.FanpageService;
 import vn.edu.hust.volunteer_app.service.UserService;
 
-import java.lang.annotation.Target;
 import java.util.List;
 
 @RestController
@@ -120,7 +119,7 @@ public class FanpageController {
 
     @PostMapping("/admin/verify/{id}")
     @Operation(summary = "admin verify fanpage", security = @SecurityRequirement(name = "bearerAuth"))
-    public ResponseEntity<?> verifyEvent(@PathVariable int id) {
+    public ResponseEntity<?> verifyFanpage(@PathVariable int id) {
         try{
         User user = userService.findUserById((int) request.getAttribute("user_id")).orElseThrow();
         if (user.getRole() != User.Role.ADMIN) {
