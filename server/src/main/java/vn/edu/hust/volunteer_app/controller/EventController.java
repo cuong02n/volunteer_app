@@ -60,7 +60,7 @@ public class EventController {
             @RequestParam(name = "fanpage_id", required = false) Integer fanpageId,
             @RequestParam(name = "start_time", required = false) Integer startTime,
             @RequestParam(name = "end_time", required = false) Integer endTime,
-            @RequestParam(name = "status") Event.STATUS status
+            @RequestParam(name = "status", required = false) Event.STATUS status
     ) {
         try {
             List<Event> events = eventService.getEventByCriteria(id, title, content, minTarget, maxTarget, fanpageId, startTime, endTime, status);
