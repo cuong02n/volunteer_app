@@ -120,17 +120,18 @@ public class FanpageController {
     @PostMapping("/admin/verify/{id}")
     @Operation(summary = "admin verify fanpage", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<?> verifyFanpage(@PathVariable int id) {
-        try{
-        User user = userService.findUserById((int) request.getAttribute("user_id")).orElseThrow();
-        if (user.getRole() != User.Role.ADMIN) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("YOU MUST BE ADMIN");
-        }
-        Fanpage fanpage = fanpageService.getFanpageById(id).orElseThrow();
-        if (fanpage.getStatus() != Fanpage.STATUS.NOT_VERIFY) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
-        fanpageService.setFanpageStatusVerified(fanpage.getId());
-        return ResponseEntity.status(HttpStatus.OK).body(null);}catch (Exception e){
+        try {
+            User user = userService.findUserById((int) request.getAttribute("user_id")).orElseThrow();
+            if (user.getRole() != User.Role.ADMIN) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("YOU MUST BE ADMIN");
+            }
+            Fanpage fanpage = fanpageService.getFanpageById(id).orElseThrow();
+            if (fanpage.getStatus() != Fanpage.STATUS.NOT_VERIFY) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+            fanpageService.setFanpageStatusVerified(fanpage.getId());
+            return ResponseEntity.status(HttpStatus.OK).body(null);
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
