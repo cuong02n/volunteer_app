@@ -18,7 +18,7 @@ import vn.edu.hust.volunteer_app.repository.EventRepository;
 public class DemoController {
     private final HttpServletRequest request;
     final EventRepository eventRepository;
-
+    
     @GetMapping("/test")
     public ResponseEntity<?> test(@RequestParam("status") Event.STATUS status) {
         return ResponseEntity.ok().body(eventRepository.test(status));

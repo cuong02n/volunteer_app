@@ -32,6 +32,10 @@ public class DonationService {
         return donationRepository.save(donation);
     }
 
+    public List<Donation> getDonationByCriteria(Integer eventId) {
+        return donationRepository.getDonationByCriteria(eventId);
+    }
+
     public Donation updateDonation(Donation donation) {
         // Add validation or business logic if needed
         return donationRepository.save(donation);
