@@ -18,7 +18,6 @@ import vn.edu.hust.volunteer_app.service.FanpageService;
 import vn.edu.hust.volunteer_app.service.UserService;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
@@ -35,7 +34,6 @@ public class DonationController {
     public ResponseEntity<List<Donation>> getAllDonations(
             @RequestParam(name = "eventId", required = false) Integer eventId) {
         List<Donation> donations = donationService.getDonationByCriteria(eventId);
-
         return ResponseEntity.ok(donations);
     }
 
@@ -63,9 +61,12 @@ public class DonationController {
             if (!userId.equals(fanpage.getLeaderId())) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
             }
+            event.setProgress(event.getProgress() == null ? 0 : event.getProgress() + donationRequest.getMoney());
+            eventService.updateEvent(event, event);
             Donation newDonation = donationService.createDonation(donationRequest);
             return new ResponseEntity<>(newDonation, HttpStatus.CREATED);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }

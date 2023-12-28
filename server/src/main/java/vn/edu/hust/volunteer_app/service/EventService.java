@@ -61,6 +61,7 @@ public class EventService {
         if (eventRequest.getTarget() != null) existingEvent.setTarget(eventRequest.getTarget());
         if (eventRequest.getStartTime() != null) existingEvent.setStartTime(eventRequest.getStartTime());
         if (eventRequest.getEndTime() != null) existingEvent.setEndTime(eventRequest.getEndTime());
+         if (eventRequest.getProgress() != null) existingEvent.setProgress(eventRequest.getProgress());
 
         return eventRepository.save(existingEvent);
 
