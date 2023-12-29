@@ -44,8 +44,12 @@ public class Event {
     private Event.STATUS status;
     @Column(name = "image")
     private String image;
+    @Column(name = "bank")
+    private String bank;
+    @Column(name = "bank_account")
+    private String bankAccount;
 
-    public static Event fromRequest(Request request){
+    public static Event fromRequest(Request request) {
         return Event.builder()
                 .fanpageId(request.fanpageId())
                 .title(request.title())
@@ -54,7 +58,12 @@ public class Event {
                 .target(request.target())
                 .startTime(request.startTime())
                 .endTime(request.endTime())
+                .bank(request.bank())
+                .bankAccount(request.bankAccount())
                 .build();
     }
-    public record Request(Integer fanpageId,String title,String content,Integer progress,Integer target,Long startTime,Long endTime){}
+
+    public record Request(Integer fanpageId, String title, String content, Integer progress, Integer target,
+            Long startTime, Long endTime, String bank, String bankAccount) {
+    }
 }

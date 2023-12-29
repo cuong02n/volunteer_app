@@ -73,12 +73,14 @@ public class EventController {
 
     @PostMapping("/new_event")
     @Operation(summary = "Post new event", security = @SecurityRequirement(name = "bearerAuth"))
-    public ResponseEntity<Event> createEvent(@RequestBody @Valid Event.Request requestRecord) {
+    public ResponseEntity<Event> createEvent(@RequestBody Event.Request requestRecord) {
+        System.out.println("check___");
         logger.info("event request is {}",requestRecord);
         Event eventRequest = Event.fromRequest(requestRecord);
         logger.info("event after map is {}",eventRequest);
         Integer userId = (int) request.getAttribute("user_id");
         Fanpage fanpage = fanpageService.getFanpageById(eventRequest.getFanpageId()).orElseThrow();
+        System.out.println(requestRecord);
         try {
             if (!fanpage.getLeaderId().equals(userId)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
             eventRequest.setStatus(Event.STATUS.NOT_VERIFY);
@@ -86,8 +88,10 @@ public class EventController {
             Event newEvent = eventService.saveEvent(eventRequest);
 
             return new ResponseEntity<>(newEvent, HttpStatus.OK);
+            
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("check");
+            System.out.println(e.getMessage());;
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
         }
     }

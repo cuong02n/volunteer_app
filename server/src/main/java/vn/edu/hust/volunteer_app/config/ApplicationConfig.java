@@ -32,7 +32,8 @@ public class ApplicationConfig {
             // "/test",
             "/api/v1/auth/*",
             "/swagger-ui/**",
-            "/v3/api-docs/**"
+            "/v3/api-docs/**",
+            "/api/banks/**",
     };
 
     private final UserRepository userRepository;
