@@ -15,9 +15,11 @@ import org.springframework.web.multipart.MultipartFile;
 import vn.edu.hust.volunteer_app.annotation.ValidImage;
 import vn.edu.hust.volunteer_app.models.entity.Event;
 import vn.edu.hust.volunteer_app.models.entity.Fanpage;
+import vn.edu.hust.volunteer_app.models.entity.User;
 import vn.edu.hust.volunteer_app.service.CloudinaryImageService;
 import vn.edu.hust.volunteer_app.service.EventService;
 import vn.edu.hust.volunteer_app.service.FanpageService;
+import vn.edu.hust.volunteer_app.service.UserService;
 
 import java.util.List;
 import java.util.Map;
@@ -32,7 +34,7 @@ public class EventController {
     private final HttpServletRequest request;
     private final FanpageService fanpageService;
     private final CloudinaryImageService cloudinaryImageService;
-
+    private final UserService userService;
     /**
      *
      * @param id : pass null (ignore in param list) for not filter
@@ -74,19 +76,19 @@ public class EventController {
     @PostMapping("/new_event")
     @Operation(summary = "Post new event", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<Event> createEvent(@RequestBody @Valid Event eventRequest) {
-        eventRequest.setStatus(0);
+        eventRequest.setStatus(Event.STATUS.NOT_VERIFY);
         String userIdStr = request.getAttribute("user_id").toString();
         Integer userId = Integer.valueOf(userIdStr);
 
         try {
-            Fanpage fanpage = fanpageService.getFanpageById(eventRequest.getFanpageId());
+            Fanpage fanpage = fanpageService.getFanpageById(eventRequest.getFanpageId()).orElseThrow();
             if (fanpage == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
             if (!fanpage.getLeaderId().equals(userId)) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
 
             // set status to un verify
-            eventRequest.setStatus(Event.STATUS.NOT_VERIFY.getValue());
+            eventRequest.setStatus(Event.STATUS.NOT_VERIFY);
 
             Event newEvent = eventService.saveEvent(eventRequest);
 
@@ -108,7 +110,7 @@ public class EventController {
                 return ResponseEntity.notFound().build();
             }
 
-            Fanpage fanpage = fanpageService.getFanpageById(existingEvent.getFanpageId());
+            Fanpage fanpage = fanpageService.getFanpageById(existingEvent.getFanpageId()).orElseThrow();
             if (!fanpage.getLeaderId().equals(userId)) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
             }
@@ -120,11 +122,14 @@ public class EventController {
     }
 
     @PostMapping("/admin/verify/{id}")
-    @Operation(summary = "admin verify event")
-    public ResponseEntity<Event> verifyEvent(@PathVariable int id) {
-        // TODO: check admin role
+    @Operation(summary = "admin verify event",security = @SecurityRequirement(name = "bearerAuth"))
+    public ResponseEntity<?> verifyEvent(@PathVariable int id) {
+        User user = userService.findUserById((int)request.getAttribute("user_id")).orElseThrow();
+        if(user.getRole()!= User.Role.ADMIN){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("YOU MUST BE ADMIN");
+        }
         Event event = eventService.getEventById(id).orElse(null);
-        if (event == null || event.getStatus() != 0) {
+        if (event == null || event.getStatus() != Event.STATUS.NOT_VERIFY) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
         eventService.setEventStatusVerified(event.getId());

@@ -10,10 +10,9 @@ import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity
-@Table(name = "register_otp")
-public class RegisterOtp {
+@Table(name = "reset_password_otp")
+public class ResetPasswordOtp {
     @Id
     @Column(name = "email",unique = true)
     public String email;
@@ -23,5 +22,7 @@ public class RegisterOtp {
 
     @Column(name = "otp")
     public String OTP;
+
+    protected ResetPasswordOtp(){}
 
 }

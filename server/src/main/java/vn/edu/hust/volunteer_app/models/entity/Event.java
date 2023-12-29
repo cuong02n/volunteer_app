@@ -14,16 +14,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Event {
     public enum STATUS {
-        NOT_VERIFY(0), VERIFIED(1);
-        final int code;
+        NOT_VERIFY,
+        VERIFIED;
 
-        STATUS(int code) {
-            this.code = code;
-        }
-
-        public int getValue() {
-            return code;
-        }
     }
 
     @Id
@@ -46,8 +39,9 @@ public class Event {
     private Long endTime;
     @Column(name = "fanpage_id", nullable = false)
     private Integer fanpageId;
-    @Column(name = "status", nullable = false, columnDefinition = "INT DEFAULT 0")
-    private Integer status;
+    @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Event.STATUS status;
     @Column(name = "image")
     private String image;
 

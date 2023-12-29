@@ -25,15 +25,21 @@ class NewPageBody extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text("Tạo fanpage",
-                    style: AppTypology.titleMedium),
+                Text("Tạo fanpage", style: AppTypology.titleMedium),
                 Container(
                   height: 10,
                   width: 40.w,
                   decoration:
                       const BoxDecoration(border: Border(top: BorderSide())),
                 ),
-                NewPageForm(),
+                ConstrainedBox(
+                    constraints: BoxConstraints(maxHeight: 80.h),
+                    child: ScrollConfiguration(
+                        behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
+                        child: SingleChildScrollView(child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: NewPageForm(),
+                        )))),
                 const SizedBox(height: 10),
               ],
             ),

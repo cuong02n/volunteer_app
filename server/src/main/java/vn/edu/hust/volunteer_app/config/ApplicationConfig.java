@@ -23,9 +23,10 @@ import java.util.Map;
 @AllArgsConstructor
 public class ApplicationConfig {
     public static final long EXPIRED_REGISTER_OTP = 2 * 60 * 1000;
+    public static final long EXPIRED_RESET_PASSWORD_OTP = 2*60*1000;
     public static final String[] WHITE_LIST = {
-            "/api/users/**",
-            "/api/events/**",
+//            "/api/users/**",
+//            "/api/events/**",
             "/test",
             "/api/v1/auth/*",
             "/swagger-ui/**",
@@ -48,7 +49,7 @@ public class ApplicationConfig {
             @Value("${cloudinary.api_key}") String apiKey,
             @Value("${cloudinary.api_secret}") String apiSecret
     ) {
-        Map config = new HashMap();
+        Map config = new HashMap<>();
         config.put("cloud_name", cloudName);
         config.put("api_key", apiKey);
         config.put("api_secret", apiSecret);
