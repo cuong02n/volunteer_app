@@ -16,31 +16,24 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `event_member`
+-- Table structure for table `test`
 --
 
-DROP TABLE IF EXISTS `event_member`;
+DROP TABLE IF EXISTS `test`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `event_member` (
-  `user_id` int NOT NULL,
-  `event_id` int NOT NULL,
-  `task` text NOT NULL,
-  `status` int NOT NULL DEFAULT (0),
-  KEY `FK__user` (`user_id`),
-  KEY `FK__event` (`event_id`),
-  CONSTRAINT `FK__event` FOREIGN KEY (`event_id`) REFERENCES `event` (`id`),
-  CONSTRAINT `FK__user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+CREATE TABLE `test` (
+  `test` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `event_member`
+-- Dumping data for table `test`
 --
 
-LOCK TABLES `event_member` WRITE;
-/*!40000 ALTER TABLE `event_member` DISABLE KEYS */;
-/*!40000 ALTER TABLE `event_member` ENABLE KEYS */;
+LOCK TABLES `test` WRITE;
+/*!40000 ALTER TABLE `test` DISABLE KEYS */;
+/*!40000 ALTER TABLE `test` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -52,4 +45,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-11-23 10:40:36
+-- Dump completed on 2023-12-29 19:28:03
