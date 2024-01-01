@@ -1,8 +1,9 @@
 package vn.edu.hust.volunteer_app.service;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,40 +16,49 @@ import vn.edu.hust.volunteer_app.models.request.RegisterRequest;
 import vn.edu.hust.volunteer_app.models.response.AuthenticationResponse;
 import vn.edu.hust.volunteer_app.repository.UserRepository;
 
+import javax.swing.text.DefaultStyledDocument;
+
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 
 public class AuthenticationService {
-    private final UserRepository repository;
-    private final PasswordEncoder passwordEncoder;
-    private final JwtService jwtService;
-    private final AuthenticationManager authenticationManager;
-    private final OtpService otpService;
-    public String register(RegisterRequest request) {
-        User user = User.builder()
-                .name(request.getName())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(User.Role.USER)
-                .build();
-        repository.save(user);
+        private final UserRepository userRepository;
+        private final PasswordEncoder passwordEncoder;
+        private final JwtService jwtService;
+        private final AuthenticationManager authenticationManager;
+        private final OtpService otpService;
+        Logger logger = LoggerFactory.getLogger(AuthenticationService.class);
 
-        RegisterOtp otp = otpService.generateAndSaveRegisterOTP(user.getEmail());
-        return otpService.sendRegisterOTP(otp);
-    }
+        public String register(RegisterRequest request) {
+                User user = User.builder()
+                                .name(request.getName())
+                                .email(request.getEmail())
+                                .password(passwordEncoder.encode(request.getPassword()))
+                                .role(User.Role.USER)
+                                .status(User.Status.NOT_VERIFY)
+                                .build();
+                userRepository.save(user);
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()));
-        var user = repository.findByEmailAndStatus(request.getEmail(),User.Status.VERIFIED.name())
-                .orElseThrow();
-        var jwtToken = jwtService.generateToken(user);
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .userId(user.getId())
-                .build();
-    }
+                RegisterOtp otp = otpService.generateAndSaveRegisterOTP(user.getEmail());
+                return otpService.sendRegisterOTP(otp);
+        }
+
+        public AuthenticationResponse authenticate(AuthenticationRequest request) {
+                logger.debug("authenticate");
+                authenticationManager.authenticate(
+                                new UsernamePasswordAuthenticationToken(
+                                                request.getEmail(),
+                                                request.getPassword()));
+
+                logger.debug("after authenticate success");
+                var user = userRepository.findByEmailAndStatus(request.getEmail(), User.Status.VERIFIED)
+                                .orElseThrow();
+
+                var jwtToken = jwtService.generateToken(user);
+                return AuthenticationResponse.builder()
+                                .token(jwtToken)
+                                .userId(user.getId())
+                                .build();
+        }
 
 }

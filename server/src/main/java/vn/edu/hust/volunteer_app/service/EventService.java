@@ -40,8 +40,10 @@ public class EventService {
         saveEvent(event);
     }
 
-    public List<Event> getEventByCriteria(Integer id, String title, String content, Integer minTarget, Integer maxTarget, Integer fanpageId, Integer startTime, Integer endTime, Integer status) {
-        return eventRepository.getEventByCriteria(id, title, content, minTarget, maxTarget, fanpageId, startTime, endTime, status);
+    public List<Event> getEventByCriteria(Integer id, String title, String content, Integer minTarget,
+            Integer maxTarget, Integer fanpageId, Integer startTime, Integer endTime, Event.STATUS status) {
+        return eventRepository.getEventByCriteria(id, title, content, minTarget, maxTarget, fanpageId, startTime,
+                endTime, status);
     }
 
     public Optional<Event> getEventById(Integer eventId) {
@@ -56,14 +58,23 @@ public class EventService {
     // Update sự kiện
     public Event updateEvent(Event existingEvent, Event eventRequest) {
 
-        if (eventRequest.getTitle() != null) existingEvent.setTitle(eventRequest.getTitle());
-        if (eventRequest.getContent() != null) existingEvent.setContent(eventRequest.getContent());
-        if (eventRequest.getTarget() != null) existingEvent.setTarget(eventRequest.getTarget());
-        if (eventRequest.getStartTime() != null) existingEvent.setStartTime(eventRequest.getStartTime());
-        if (eventRequest.getEndTime() != null) existingEvent.setEndTime(eventRequest.getEndTime());
-
+        if (eventRequest.getTitle() != null)
+            existingEvent.setTitle(eventRequest.getTitle());
+        if (eventRequest.getContent() != null)
+            existingEvent.setContent(eventRequest.getContent());
+        if (eventRequest.getTarget() != null)
+            existingEvent.setTarget(eventRequest.getTarget());
+        if (eventRequest.getStartTime() != null)
+            existingEvent.setStartTime(eventRequest.getStartTime());
+        if (eventRequest.getEndTime() != null)
+            existingEvent.setEndTime(eventRequest.getEndTime());
+        if (eventRequest.getProgress() != null)
+            existingEvent.setProgress(eventRequest.getProgress());
+        if (eventRequest.getBank() != null)
+            existingEvent.setBank(eventRequest.getBank());
+        if (eventRequest.getBankAccount() != null)
+            existingEvent.setBankAccount(eventRequest.getBankAccount());
         return eventRepository.save(existingEvent);
-
     }
 
     public void deleteEvent(Integer eventId) {

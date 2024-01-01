@@ -1,6 +1,5 @@
 package vn.edu.hust.volunteer_app.service;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,6 +16,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
+
     private final UserRepository userRepository;
     private CloudinaryImageService cloudinaryImageService;
 
@@ -30,7 +30,7 @@ public class UserService implements UserDetailsService {
     }
 
     public void verifiedRegister(String email) {
-        userRepository.updateUserStatusOK(email);
+        userRepository.updateStatusByEmail(User.Status.VERIFIED,email);
     }
 
     public Optional<User> findUserById(Integer userId) {
@@ -43,25 +43,28 @@ public class UserService implements UserDetailsService {
 
     public String setCoverImage(Integer id, MultipartFile file) throws Exception {
         User user = findUserById(id).orElseThrow();
-        Map<?,?> data = cloudinaryImageService.upload(file);
+        Map<?, ?> data = cloudinaryImageService.upload(file);
         String url = String.valueOf(data.get("url"));
         user.setCoverImage(url);
         userRepository.save(user);
         return url;
     }
+
     public String setAvatarImage(Integer id, MultipartFile file) throws Exception {
         User user = findUserById(id).orElseThrow();
-        Map<?,?> data = cloudinaryImageService.upload(file);
+        Map<?, ?> data = cloudinaryImageService.upload(file);
         String url = String.valueOf(data.get("url"));
         user.setAvatarImage(url);
         userRepository.save(user);
         return url;
     }
-    public void setNewPassword(String email,String password){
+
+    public void setNewPassword(String email, String password) {
         User user = loadUserByUsername(email);
         user.setPassword(password);
         userRepository.save(user);
     }
+
     public User update(User existingUser, User userRequest) {
         if (userRequest.getName() != null) {
             existingUser.setName(userRequest.getName());
@@ -69,8 +72,21 @@ public class UserService implements UserDetailsService {
         return userRepository.save(existingUser);
     }
 
+    // @Override
+    // public User loadUserByUsername(String email) throws UsernameNotFoundException {
+    //     System.out.println("in loadUserByUsername");
+    //     return userRepository.findByEmailAndStatus(email, User.Status.VERIFIED.name())
+    //             .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+    // }
+
     @Override
     public User loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findByEmailAndStatus(email,User.Status.VERIFIED.name()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        System.out.println("in load user by username 1 " + email);
+        System.out.println(userRepository);
+        User user = userRepository.findByEmail(email).orElseThrow();
+        System.out.println(user);
+        System.out.println("in load user by username 2 " + email);
+        return userRepository.findByEmail(email).orElseThrow();
     }
 }

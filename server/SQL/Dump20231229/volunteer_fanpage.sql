@@ -16,32 +16,34 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `donation`
+-- Table structure for table `fanpage`
 --
 
-DROP TABLE IF EXISTS `donation`;
+DROP TABLE IF EXISTS `fanpage`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `donation` (
-  `user_id` int NOT NULL,
-  `event_id` int NOT NULL,
-  `money` int NOT NULL,
-  `message` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',
-  `time_stamp` bigint NOT NULL DEFAULT (0),
-  KEY `FK_donation_user` (`user_id`),
-  KEY `FK_donation_event` (`event_id`),
-  CONSTRAINT `FK_donation_event` FOREIGN KEY (`event_id`) REFERENCES `event` (`id`),
-  CONSTRAINT `FK_donation_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `fanpage` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `avatar_image` varchar(255) DEFAULT NULL,
+  `cover_image` varchar(255) DEFAULT NULL,
+  `create_time` bigint DEFAULT NULL,
+  `fanpage_name` varchar(100) DEFAULT NULL,
+  `leader_id` int DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  `subscriber` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UK_t9ouhctegj3otfg8wlv3q4kdi` (`fanpage_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `donation`
+-- Dumping data for table `fanpage`
 --
 
-LOCK TABLES `donation` WRITE;
-/*!40000 ALTER TABLE `donation` DISABLE KEYS */;
-/*!40000 ALTER TABLE `donation` ENABLE KEYS */;
+LOCK TABLES `fanpage` WRITE;
+/*!40000 ALTER TABLE `fanpage` DISABLE KEYS */;
+INSERT INTO `fanpage` VALUES (1,NULL,NULL,1702999964102,'fan page A',1,'VERIFIED',NULL),(2,NULL,NULL,1703319290094,'string',2,'VERIFIED',NULL),(6,NULL,NULL,1703852397670,'fan page cua namker thu xxxxxx',1,'NOT_VERIFY',NULL),(7,NULL,NULL,1703852404396,'fan page cua cuong thu xxxxxx',1,'NOT_VERIFY',NULL);
+/*!40000 ALTER TABLE `fanpage` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -53,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-11-23 10:40:36
+-- Dump completed on 2023-12-29 19:28:03

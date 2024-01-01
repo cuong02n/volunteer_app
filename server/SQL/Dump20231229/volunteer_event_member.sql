@@ -16,36 +16,31 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `fanpage`
+-- Table structure for table `event_member`
 --
 
-DROP TABLE IF EXISTS `fanpage`;
+DROP TABLE IF EXISTS `event_member`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `fanpage` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `fanpage_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',
-  `leader_id` int NOT NULL DEFAULT (0),
+CREATE TABLE `event_member` (
+  `user_id` int NOT NULL,
+  `event_id` int NOT NULL,
+  `task` text NOT NULL,
   `status` int NOT NULL DEFAULT (0),
-  `create_time` bigint NOT NULL DEFAULT (0),
-  `subscriber` int NOT NULL DEFAULT '0',
-  `cover_image` varchar(255) DEFAULT NULL,
-  `avatar_image` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `fanpage_name` (`fanpage_name`) USING BTREE,
-  KEY `FK_fanpage_user` (`leader_id`),
-  CONSTRAINT `FK_fanpage_user` FOREIGN KEY (`leader_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=253 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `FK__user` (`user_id`),
+  KEY `FK__event` (`event_id`),
+  CONSTRAINT `FK__event` FOREIGN KEY (`event_id`) REFERENCES `event` (`id`),
+  CONSTRAINT `FK__user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `fanpage`
+-- Dumping data for table `event_member`
 --
 
-LOCK TABLES `fanpage` WRITE;
-/*!40000 ALTER TABLE `fanpage` DISABLE KEYS */;
-INSERT INTO `fanpage` VALUES (2,'new fanpage after put 2',12,0,1700551355,1002,NULL,NULL),(52,'fan page A',12,0,1700551355,1000,NULL,NULL),(53,'fan page B',12,0,1700551355,1000,NULL,NULL),(55,'fan page C',12,0,1700551355,1000,NULL,NULL),(252,'fan page F',12,0,1700551355,1000,'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScgsJTy2dl-Tr4m1amid5OZyNTg-c2KlgbmnjO947w&s','https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjIEnUkwQUdbyVfkutEwc9ZQDGz_f8IXu1R024nhc-&s');
-/*!40000 ALTER TABLE `fanpage` ENABLE KEYS */;
+LOCK TABLES `event_member` WRITE;
+/*!40000 ALTER TABLE `event_member` DISABLE KEYS */;
+/*!40000 ALTER TABLE `event_member` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -57,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-11-23 10:40:36
+-- Dump completed on 2023-12-29 19:28:02

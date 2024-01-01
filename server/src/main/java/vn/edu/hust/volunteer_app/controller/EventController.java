@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -28,41 +29,38 @@ import java.util.Map;
 @RequestMapping("/api/events")
 @RequiredArgsConstructor
 public class EventController {
-    Logger logger = LoggerFactory.getLogger(EventController.class);
-
     private final EventService eventService;
     private final HttpServletRequest request;
     private final FanpageService fanpageService;
     private final CloudinaryImageService cloudinaryImageService;
     private final UserService userService;
+    private final ModelMapper modelMapper;
+    Logger logger = LoggerFactory.getLogger(EventController.class);
+
     /**
-     *
-     * @param id : pass null (ignore in param list) for not filter
-     * @param title : pass null (ignore in param list) for not filter
-     * @param content : pass null (ignore in param list) for not filter
+     * @param id        : pass null (ignore in param list) for not filter
+     * @param title     : pass null (ignore in param list) for not filter
+     * @param content   : pass null (ignore in param list) for not filter
      * @param minTarget : pass null (ignore in param list) for not filter
      * @param maxTarget : pass null (ignore in param list) for not filter
      * @param fanpageId : pass null (ignore in param list) for not filter
      * @param startTime : pass null (ignore in param list) for not filter
-     * @param endTime : pass null (ignore in param list) for not filter
-     * @param status : must be 0 or 1,
-     *               0 : not verified (use for admin)
-     *               1 : verified (use for user)
-     *
+     * @param endTime   : pass null (ignore in param list) for not filter
+     * @param status    : must be VERIFIED or NOT_VERIFY
      * @return : List Event (Json format) valid with that filter
      */
     @GetMapping("/get_event")
     @Operation(summary = "Get Event by Criteria", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<List<Event>> getEvent(
-            @RequestParam(name = "id",required = false) Integer id,
-            @RequestParam(name = "title" ,required = false) String title,
-            @RequestParam(name = "content" ,required = false) String content,
-            @RequestParam(name = "min_target",required = false) Integer minTarget,
-            @RequestParam(name = "max_target",required = false) Integer maxTarget,
+            @RequestParam(name = "id", required = false) Integer id,
+            @RequestParam(name = "title", required = false) String title,
+            @RequestParam(name = "content", required = false) String content,
+            @RequestParam(name = "min_target", required = false) Integer minTarget,
+            @RequestParam(name = "max_target", required = false) Integer maxTarget,
             @RequestParam(name = "fanpage_id", required = false) Integer fanpageId,
-            @RequestParam(name = "start_time",required = false) Integer startTime,
-            @RequestParam(name = "end_time",required = false) Integer endTime,
-            @RequestParam(name = "status") Integer status
+            @RequestParam(name = "start_time", required = false) Integer startTime,
+            @RequestParam(name = "end_time", required = false) Integer endTime,
+            @RequestParam(name = "status", required = false) Event.STATUS status
     ) {
         try {
             List<Event> events = eventService.getEventByCriteria(id, title, content, minTarget, maxTarget, fanpageId, startTime, endTime, status);
@@ -75,25 +73,25 @@ public class EventController {
 
     @PostMapping("/new_event")
     @Operation(summary = "Post new event", security = @SecurityRequirement(name = "bearerAuth"))
-    public ResponseEntity<Event> createEvent(@RequestBody @Valid Event eventRequest) {
-        eventRequest.setStatus(Event.STATUS.NOT_VERIFY);
-        String userIdStr = request.getAttribute("user_id").toString();
-        Integer userId = Integer.valueOf(userIdStr);
-
+    public ResponseEntity<Event> createEvent(@RequestBody Event.Request requestRecord) {
+        System.out.println("check___");
+        logger.info("event request is {}",requestRecord);
+        Event eventRequest = Event.fromRequest(requestRecord);
+        logger.info("event after map is {}",eventRequest);
+        Integer userId = (int) request.getAttribute("user_id");
+        Fanpage fanpage = fanpageService.getFanpageById(eventRequest.getFanpageId()).orElseThrow();
+        System.out.println(requestRecord);
         try {
-            Fanpage fanpage = fanpageService.getFanpageById(eventRequest.getFanpageId()).orElseThrow();
-            if (fanpage == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-
-            if (!fanpage.getLeaderId().equals(userId)) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-
-
-            // set status to un verify
+            if (!fanpage.getLeaderId().equals(userId)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
             eventRequest.setStatus(Event.STATUS.NOT_VERIFY);
-
+            eventRequest.setFanpageId(fanpage.getId());
             Event newEvent = eventService.saveEvent(eventRequest);
 
             return new ResponseEntity<>(newEvent, HttpStatus.OK);
+            
         } catch (Exception e) {
+            System.out.println("check");
+            System.out.println(e.getMessage());;
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
         }
     }
@@ -117,15 +115,16 @@ public class EventController {
             Event updatedEvent = eventService.updateEvent(existingEvent, eventRequest);
             return ResponseEntity.ok(updatedEvent);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
         }
     }
 
     @PostMapping("/admin/verify/{id}")
-    @Operation(summary = "admin verify event",security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "admin verify event", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<?> verifyEvent(@PathVariable int id) {
-        User user = userService.findUserById((int)request.getAttribute("user_id")).orElseThrow();
-        if(user.getRole()!= User.Role.ADMIN){
+        User user = userService.findUserById((int) request.getAttribute("user_id")).orElseThrow();
+        if (user.getRole() != User.Role.ADMIN) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("YOU MUST BE ADMIN");
         }
         Event event = eventService.getEventById(id).orElse(null);
@@ -141,7 +140,7 @@ public class EventController {
     @Operation(summary = "Update Image for Event", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<?> updateEventImage(@PathVariable Integer id, @RequestParam("image") @ValidImage MultipartFile multipartFile) {
         try {
-            Map<?,?> result = cloudinaryImageService.upload(multipartFile);
+            Map<?, ?> result = cloudinaryImageService.upload(multipartFile);
             if (result.get("url") != null) {
                 String url = String.valueOf(result.get("url"));
                 eventService.setImageByEventId(id, url);

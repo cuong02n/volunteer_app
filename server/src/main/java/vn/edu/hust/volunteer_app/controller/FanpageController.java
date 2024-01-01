@@ -13,7 +13,6 @@ import vn.edu.hust.volunteer_app.models.entity.User;
 import vn.edu.hust.volunteer_app.service.FanpageService;
 import vn.edu.hust.volunteer_app.service.UserService;
 
-import java.lang.annotation.Target;
 import java.util.List;
 
 @RestController
@@ -50,19 +49,27 @@ public class FanpageController {
 
     @PostMapping()
     @Operation(summary = "Create new fanpage", security = @SecurityRequirement(name = "bearerAuth"))
-    public ResponseEntity<?> createFanpage(@RequestBody @Valid Fanpage fanpageRequest) {
+    public ResponseEntity<?> createFanpage(@RequestBody Fanpage fanpageRequest) {
         try {
             String leaderIdStr = request.getAttribute("user_id").toString();
             Integer leaderId = Integer.valueOf(leaderIdStr);
 
-            Fanpage newFanpage = Fanpage.builder().fanpageName(fanpageRequest.getFanpageName()).leaderId(leaderId).status(Fanpage.STATUS.NOT_VERIFY).createTime(System.currentTimeMillis()).build();
-            if (fanpageService.isExistByNameAndStatus(fanpageRequest.getFanpageName(), Fanpage.STATUS.VERIFIED.name())) {
+            if (fanpageService.isExistByNameAndStatus(fanpageRequest.getFanpageName(), Fanpage.STATUS.VERIFIED)) {
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Name must be unique");
             }
+
+            Fanpage newFanpage = Fanpage.builder()
+                    .fanpageName(fanpageRequest.getFanpageName())
+                    .leaderId(leaderId)
+                    .status(Fanpage.STATUS.NOT_VERIFY)
+                    .createTime(System.currentTimeMillis())
+                    .build();
+
             Fanpage fanpage = fanpageService.saveFanpage(newFanpage);
 
             return new ResponseEntity<>(fanpage, HttpStatus.OK);
         } catch (Exception e) {
+//            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
@@ -112,16 +119,21 @@ public class FanpageController {
 
     @PostMapping("/admin/verify/{id}")
     @Operation(summary = "admin verify fanpage", security = @SecurityRequirement(name = "bearerAuth"))
-    public ResponseEntity<?> verifyEvent(@PathVariable int id) {
-        User user = userService.findUserById((int) request.getAttribute("user_id")).orElseThrow();
-        if (user.getRole() != User.Role.ADMIN) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("YOU MUST BE ADMIN");
+    public ResponseEntity<?> verifyFanpage(@PathVariable int id) {
+        try {
+            User user = userService.findUserById((int) request.getAttribute("user_id")).orElseThrow();
+            if (user.getRole() != User.Role.ADMIN) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("YOU MUST BE ADMIN");
+            }
+            Fanpage fanpage = fanpageService.getFanpageById(id).orElseThrow();
+            if (fanpage.getStatus() != Fanpage.STATUS.NOT_VERIFY) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+            fanpageService.setFanpageStatusVerified(fanpage.getId());
+            return ResponseEntity.status(HttpStatus.OK).body(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        Fanpage fanpage = fanpageService.getFanpageById(id).orElseThrow();
-        if (fanpage.getStatus() != Fanpage.STATUS.NOT_VERIFY) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
-        fanpageService.setFanpageStatusVerified(fanpage.getId());
-        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 }
