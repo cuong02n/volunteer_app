@@ -14,6 +14,7 @@ public class NameValidator implements ConstraintValidator<ValidName, String> {
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
         assert s != null;
+        System.out.println(s);
         if (!StringUtil.isName(s.trim())) {
             constraintValidatorContext.disableDefaultConstraintViolation();
             constraintValidatorContext.buildConstraintViolationWithTemplate("Name not valid").addConstraintViolation();

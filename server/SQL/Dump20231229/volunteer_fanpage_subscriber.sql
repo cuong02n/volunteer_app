@@ -16,33 +16,29 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `user`
+-- Table structure for table `fanpage_subscriber`
 --
 
-DROP TABLE IF EXISTS `user`;
+DROP TABLE IF EXISTS `fanpage_subscriber`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `user` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL DEFAULT '',
-  `email` varchar(255) NOT NULL DEFAULT '',
-  `password` varchar(255) NOT NULL DEFAULT '',
-  `role` varchar(255) DEFAULT NULL,
-  `status` int NOT NULL DEFAULT '0',
-  `cover_image` varchar(255) DEFAULT NULL,
-  `avatar_image` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `fanpage_subscriber` (
+  `fanpage_id` int NOT NULL,
+  `user_id` int NOT NULL,
+  KEY `FK_fanpage_subscriber_fanpage` (`fanpage_id`),
+  KEY `FK_fanpage_subscriber_user` (`user_id`),
+  CONSTRAINT `FK_fanpage_subscriber_fanpage` FOREIGN KEY (`fanpage_id`) REFERENCES `fanpage` (`id`),
+  CONSTRAINT `FK_fanpage_subscriber_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user`
+-- Dumping data for table `fanpage_subscriber`
 --
 
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (12,'Nguyen Ngoc Nam','ngocnamk3er@gmail.com','$2a$10$cUCqilgt.8Vt9niotKrn/ejuMerONLIbV090I2OJER01vzwcEkL76','USER',1,NULL,NULL);
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+LOCK TABLES `fanpage_subscriber` WRITE;
+/*!40000 ALTER TABLE `fanpage_subscriber` DISABLE KEYS */;
+/*!40000 ALTER TABLE `fanpage_subscriber` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -54,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-11-23 10:40:36
+-- Dump completed on 2023-12-29 19:28:03

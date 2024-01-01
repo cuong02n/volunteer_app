@@ -24,12 +24,14 @@ public class User implements UserDetails {
         USER,
         ADMIN
     }
-    public enum Status{
+
+    public enum Status {
         VERIFIED,
-        UNVERIFIED
+        NOT_VERIFY
     }
 
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "name")
@@ -45,48 +47,49 @@ public class User implements UserDetails {
     private String avatarImage;
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private User.Role role;
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private User.Status status;
 
-    @Override
     @JsonIgnore
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
-    @Override
     @JsonIgnore
+    @Override
     public String getPassword() {
         return password;
     }
-    @Override
+
     @JsonIgnore
+    @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
-    @Override
     @JsonIgnore
+    @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
-    @Override
     @JsonIgnore
+    @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
-    @Override
     @JsonIgnore
+    @Override
     public boolean isEnabled() {
         return true;
     }
 
-    @Override
     @JsonIgnore
+    @Override
     public String getUsername() {
         return email;
     }

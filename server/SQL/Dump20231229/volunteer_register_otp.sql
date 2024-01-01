@@ -16,25 +16,27 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `fanpage_seq`
+-- Table structure for table `register_otp`
 --
 
-DROP TABLE IF EXISTS `fanpage_seq`;
+DROP TABLE IF EXISTS `register_otp`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `fanpage_seq` (
-  `next_val` bigint DEFAULT NULL
+CREATE TABLE `register_otp` (
+  `email` varchar(255) NOT NULL,
+  `otp` varchar(255) DEFAULT NULL,
+  `expired` bigint DEFAULT NULL,
+  PRIMARY KEY (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `fanpage_seq`
+-- Dumping data for table `register_otp`
 --
 
-LOCK TABLES `fanpage_seq` WRITE;
-/*!40000 ALTER TABLE `fanpage_seq` DISABLE KEYS */;
-INSERT INTO `fanpage_seq` VALUES (351);
-/*!40000 ALTER TABLE `fanpage_seq` ENABLE KEYS */;
+LOCK TABLES `register_otp` WRITE;
+/*!40000 ALTER TABLE `register_otp` DISABLE KEYS */;
+/*!40000 ALTER TABLE `register_otp` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -46,4 +48,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-11-23 10:40:35
+-- Dump completed on 2023-12-29 19:28:03

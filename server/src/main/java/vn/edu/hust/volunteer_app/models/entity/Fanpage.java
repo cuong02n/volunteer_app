@@ -19,7 +19,7 @@ import vn.edu.hust.volunteer_app.annotation.ValidName;
 public class Fanpage {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
@@ -32,7 +32,7 @@ public class Fanpage {
     private Integer leaderId;
 
     @Column(name = "status")
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private Fanpage.STATUS status;
 
     @Column(name = "create_time")
@@ -41,10 +41,10 @@ public class Fanpage {
     @Column(name = "subscriber")
     private Integer subscriber;
 
-    @Column(name = "cover_image", length = 255)
+    @Column(name = "cover_image")
     private String cover_image;
 
-    @Column(name = "avatar_image", length = 255)
+    @Column(name = "avatar_image")
     private String avatar_image;
 
     public enum STATUS{

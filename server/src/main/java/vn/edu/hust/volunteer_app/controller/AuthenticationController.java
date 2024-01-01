@@ -30,7 +30,7 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     @Operation(summary = "simple register, contains name, email, password")
-    public ResponseEntity<?> register(@RequestBody @Valid RegisterRequest request) {
+    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
         if (request.getName().isEmpty() || request.getEmail().isEmpty() || request.getPassword().isEmpty()) {
             return ResponseEntity.status(BAD_REQUEST).body("All fields must be filled in.");
         }

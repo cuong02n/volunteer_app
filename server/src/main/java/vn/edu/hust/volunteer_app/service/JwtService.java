@@ -17,8 +17,6 @@ import org.springframework.stereotype.Service;
 
 import vn.edu.hust.volunteer_app.models.entity.User;
 
-// import danentang.app_thien_nguyen.user.User;
-
 @Service
 public class JwtService {
 
