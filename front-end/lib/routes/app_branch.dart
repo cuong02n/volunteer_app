@@ -45,6 +45,23 @@ abstract class AppRouter {
                 )
               ]
           ),
+          GoRoute(
+            name: RouteName.forgetPassword,
+            path: RoutePath.forgetPassword,
+            builder: (context, state) => ForgotPasswordPage(),
+            routes: [
+              GoRoute(
+                name: RouteName.forgetOtp,
+                path: RoutePath.otp,
+                builder: (context, state) => ForgetOtpPage(),
+              ),
+              GoRoute(
+                name: RouteName.resetPassword,
+                path: RoutePath.resetPassword,
+                builder: (context, state) => ResetPasswordPage()
+              )
+            ]
+          )
         ]),
     GoRoute(
         parentNavigatorKey: _rootKey,

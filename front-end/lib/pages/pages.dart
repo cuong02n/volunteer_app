@@ -18,3 +18,8 @@ export 'account/account_page.dart';
 export 'help/help_page.dart';
 export 'privacy_and_terms/privacy_page.dart';
 export 'privacy_and_terms/terms_page.dart';
+
+export 'otp/otp_page.dart';
+export 'forget_password/forgot_password.dart';
+export 'forget_password/otp_page.dart';
+export 'forget_password/set_password.dart';

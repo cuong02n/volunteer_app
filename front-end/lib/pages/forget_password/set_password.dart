@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:thien_nguyen_app/configs/assets/app_icons.dart';
+import 'package:thien_nguyen_app/configs/assets/app_images.dart';
+import 'package:thien_nguyen_app/configs/assets/app_logo.dart';
 import 'package:thien_nguyen_app/pages/login/login_page.dart';
 
-import '../../configs/app_icons.dart';
-import '../../configs/app_images.dart';
-import '../../configs/app_logo.dart';
 import '../../theme/theme.dart';
 import '../../widgets/app_icon.dart';
 
-class SetPasswordScreen extends StatefulWidget {
-  const SetPasswordScreen({super.key});
+class ResetPasswordPage extends StatefulWidget {
+  const ResetPasswordPage({super.key});
 
   @override
-  State<SetPasswordScreen> createState() => _SetPasswordScreenState();
+  State<ResetPasswordPage> createState() => _ResetPasswordPageState();
 }
 
-class _SetPasswordScreenState extends State<SetPasswordScreen> {
+class _ResetPasswordPageState extends State<ResetPasswordPage> {
   TextEditingController newPasswordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
   @override
