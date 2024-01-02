@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../configs/app_images.dart';
+import 'package:thien_nguyen_app/configs/assets/app_images.dart';
 import '../../theme/theme.dart';
 
 class PageDetail extends StatelessWidget {
@@ -197,6 +197,7 @@ class PageDetail extends StatelessWidget {
                     ),
                   ],
                 ),
+                Image.asset('assets/images/cute_meos.jpg')
               ],
             ),
           ),

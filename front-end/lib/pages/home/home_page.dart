@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:thien_nguyen_app/configs/assets/app_images.dart';
 import 'package:thien_nguyen_app/pages/home/page_detail.dart';
 import 'package:thien_nguyen_app/theme/theme.dart';
 import 'package:thien_nguyen_app/widgets/status_widget.dart';
-
-import '../../configs/app_images.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

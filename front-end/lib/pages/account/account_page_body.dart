@@ -37,6 +37,8 @@ class _AccountPageBodyState extends State<AccountPageBody> {
   void _deleteAccount() {
   }
 
-  void _logout() {
+  void _logout() async {
+    await AuthLocalProvider.logout();
+    if (context.mounted) context.goNamed(RouteName.login);
   }
 }

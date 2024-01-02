@@ -21,8 +21,12 @@ abstract class RoutePath {
 
   static String login = "/login";
   static String register = "new";
+  static String otp = "otp";
 
   static String status = "/status";
+
+  static String forgetPassword = "reset";
+  static String resetPassword = "new";
 }
 
 ///Tên các trang trong app
@@ -38,6 +42,8 @@ abstract class RouteName {
   static String terms = "terms";
   static String privacyPolicy = "policy";
   static String anotherUser = "anotherUser";
+  static String forgetPassword = "forgetPassword";
+  static String resetPassword = "resetPassword";
 
   static String login = "login";
   static String register = "register";
@@ -47,4 +53,7 @@ abstract class RouteName {
   static String newPage = "npage";
   //Sub branch
   static String edit = "edit";
+
+  static String otp = "otp";
+  static String forgetOtp = "forgetOtp";
 }
