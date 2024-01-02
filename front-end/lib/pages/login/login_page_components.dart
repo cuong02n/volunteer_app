@@ -128,7 +128,9 @@ class _LoginPageFormState extends State<LoginPageForm> {
     );
   }
 
-  void _forgotPassword() {}
+  void _forgotPassword() {
+    context.pushNamed(RouteName.forgetPassword);
+  }
 
   VoidCallback _register(BuildContext context) => () {
     context.pushNamed(RouteName.register);
