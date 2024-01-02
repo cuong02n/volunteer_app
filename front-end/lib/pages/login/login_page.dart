@@ -13,6 +13,8 @@ import 'package:thien_nguyen_app/theme/theme.dart';
 import 'package:thien_nguyen_app/utilities/controllers/login_controller.dart';
 import 'package:thien_nguyen_app/widgets/app_icon.dart';
 
+import 'forgot_password.dart';
+
 part 'login_page_body.dart';
 part 'login_page_components.dart';
 
