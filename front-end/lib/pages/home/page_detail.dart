@@ -197,6 +197,7 @@ class PageDetail extends StatelessWidget {
                     ),
                   ],
                 ),
+                Image.asset('assets/images/cute_meos.jpg')
               ],
             ),
           ),
