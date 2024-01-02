@@ -37,10 +37,10 @@ class LoginController with ChangeNotifier implements BaseFunction {
     try {
       Navigator.of(context).push(LoadingOverlay());
       AuthRequest request = AuthRequest(email: username, password: password);
-      AuthResponse response = await AuthProvider.authenticate(request);
+      AuthResponse response = await AuthServerProvider.authenticate(request);
       //After finish
-      AuthLocalProvider.saveToken(response);
-      AuthLocalProvider.saveUser(request);
+      await AuthLocalProvider.saveToken(response);
+      await AuthLocalProvider.saveUser(request);
       if (context.mounted) context.go('/');
     }
     catch (e) {

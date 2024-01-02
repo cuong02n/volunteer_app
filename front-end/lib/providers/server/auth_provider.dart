@@ -7,7 +7,7 @@ import 'package:thien_nguyen_app/models/response/auth_response.dart';
 
 import 'dio.dart';
 
-abstract class AuthProvider {
+abstract class AuthServerProvider {
   ///Register new account
   static Future<void> register(RegisterRequest data) async {
     //Call response
@@ -38,9 +38,9 @@ abstract class AuthProvider {
 
   static Future<AuthResponse> authenticate(AuthRequest data) async {
     try{
-      print(AuthApi.authenticate);
       final response = await dio.post(AuthApi.authenticate, data: data);
       if (response.statusCode == 200) {
+
         return AuthResponse.fromJson(response.data);
       }
       else {

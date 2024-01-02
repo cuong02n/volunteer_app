@@ -55,7 +55,7 @@ class RegisterController with ChangeNotifier implements BaseFunction {
     try {
       Navigator.of(context).push(LoadingOverlay());
       RegisterRequest request = RegisterRequest(name: username, email: email, password: password);
-      await AuthProvider.register(request);
+      await AuthServerProvider.register(request);
       //After finish
       if (context.mounted) {
         context.pop();

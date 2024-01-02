@@ -40,7 +40,7 @@ class OtpController with ChangeNotifier implements BaseFunction {
     try {
       Navigator.of(context).push(LoadingOverlay());
       OtpRequest request = OtpRequest(email: email, otp: otp);
-      await AuthProvider.verifyRegister(request);
+      await AuthServerProvider.verifyRegister(request);
       //After finish
       if (context.mounted) context.go('/');
     }

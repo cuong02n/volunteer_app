@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:thien_nguyen_app/pages/otp/otp_page.dart';
 import 'package:thien_nguyen_app/pages/pages.dart';
 import 'package:thien_nguyen_app/configs/route_name.dart';
+import 'package:thien_nguyen_app/providers/mix/auth_mix_provider.dart';
 
 import '../pages/home/home_page.dart';
 
@@ -13,7 +14,10 @@ import '../pages/home/home_page.dart';
 ///cho các trang dùng thanh điều hướng dưới.
 abstract class AppRouter {
   static final router = GoRouter(
-      routes: _route, initialLocation: RoutePath.login, navigatorKey: _rootKey);
+      routes: _route,
+      initialLocation: RoutePath.login,
+
+      navigatorKey: _rootKey);
 
   static final _rootKey = GlobalKey<NavigatorState>();
 
@@ -81,7 +85,17 @@ abstract class AppRouter {
       GoRoute(
           path: RoutePath.home,
           pageBuilder: (context, state) =>
-              _getPage(child: HomePage(), state: state))
+              _getPage(child: HomePage(), state: state),
+          redirect: (context, state) async {
+            bool isLogin = await AuthMixProvider.tryLogin();
+            if (isLogin) {
+              return null;
+            }
+            else {
+              return RoutePath.login;
+            }
+          }
+      )
     ]),
     StatefulShellBranch(routes: [
       GoRoute(
