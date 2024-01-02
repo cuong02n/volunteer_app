@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-import 'package:thien_nguyen_app/configs/app_images.dart';
+import 'package:thien_nguyen_app/configs/assets/app_images.dart';
 import 'package:thien_nguyen_app/theme/theme.dart';
 import 'package:thien_nguyen_app/widgets/navigation_button.dart';
 import 'package:thien_nguyen_app/widgets/star_picker.dart';

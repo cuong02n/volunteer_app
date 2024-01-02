@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:thien_nguyen_app/configs/app_docs.dart';
+import 'package:thien_nguyen_app/configs/assets/app_docs.dart';
 import 'package:thien_nguyen_app/theme/theme.dart';
 
 class PrivacyPage extends StatelessWidget {

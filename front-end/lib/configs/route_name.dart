@@ -21,6 +21,7 @@ abstract class RoutePath {
 
   static String login = "/login";
   static String register = "new";
+  static String otp = "otp";
 
   static String status = "/status";
 }
@@ -47,4 +48,6 @@ abstract class RouteName {
   static String newPage = "npage";
   //Sub branch
   static String edit = "edit";
+
+  static String otp = "otp";
 }

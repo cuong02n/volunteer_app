@@ -34,8 +34,31 @@ class LoginPageLogo extends StatelessWidget {
   }
 }
 
-class LoginPageForm extends StatelessWidget {
+class LoginPageForm extends StatefulWidget {
   const LoginPageForm({super.key});
+
+  @override
+  State<LoginPageForm> createState() => _LoginPageFormState();
+}
+
+class _LoginPageFormState extends State<LoginPageForm> {
+  late final LoginController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = LoginController(context);
+    _controller.addListener(() {
+      setState(() {});
+    });
+    _controller.init();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,14 +68,31 @@ class LoginPageForm extends StatelessWidget {
         child: Column(
           children: [
             TextFormField(
+              controller: _controller.usernameController,
+              focusNode: _controller.usernameNode,
+              onTap: () => _controller.usernameNode.requestFocus(),
+              onTapOutside: (_) => _controller.usernameNode.unfocus(),
+              onFieldSubmitted: (_) => _controller.nextFocus(),
               decoration: InputDecoration(
-                  prefixIcon: AppIcon(AppIcons.username),
+                  errorText: _controller.usernameError,
+                  prefixIcon: const AppIcon(AppIcons.username),
                   labelText: "Nhập địa chỉ email"),
             ),
             const SizedBox(height: 10),
             TextFormField(
+              controller: _controller.passwordController,
+              focusNode: _controller.passwordNode,
+              onTap: () => _controller.passwordNode.requestFocus(),
+              onTapOutside: (_) => _controller.passwordNode.unfocus(),
+              onFieldSubmitted: (_) => _controller.nextFocus(),
+              obscureText: !_controller.isShowPassword,
               decoration: InputDecoration(
-                  prefixIcon: AppIcon(AppIcons.password),
+                  suffixIcon: IconButton(
+                    icon: Icon((_controller.isShowPassword)? Icons.visibility_off: Icons.visibility),
+                    onPressed: _controller.setPasswordShow,
+                  ),
+                  errorText: _controller.passwordError,
+                  prefixIcon: const AppIcon(AppIcons.password),
                   labelText: "Nhập mật khẩu"),
             ),
             const SizedBox(height: 10),
@@ -65,11 +105,11 @@ class LoginPageForm extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             FilledButton(
-                onPressed: _signIn, child: Center(child: Text("Đăng nhập"))),
+                onPressed: _controller.login, child: const Center(child: Text("Đăng nhập"))),
             const SizedBox(height: 10),
             Center(
               child: Text.rich(TextSpan(children: [
-                TextSpan(text: "Chưa có tài khoản? "),
+                const TextSpan(text: "Chưa có tài khoản? "),
                 TextSpan(
                     text: "Tạo tài khoản",
                     mouseCursor: MaterialStateMouseCursor.clickable,
@@ -84,8 +124,6 @@ class LoginPageForm extends StatelessWidget {
   }
 
   void _forgotPassword() {}
-
-  void _signIn() {}
 
   VoidCallback _register(BuildContext context) => () {
     context.pushNamed(RouteName.register);

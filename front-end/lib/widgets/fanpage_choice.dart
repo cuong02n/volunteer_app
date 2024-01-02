@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
-import 'package:thien_nguyen_app/configs/app_images.dart';
+import 'package:thien_nguyen_app/configs/assets/app_images.dart';
 import 'package:thien_nguyen_app/theme/theme.dart';
 
 typedef Json = Map<String, dynamic>;

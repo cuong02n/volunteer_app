@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:thien_nguyen_app/pages/otp/otp_page.dart';
 import 'package:thien_nguyen_app/pages/pages.dart';
 import 'package:thien_nguyen_app/configs/route_name.dart';
 
@@ -12,7 +13,7 @@ import '../pages/home/home_page.dart';
 ///cho các trang dùng thanh điều hướng dưới.
 abstract class AppRouter {
   static final router = GoRouter(
-      routes: _route, initialLocation: RoutePath.home, navigatorKey: _rootKey);
+      routes: _route, initialLocation: RoutePath.login, navigatorKey: _rootKey);
 
   static final _rootKey = GlobalKey<NavigatorState>();
 
@@ -31,7 +32,15 @@ abstract class AppRouter {
           GoRoute(
               name: RouteName.register,
               path: RoutePath.register,
-              pageBuilder: (context, state) => RegisterPage()),
+              pageBuilder: (context, state) => RegisterPage(),
+              routes: [
+                GoRoute(
+                  name: RouteName.otp,
+                  path: RoutePath.otp,
+                  pageBuilder: (context, state) => OtpPage(),
+                )
+              ]
+          ),
         ]),
     GoRoute(
         parentNavigatorKey: _rootKey,
