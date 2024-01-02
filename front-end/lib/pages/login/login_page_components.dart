@@ -59,7 +59,7 @@ class LoginPageForm extends StatelessWidget {
             Align(
               alignment: Alignment.centerRight,
               child: TextButton(
-                onPressed: _forgotPassword,
+                onPressed: () => _forgotPassword(context),
                 child: const Text("Quên mật khẩu"),
               ),
             ),
@@ -73,7 +73,8 @@ class LoginPageForm extends StatelessWidget {
                 TextSpan(
                     text: "Tạo tài khoản",
                     mouseCursor: MaterialStateMouseCursor.clickable,
-                    recognizer: TapGestureRecognizer()..onTap = _register(context),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = _register(context),
                     style: AppTypology.textButtonLabel)
               ])),
             ),
@@ -83,13 +84,18 @@ class LoginPageForm extends StatelessWidget {
     );
   }
 
-  void _forgotPassword() {}
+  void _forgotPassword(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ForgotPasswordScreen()),
+    );
+  }
 
   void _signIn() {}
 
   VoidCallback _register(BuildContext context) => () {
-    context.pushNamed(RouteName.register);
-  };
+        context.pushNamed(RouteName.register);
+      };
 }
 
 class LoginPagePrivacy extends StatelessWidget {

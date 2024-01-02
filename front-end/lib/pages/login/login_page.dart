@@ -12,6 +12,8 @@ import 'package:thien_nguyen_app/configs/route_name.dart';
 import 'package:thien_nguyen_app/theme/theme.dart';
 import 'package:thien_nguyen_app/widgets/app_icon.dart';
 
+import 'forgot_password.dart';
+
 part 'login_page_body.dart';
 part 'login_page_components.dart';
 
