@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:thien_nguyen_app/theme/theme.dart';
+import 'package:thien_nguyen_app/ui/theme/theme.dart';
 
 class StarPicker extends StatefulWidget {
   final int count;

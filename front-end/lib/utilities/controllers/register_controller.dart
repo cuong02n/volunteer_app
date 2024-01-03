@@ -6,9 +6,9 @@ import 'package:thien_nguyen_app/configs/route_name.dart';
 import 'package:thien_nguyen_app/models/request/auth_request.dart';
 import 'package:thien_nguyen_app/models/request/register_request.dart';
 import 'package:thien_nguyen_app/models/response/auth_response.dart';
-import 'package:thien_nguyen_app/pages/loading/loading_page.dart';
 import 'package:thien_nguyen_app/repositories/local/auth_local_provider.dart';
 import 'package:thien_nguyen_app/repositories/server/auth_provider.dart';
+import 'package:thien_nguyen_app/ui/pages/loading/loading_page.dart';
 import 'package:thien_nguyen_app/utilities/functions/base_function.dart';
 
 class RegisterController with ChangeNotifier implements BaseFunction {

@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:thien_nguyen_app/theme/theme.dart';
+import 'package:thien_nguyen_app/ui/theme/theme.dart';
 import 'package:thien_nguyen_app/widgets/image_preview.dart';
 
 class ImagePickerField extends StatefulWidget {
