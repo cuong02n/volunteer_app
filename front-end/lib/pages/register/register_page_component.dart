@@ -115,7 +115,7 @@ class RegisterPolicy extends StatelessWidget {
           text: "Bằng việc tiếp tục, bạn đã đồng ý với\n",
         ),
         TextSpan(
-            recognizer: TapGestureRecognizer()..onTap = _privacy,
+            recognizer: TapGestureRecognizer()..onTap = _privacy(context),
             text: "Điều khoản sử dụng",
             mouseCursor: MaterialStateMouseCursor.clickable,
             style: AppTypology.textButtonLabel.merge(AppTypology.labelSmall))
@@ -125,5 +125,9 @@ class RegisterPolicy extends StatelessWidget {
     );
   }
 
-  void _privacy() {}
+  VoidCallback _privacy(BuildContext context) {
+    return () {
+      context.pushNamed(RouteName.privacyPolicy);
+    };
+  }
 }

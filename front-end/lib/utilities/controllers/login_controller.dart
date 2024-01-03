@@ -7,7 +7,7 @@ import 'package:thien_nguyen_app/models/response/auth_response.dart';
 import 'package:thien_nguyen_app/pages/loading/loading_page.dart';
 import 'package:thien_nguyen_app/providers/local/auth_local_provider.dart';
 import 'package:thien_nguyen_app/providers/server/auth_provider.dart';
-import 'package:thien_nguyen_app/utilities/controllers/base_function.dart';
+import 'package:thien_nguyen_app/utilities/functions/base_function.dart';
 
 class LoginController with ChangeNotifier implements BaseFunction {
   LoginController(this.context);

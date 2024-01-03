@@ -148,7 +148,7 @@ class LoginPagePrivacy extends StatelessWidget {
           text: "Bằng việc tiếp tục, bạn đã đồng ý với\n",
         ),
         TextSpan(
-            recognizer: TapGestureRecognizer()..onTap = _privacy,
+            recognizer: TapGestureRecognizer()..onTap = _privacy(context),
             text: "Điều khoản sử dụng",
             mouseCursor: MaterialStateMouseCursor.clickable,
             style: AppTypology.textButtonLabel)
@@ -157,5 +157,9 @@ class LoginPagePrivacy extends StatelessWidget {
     );
   }
 
-  void _privacy() {}
+  VoidCallback _privacy(BuildContext context) {
+    return () {
+      context.pushNamed(RouteName.privacyPolicy);
+    };
+  }
 }

@@ -30,7 +30,9 @@ class LoadingOverlay extends ModalRoute<void> {
     return const Material(
       type: MaterialType.transparency,
       // make sure that the overlay content is not cut off
-      child: Center(child: CircularProgressIndicator()),
+      child: PopScope(
+          canPop: false,
+          child: Center(child: CircularProgressIndicator())),
     );
   }
 

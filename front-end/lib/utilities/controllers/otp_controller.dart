@@ -10,7 +10,7 @@ import 'package:thien_nguyen_app/models/response/auth_response.dart';
 import 'package:thien_nguyen_app/pages/loading/loading_page.dart';
 import 'package:thien_nguyen_app/providers/local/auth_local_provider.dart';
 import 'package:thien_nguyen_app/providers/server/auth_provider.dart';
-import 'package:thien_nguyen_app/utilities/controllers/base_function.dart';
+import 'package:thien_nguyen_app/utilities/functions/base_function.dart';
 
 class OtpController with ChangeNotifier implements BaseFunction {
   bool isShowOtp = false;
@@ -42,7 +42,17 @@ class OtpController with ChangeNotifier implements BaseFunction {
       OtpRequest request = OtpRequest(email: email, otp: otp);
       await AuthServerProvider.verifyRegister(request);
       //After finish
-      if (context.mounted) context.go('/');
+      if (context.mounted) {
+        showDialog(context: context, builder: (context) {
+          return AlertDialog(
+            title: const Text("Xác thực OTP thành công!"),
+            content: const Text("Nhấn OK để trở về màn hình đăng nhập."),
+            actions: [
+              TextButton(child: const Text("OK"), onPressed: () => context.go('/'),)
+            ],
+          );
+        });
+      }
     }
     catch (e) {
       if (context.mounted) {

@@ -1,8 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
 import 'package:thien_nguyen_app/app.dart';
 import 'package:thien_nguyen_app/configs/assets/app_icons.dart';
+import 'package:thien_nguyen_app/configs/route_name.dart';
 import 'package:thien_nguyen_app/theme/theme.dart';
 import 'package:thien_nguyen_app/utilities/controllers/register_controller.dart';
 import 'package:thien_nguyen_app/widgets/app_icon.dart';

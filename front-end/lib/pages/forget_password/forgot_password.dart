@@ -105,56 +105,53 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           // Add other properties as needed
         ),
       ),
-      body: Column(
-        children: [
-          SizedBox(
-            height: 20,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              AppLogo(),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: const Text(
-                  "ThienNguyen",
-                  style: AppTypology.appName,
-                ),
-              )
-            ],
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: AutofillGroup(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Your forgot password widgets go here
-                  Text((!_controller.isExpanded)? 'Nhập email của bạn để đặt lại mật khẩu': 'Nhập mật khẩu mới của bạn'),
-                  // Example: TextForm to enter email
-                  TextFormField(
-                    autofillHints: const [AutofillHints.email],
-                    controller: _controller.usernameController,
-                    focusNode: _controller.usernameNode,
-                    keyboardType: TextInputType.emailAddress,
-                    onTap: () => _controller.usernameNode.requestFocus(),
-                    onTapOutside: (_) => _controller.usernameNode.unfocus(),
-                    onFieldSubmitted: (_) => _controller.nextFocus(),
-                    decoration: InputDecoration(
-                        errorText: _controller.usernameError,
-                        labelText: "Nhập địa chỉ email"),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AppLogo(),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: const Text(
+                    "ThienNguyen",
+                    style: AppTypology.appName,
                   ),
-
-                  // Example: Reset Password button
-                  ...expand
-                ],
+                )
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: AutofillGroup(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Your forgot password widgets go here
+                      Text((!_controller.isExpanded)? 'Nhập email của bạn để đặt lại mật khẩu': 'Nhập mật khẩu mới của bạn'),
+                      // Example: TextForm to enter email
+                      const SizedBox(height: 5),
+                      TextFormField(
+                        autofillHints: const [AutofillHints.email],
+                        controller: _controller.usernameController,
+                        focusNode: _controller.usernameNode,
+                        keyboardType: TextInputType.emailAddress,
+                        onTap: () => _controller.usernameNode.requestFocus(),
+                        onTapOutside: (_) => _controller.usernameNode.unfocus(),
+                        onFieldSubmitted: (_) => _controller.nextFocus(),
+                        decoration: InputDecoration(
+                            errorText: _controller.usernameError,
+                            labelText: "Nhập địa chỉ email"),
+                      ),
+        
+                      // Example: Reset Password button
+                      ...expand
+                    ],
+                  ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

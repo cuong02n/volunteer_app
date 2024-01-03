@@ -1,7 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 abstract class BaseApi {
-  static String? baseUrl = dotenv.env['BASE_URL'];
+  static String? baseUrl = (kIsWeb)? dotenv.env['BASE_WEB_URL']: dotenv.env['BASE_EMULATOR_URL'];
 }
 
 abstract class AuthApi {
