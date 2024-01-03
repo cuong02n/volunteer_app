@@ -38,7 +38,7 @@ class _AccountPageBodyState extends State<AccountPageBody> {
   }
 
   void _logout() async {
-    await AuthLocalProvider.logout();
+    await AuthLocalRepository.logout();
     if (context.mounted) context.goNamed(RouteName.login);
   }
 }

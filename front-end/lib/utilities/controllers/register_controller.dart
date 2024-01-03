@@ -7,8 +7,8 @@ import 'package:thien_nguyen_app/models/request/auth_request.dart';
 import 'package:thien_nguyen_app/models/request/register_request.dart';
 import 'package:thien_nguyen_app/models/response/auth_response.dart';
 import 'package:thien_nguyen_app/pages/loading/loading_page.dart';
-import 'package:thien_nguyen_app/providers/local/auth_local_provider.dart';
-import 'package:thien_nguyen_app/providers/server/auth_provider.dart';
+import 'package:thien_nguyen_app/repositories/local/auth_local_provider.dart';
+import 'package:thien_nguyen_app/repositories/server/auth_provider.dart';
 import 'package:thien_nguyen_app/utilities/functions/base_function.dart';
 
 class RegisterController with ChangeNotifier implements BaseFunction {
@@ -55,7 +55,7 @@ class RegisterController with ChangeNotifier implements BaseFunction {
     try {
       Navigator.of(context).push(LoadingOverlay());
       RegisterRequest request = RegisterRequest(name: username, email: email, password: password);
-      await AuthServerProvider.register(request);
+      await AuthServerRepository.register(request);
       //After finish
       if (context.mounted) {
         context.pop();

@@ -1,9 +1,9 @@
 import 'package:thien_nguyen_app/models/request/auth_request.dart';
 import 'package:thien_nguyen_app/models/response/auth_response.dart';
-import 'package:thien_nguyen_app/providers/local/storage.dart';
-import 'package:thien_nguyen_app/providers/server/dio.dart';
+import 'package:thien_nguyen_app/repositories/local/storage.dart';
+import 'package:thien_nguyen_app/repositories/server/dio.dart';
 
-abstract class AuthLocalProvider {
+abstract class AuthLocalRepository {
   static Future<void> saveToken(AuthResponse response) async {
     await storage.write(key: 'accessToken', value: response.token!);
     await storage.write(key: 'userId', value: response.userId!.toString());

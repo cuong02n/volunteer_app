@@ -8,8 +8,8 @@ import 'package:thien_nguyen_app/models/request/otp_request.dart';
 import 'package:thien_nguyen_app/models/request/register_request.dart';
 import 'package:thien_nguyen_app/models/response/auth_response.dart';
 import 'package:thien_nguyen_app/pages/loading/loading_page.dart';
-import 'package:thien_nguyen_app/providers/local/auth_local_provider.dart';
-import 'package:thien_nguyen_app/providers/server/auth_provider.dart';
+import 'package:thien_nguyen_app/repositories/local/auth_local_provider.dart';
+import 'package:thien_nguyen_app/repositories/server/auth_provider.dart';
 import 'package:thien_nguyen_app/utilities/functions/base_function.dart';
 
 class OtpController with ChangeNotifier implements BaseFunction {
@@ -40,7 +40,7 @@ class OtpController with ChangeNotifier implements BaseFunction {
     try {
       Navigator.of(context).push(LoadingOverlay());
       OtpRequest request = OtpRequest(email: email, otp: otp);
-      await AuthServerProvider.verifyRegister(request);
+      await AuthServerRepository.verifyRegister(request);
       //After finish
       if (context.mounted) {
         showDialog(context: context, builder: (context) {

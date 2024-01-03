@@ -8,8 +8,8 @@ import 'package:thien_nguyen_app/models/request/auth_request.dart';
 import 'package:thien_nguyen_app/models/request/reset_password_request.dart';
 import 'package:thien_nguyen_app/models/response/auth_response.dart';
 import 'package:thien_nguyen_app/pages/loading/loading_page.dart';
-import 'package:thien_nguyen_app/providers/local/auth_local_provider.dart';
-import 'package:thien_nguyen_app/providers/server/auth_provider.dart';
+import 'package:thien_nguyen_app/repositories/local/auth_local_provider.dart';
+import 'package:thien_nguyen_app/repositories/server/auth_provider.dart';
 import 'package:thien_nguyen_app/utilities/functions/base_function.dart';
 
 class ResetPasswordController with ChangeNotifier implements BaseFunction {
@@ -76,7 +76,7 @@ class ResetPasswordController with ChangeNotifier implements BaseFunction {
     try {
       Navigator.of(context).push(LoadingOverlay());
       ResetPasswordRequest request = ResetPasswordRequest(email: username);
-      isExists = await AuthServerProvider.checkExist(request);
+      isExists = await AuthServerRepository.checkExist(request);
     }
     on DioException catch (e) {
       isExists = false;
@@ -98,7 +98,7 @@ class ResetPasswordController with ChangeNotifier implements BaseFunction {
     try {
       Navigator.of(context).push(LoadingOverlay());
       ResetPasswordRequest request = ResetPasswordRequest(email: username, newPassword: password, otp: otp);
-      await AuthServerProvider.resetPassword(request);
+      await AuthServerRepository.resetPassword(request);
       if (context.mounted) {
         context.pop();
         context.pop();

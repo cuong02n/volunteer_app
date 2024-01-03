@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:thien_nguyen_app/pages/otp/otp_page.dart';
 import 'package:thien_nguyen_app/pages/pages.dart';
 import 'package:thien_nguyen_app/configs/route_name.dart';
-import 'package:thien_nguyen_app/providers/mix/auth_mix_provider.dart';
+import 'package:thien_nguyen_app/repositories/mix/auth_mix_provider.dart';
 
 import '../pages/home/home_page.dart';
 
@@ -92,7 +92,7 @@ abstract class AppRouter {
           pageBuilder: (context, state) =>
               _getPage(child: HomePage(), state: state),
           redirect: (context, state) async {
-            bool isLogin = await AuthMixProvider.tryLogin();
+            bool isLogin = await AuthMixRepository.tryLogin();
             if (isLogin) {
               return null;
             }

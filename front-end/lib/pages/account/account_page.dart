@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
 import 'package:thien_nguyen_app/configs/route_name.dart';
-import 'package:thien_nguyen_app/providers/local/auth_local_provider.dart';
+import 'package:thien_nguyen_app/repositories/local/auth_local_provider.dart';
 import 'package:thien_nguyen_app/theme/theme.dart';
 import 'package:thien_nguyen_app/widgets/navigation_button.dart';
 

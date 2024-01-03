@@ -8,12 +8,12 @@ import 'package:thien_nguyen_app/models/response/auth_response.dart';
 
 import 'dio.dart';
 
-abstract class UserServerProvider {
+abstract class AuthServerRepository {
   ///Register new account
-  static Future<void> getUser(int id) async {
+  static Future<void> register(RegisterRequest data) async {
     //Call response
     try {
-      final response = await dio.get(UserApi.getUser(id));
+      final response = await dio.post(AuthApi.register, data: data);
       if (response.statusCode != 200) throw response;
     } on DioException catch (e) {
       if (e.response?.statusCode == 409) throw "Tài khoản đã tồn tại";
@@ -42,8 +42,9 @@ abstract class UserServerProvider {
     try{
       final response = await dio.post(AuthApi.authenticate, data: data);
       if (response.statusCode == 200) {
-
-        return AuthResponse.fromJson(response.data);
+        final authResponse = AuthResponse.fromJson(response.data);
+        headers["Authorization"] = "Bearer ${authResponse.token}";
+        return authResponse;
       }
       else {
         throw response;
