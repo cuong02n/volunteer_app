@@ -8,6 +8,7 @@ import 'package:thien_nguyen_app/singleton/current_info.dart';
 
 abstract class AuthLocalRepository {
   static Future<void> saveToken(AuthResponse response) async {
+    CurrentInfo.isRefresh = true;
     await storage.write(key: 'accessToken', value: response.token!);
     await storage.write(key: 'userId', value: response.userId!.toString());
   }
@@ -20,13 +21,14 @@ abstract class AuthLocalRepository {
   }
 
   static Future<void> logout() async {
+    CurrentInfo.refreshToken?.cancel();
+    CurrentInfo.refreshToken = null;
+    CurrentInfo.isRefresh = false;
     await storage.delete(key: 'password');
     await storage.delete(key: 'accessToken');
     await storage.delete(key: 'userId');
     await storage.delete(key: 'validDate');
     removeHeader('Authorization');
-    CurrentInfo.refreshToken?.cancel();
-    CurrentInfo.refreshToken = null;
   }
 
   static Future<AuthRequest?> readLastUser() async {

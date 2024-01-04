@@ -30,20 +30,27 @@ abstract class AuthMixRepository {
   }
   
   static Future<void> setRefreshToken() async {
-    CurrentInfo.refreshToken = Timer.periodic(const Duration(minutes: 20), (timer) async {
+    CurrentInfo.refreshToken = Timer.periodic(const Duration(minutes: 1), (timer) async {
       int turn = 5;
-      while (turn-- > 0) {
+      while (turn-- > 0 && CurrentInfo.isRefresh) {
         bool result = await tryLogin();
         if (result) return;
+        await Future.delayed(const Duration(seconds: 1));
       }
-      await AuthLocalRepository.logout();
-      showDialog(context: navigatorKey.currentContext!, builder: (context) => AlertDialog(
+      if (CurrentInfo.isRefresh) {
+        showDialog(context: navigatorKey.currentContext!, builder: (context) => AlertDialog(
         title: const Text("Phiên làm việc đã hết hạn"),
         content: const Text("Trở về màn hình đăng nhập để tiếp tục"),
         actions: [
-          TextButton(onPressed: () => context.goNamed(RouteName.login), child: const Text("OK"))
+          TextButton(onPressed: () async{
+            await AuthLocalRepository.logout();
+            if (context.mounted) {
+              context.goNamed(RouteName.login);
+            }
+          }, child: const Text("OK"))
         ],
       ));
+      }
     });
   }  
 }
