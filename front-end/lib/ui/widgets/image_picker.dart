@@ -1,9 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:thien_nguyen_app/ui/theme/theme.dart';
-import 'package:thien_nguyen_app/widgets/image_preview.dart';
+import 'package:thien_nguyen_app/ui/widgets/image_preview.dart';
+import 'package:thien_nguyen_app/utilities/controllers/files/image_picker_controller.dart';
 
 class ImagePickerField extends StatefulWidget {
   final BoxDecoration? style;
@@ -72,25 +71,3 @@ class _ImagePickerFieldState extends State<ImagePickerField> {
   }
 }
 
-class ImagePickerController with ChangeNotifier {
-  final ImagePicker _picker = ImagePicker();
-  List<XFile> _files = [];
-
-  XFile? get image => _files.elementAtOrNull(0);
-
-  List<XFile> get images => _files;
-
-  Future<XFile?> pickImage() async {
-    XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    if (image != null) {
-      _files = [image];
-      notifyListeners();
-    }
-    return image;
-  }
-
-  Future<void> pickMultiImage() async {
-    _files = await _picker.pickMultiImage();
-    notifyListeners();
-  }
-}

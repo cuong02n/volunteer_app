@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:thien_nguyen_app/models/request/auth_request.dart';
 import 'package:thien_nguyen_app/models/response/auth_response.dart';
 import 'package:thien_nguyen_app/repositories/local/storage.dart';
 import 'package:thien_nguyen_app/repositories/server/dio.dart';
+import 'package:thien_nguyen_app/singleton/current_info.dart';
 
 abstract class AuthLocalRepository {
   static Future<void> saveToken(AuthResponse response) async {
@@ -21,7 +24,9 @@ abstract class AuthLocalRepository {
     await storage.delete(key: 'accessToken');
     await storage.delete(key: 'userId');
     await storage.delete(key: 'validDate');
-    headers.remove('Authorization');
+    removeHeader('Authorization');
+    CurrentInfo.refreshToken?.cancel();
+    CurrentInfo.refreshToken = null;
   }
 
   static Future<AuthRequest?> readLastUser() async {

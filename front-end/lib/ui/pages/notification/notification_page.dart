@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:thien_nguyen_app/ui/theme/theme.dart';
-import 'package:thien_nguyen_app/widgets/notification_badge.dart';
+import 'package:thien_nguyen_app/ui/widgets/notification_badge.dart';
 
 typedef Json = Map<String, dynamic>;
 

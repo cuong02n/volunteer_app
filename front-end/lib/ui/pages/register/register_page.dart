@@ -6,8 +6,8 @@ import 'package:thien_nguyen_app/ui/app.dart';
 import 'package:thien_nguyen_app/configs/assets/app_icons.dart';
 import 'package:thien_nguyen_app/configs/route_name.dart';
 import 'package:thien_nguyen_app/ui/theme/theme.dart';
-import 'package:thien_nguyen_app/utilities/controllers/register_controller.dart';
-import 'package:thien_nguyen_app/widgets/app_icon.dart';
+import 'package:thien_nguyen_app/utilities/controllers/auth/register_controller.dart';
+import 'package:thien_nguyen_app/ui/widgets/app_icon.dart';
 
 part 'register_body.dart';
 part 'register_page_component.dart';

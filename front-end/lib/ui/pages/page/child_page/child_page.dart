@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:thien_nguyen_app/ui/theme/theme.dart';
-import 'package:thien_nguyen_app/widgets/avatar.dart';
-import 'package:thien_nguyen_app/widgets/background_image.dart';
-import 'package:thien_nguyen_app/widgets/status_widget.dart';
+import 'package:thien_nguyen_app/ui/widgets/avatar.dart';
+import 'package:thien_nguyen_app/ui/widgets/background_image.dart';
+import 'package:thien_nguyen_app/ui/widgets/status_widget.dart';
 
 part 'child_page_body.dart';
 part 'child_page_status_list.dart';

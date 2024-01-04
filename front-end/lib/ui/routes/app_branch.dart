@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:thien_nguyen_app/configs/route_name.dart';
 import 'package:thien_nguyen_app/repositories/mix/auth_mix_provider.dart';
+import 'package:thien_nguyen_app/singleton/current_info.dart';
 import 'package:thien_nguyen_app/ui/pages/pages.dart';
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
 ///Nơi lưu trữ GoRouter của app, các trang (Page) xong sẽ được xuất vào pages.dart
 ///và được gọi trong các GoRoute (tùy thuộc vào mục đích sử dụng sẽ dùng builder
@@ -13,10 +16,13 @@ abstract class AppRouter {
   static final router = GoRouter(
       routes: _route,
       initialLocation: RoutePath.login,
-
+      redirect: (context, state) async {
+        if (CurrentInfo.user == null) await AuthMixRepository.tryLogin();
+        return null;
+      },
       navigatorKey: _rootKey);
 
-  static final _rootKey = GlobalKey<NavigatorState>();
+  static final _rootKey = navigatorKey;
 
   static final _route = [
     StatefulShellRoute(

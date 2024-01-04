@@ -3,7 +3,7 @@ import 'package:sizer/sizer.dart';
 import 'package:thien_nguyen_app/configs/assets/app_images.dart';
 import 'package:thien_nguyen_app/configs/assets/app_logo.dart';
 import 'package:thien_nguyen_app/ui/theme/theme.dart';
-import 'package:thien_nguyen_app/utilities/controllers/reset_password_controller.dart';
+import 'package:thien_nguyen_app/utilities/controllers/auth/reset_password_controller.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});

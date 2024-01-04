@@ -2,7 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:thien_nguyen_app/ui/theme/theme.dart';
-import 'package:thien_nguyen_app/widgets/image_picker.dart';
+import 'package:thien_nguyen_app/ui/widgets/image_picker.dart';
 
 part 'newpage_body.dart';
 part 'newpage_page_component.dart';

@@ -43,7 +43,7 @@ abstract class AuthServerRepository {
       final response = await dio.post(AuthApi.authenticate, data: data);
       if (response.statusCode == 200) {
         final authResponse = AuthResponse.fromJson(response.data);
-        headers["Authorization"] = "Bearer ${authResponse.token}";
+        changeHeader("Authorization", "Bearer ${authResponse.token}");
         return authResponse;
       }
       else {

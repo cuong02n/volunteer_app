@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
 import 'package:thien_nguyen_app/ui/theme/theme.dart';
-import 'package:thien_nguyen_app/widgets/fanpage_choice.dart';
+import 'package:thien_nguyen_app/ui/widgets/fanpage_choice.dart';
 
 part 'fanpage_page_appbar.dart';
 

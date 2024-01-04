@@ -6,7 +6,7 @@ import 'package:sizer/sizer.dart';
 import 'package:thien_nguyen_app/configs/route_name.dart';
 import 'package:thien_nguyen_app/repositories/local/auth_local_provider.dart';
 import 'package:thien_nguyen_app/ui/theme/theme.dart';
-import 'package:thien_nguyen_app/widgets/navigation_button.dart';
+import 'package:thien_nguyen_app/ui/widgets/navigation_button.dart';
 
 part 'account_page_body.dart';
 

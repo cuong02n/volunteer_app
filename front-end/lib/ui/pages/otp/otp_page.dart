@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:thien_nguyen_app/ui/theme/theme.dart';
-import 'package:thien_nguyen_app/utilities/controllers/otp_controller.dart';
+import 'package:thien_nguyen_app/utilities/controllers/auth/otp_controller.dart';
 
 part 'otp_body.dart';
 

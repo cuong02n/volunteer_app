@@ -3,12 +3,23 @@ import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
 import 'package:thien_nguyen_app/configs/assets/app_icons.dart';
 import 'package:thien_nguyen_app/configs/route_name.dart';
+import 'package:thien_nguyen_app/singleton/current_info.dart';
 import 'package:thien_nguyen_app/ui/theme/theme.dart';
-import 'package:thien_nguyen_app/widgets/app_icon.dart';
-import 'package:thien_nguyen_app/widgets/navigation_button.dart';
+import 'package:thien_nguyen_app/ui/widgets/app_icon.dart';
+import 'package:thien_nguyen_app/ui/widgets/navigation_button.dart';
+import 'package:thien_nguyen_app/ui/widgets/user_avatar.dart';
+import 'package:thien_nguyen_app/utilities/providers/user_avatar_provider.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends StatefulWidget {
+
   SettingsPage({super.key});
+
+  @override
+  State<SettingsPage> createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
+  final currentUser = CurrentUserAvatarProvider();
 
   late BuildContext _context;
 
@@ -20,11 +31,7 @@ class SettingsPage extends StatelessWidget {
         padding: const EdgeInsets.only(top: 10),
         child: Column(
           children: [
-            CircleAvatar(radius: 15.w, foregroundColor: Colors.blue,),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 10),
-              child: Text("User Name", style: AppTypology.titleMedium),
-            ),
+            UserAvatar(provider: currentUser),
             NavigationButton(
                 icon: AppIcon(AppIcons.user),
                 title: "Trang cá nhân",
@@ -59,8 +66,10 @@ class SettingsPage extends StatelessWidget {
     _context.pushNamed(RouteName.user);
   }
 
-  void _editProfile() {
-    _context.push("/user/edit");
+  void _editProfile() async {
+    bool result = await context.push("/user/edit") as bool;
+    print(result);
+    if (result) setState(() {});
   }
 
   void _accountSettings() {

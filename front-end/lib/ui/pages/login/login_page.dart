@@ -10,8 +10,8 @@ import 'package:thien_nguyen_app/configs/assets/app_images.dart';
 import 'package:thien_nguyen_app/configs/assets/app_logo.dart';
 import 'package:thien_nguyen_app/configs/route_name.dart';
 import 'package:thien_nguyen_app/ui/theme/theme.dart';
-import 'package:thien_nguyen_app/utilities/controllers/login_controller.dart';
-import 'package:thien_nguyen_app/widgets/app_icon.dart';
+import 'package:thien_nguyen_app/utilities/controllers/auth/login_controller.dart';
+import 'package:thien_nguyen_app/ui/widgets/app_icon.dart';
 
 import '../forget_password/forgot_password.dart';
 
