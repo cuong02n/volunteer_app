@@ -30,7 +30,7 @@ abstract class AuthMixRepository {
   }
   
   static Future<void> setRefreshToken() async {
-    CurrentInfo.refreshToken = Timer.periodic(const Duration(minutes: 1), (timer) async {
+    CurrentInfo.refreshToken = Timer.periodic(const Duration(minutes: 20), (timer) async {
       int turn = 5;
       while (turn-- > 0 && CurrentInfo.isRefresh) {
         bool result = await tryLogin();

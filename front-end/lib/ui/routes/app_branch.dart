@@ -70,7 +70,10 @@ abstract class AppRouter {
     GoRoute(
         parentNavigatorKey: _rootKey,
         path: RoutePath.anotherUser,
-        builder: (context, state) => Error404Page()),
+        builder: (context, state) {
+          int id = int.parse(state.pathParameters["id"]!);
+          return UserPage(id: id);
+        }),
     GoRoute(
         parentNavigatorKey: _rootKey,
         path: RoutePath.helpAndSupport,
@@ -135,8 +138,10 @@ abstract class AppRouter {
       GoRoute(
           name: RouteName.user,
           path: RoutePath.user,
-          pageBuilder: (context, state) =>
-              _getPage(child: UserPage(), state: state),
+          pageBuilder: (context, state) {
+            int id = CurrentInfo.user!.id!;
+            return _getPage(child: UserPage(id: id), state: state);
+          },
           routes: [
             GoRoute(
                 parentNavigatorKey: _rootKey,

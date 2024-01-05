@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
 import 'package:thien_nguyen_app/configs/assets/app_images.dart';
+import 'package:thien_nguyen_app/models/entity/user.dart';
+import 'package:thien_nguyen_app/repositories/server/user_provider.dart';
 import 'package:thien_nguyen_app/ui/pages/home/page_detail.dart';
 import 'package:thien_nguyen_app/ui/theme/theme.dart';
 import 'package:thien_nguyen_app/ui/widgets/status_widget.dart';
+import 'package:thien_nguyen_app/ui/widgets/user_avatar.dart';
+import 'package:thien_nguyen_app/utilities/providers/user_avatar_provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -35,28 +40,41 @@ class HomePage extends StatelessWidget {
                   TextButton(onPressed: () {}, child: const Text('Xem tất cả'))
                 ],
               ),
-              Container(
-                height: 65,
-                color: Colors.amber,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      child: SizedBox(
-                        width: 70,
-                        child: Column(
-                          children: [
-                            Icon(
-                              Icons.account_circle,
-                              size: 45,
-                            ),
-                            Text('User $index')
-                          ],
-                        ),
-                      ),
+              SizedBox(
+                width: double.infinity,
+                height: 80,
+                child: FutureBuilder(
+                  future: UserServerRepository.getAllUser(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      List<User> users = snapshot.requireData;
+                      return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: users.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: InkWell(
+                              onTap: () => context.push('/user/${users[index].id}'),
+                                child: Column(
+                                  children: [
+                                    UserAvatar.collapsed(
+                                      radius: 30,
+                                      provider: UserAvatarProvider(user: users[index]),
+                                    ),
+                                    Text(users[index].name ?? "Người dùng", style: AppTypology.labelSmall,)
+                                  ],
+                                ),
+                          ),
+                        );
+                      },
                     );
-                  },
+                    }
+                    else if (snapshot.hasError) {
+                      return Center(child: Icon(Icons.report),);
+                    }
+                    else return Center(child: CircularProgressIndicator(),);
+                  }
                 ),
               ),
               SizedBox(

@@ -15,15 +15,9 @@ class _AccountPageBodyState extends State<AccountPageBody> {
       padding: const EdgeInsets.all(20),
       child: Column(
           children: [
-            CircleAvatar(
-              radius: 100,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Text("User Name", style: AppTypology.titleMedium,),
-            ),
-            NavigationButton(title: "Email", extra: Text("Thêm địa chỉ email")),
-            NavigationButton(title: "Tên người dùng", extra: Text("User name")),
+            UserAvatar(provider: CurrentUserAvatarProvider(), radius: 100),
+            NavigationButton(title: "Email", extra: Text(CurrentInfo.user?.email ?? "Thêm địa chỉ email")),
+            NavigationButton(title: "Tên người dùng", extra: Text(CurrentInfo.user?.name ?? "User name")),
             NavigationButton(title: "Mật khẩu", extra: Text("Đổi mật khẩu")),
             SizedBox(height: 10,),
             TextButton(onPressed: _deleteAccount, child: Text("Xóa tài khoản")),

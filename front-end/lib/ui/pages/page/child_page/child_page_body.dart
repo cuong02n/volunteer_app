@@ -10,7 +10,7 @@ class ChildPageBody extends StatelessWidget {
       children: [
         Stack(
           children: [
-            BackgroundImage(),
+            //BackgroundImage(),
             Center(
               child: Column(
                 children: [
