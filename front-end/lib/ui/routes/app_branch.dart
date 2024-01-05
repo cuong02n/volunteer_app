@@ -15,7 +15,7 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 abstract class AppRouter {
   static final router = GoRouter(
       routes: _route,
-      initialLocation: RoutePath.login,
+      initialLocation: RoutePath.home,
       redirect: (context, state) async {
         if (CurrentInfo.user == null) await AuthMixRepository.tryLogin();
         return null;
@@ -57,7 +57,7 @@ abstract class AppRouter {
     GoRoute(
         parentNavigatorKey: _rootKey,
         path: RoutePath.specificPage,
-        builder: (context, state) => ChildPagePage()),
+        builder: (context, state) => ChildPagePage(id: int.parse(state.pathParameters['pageID']!))),
     GoRoute(
         parentNavigatorKey: _rootKey,
         name: RouteName.account,

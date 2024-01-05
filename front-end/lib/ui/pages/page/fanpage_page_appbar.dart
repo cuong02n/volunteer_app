@@ -42,7 +42,10 @@ class FanpagePageAppBar extends SliverAppBar {
 
   static VoidCallback _newPage(BuildContext context) {
     return () async {
-      var result = await context.push("/my-page/new");
+      Fanpage? result = await context.push("/my-page/new");
+      print(result);
+      if (result != null && context.mounted) context.read<FanpageListBloc>().addFanpage(result);
+      print(context.read<FanpageListBloc>().state);
     };
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:thien_nguyen_app/ui/theme/theme.dart';
 import 'package:thien_nguyen_app/ui/widgets/image_picker.dart';
+import 'package:thien_nguyen_app/utilities/controllers/fanpage/create_fanpage_controller.dart';
 
 part 'newpage_body.dart';
 part 'newpage_page_component.dart';

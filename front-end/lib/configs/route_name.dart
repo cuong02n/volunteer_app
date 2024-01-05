@@ -17,7 +17,7 @@ abstract class RoutePath {
   static String helpAndSupport = "/help-and-support";
   static String terms = "/terms";
   static String privacyPolicy = "/policy";
-  static String anotherUser = "/user/:userID";
+  static String anotherUser = "/user/:id";
 
   static String login = "/login";
   static String register = "new";

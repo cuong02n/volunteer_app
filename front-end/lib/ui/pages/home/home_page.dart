@@ -24,7 +24,7 @@ class HomePage extends StatelessWidget {
           pinned: true,
           actions: [
             IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
-            IconButton(onPressed: () {}, icon: const Icon(Icons.account_circle))
+            //IconButton(onPressed: () {}, icon: const Icon(Icons.account_circle))
           ],
         ),
         SliverToBoxAdapter(
@@ -42,7 +42,7 @@ class HomePage extends StatelessWidget {
               ),
               SizedBox(
                 width: double.infinity,
-                height: 80,
+                height: 92,
                 child: FutureBuilder(
                   future: UserServerRepository.getAllUser(),
                   builder: (context, snapshot) {
@@ -91,133 +91,13 @@ class HomePage extends StatelessWidget {
                 ],
               ),
               Container(
-                height: 250,
-                color: Colors.amber,
+                height: 200,
                 child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: 5,
+                    shrinkWrap: true,
                     itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PageDetail(
-                                fanpageName:
-                                    'Fanpage Name', // Truyền dữ liệu từ bài đăng được chọn (nếu cần)
-                              ),
-                            ),
-                          );
-                        },
-                        child: SizedBox(
-                          width: 250,
-                          child: Column(
-                            children: [
-                              Stack(alignment: Alignment.bottomLeft, children: [
-                                Container(
-                                  height: 100,
-                                  margin: const EdgeInsets.only(right: 5),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.vertical(
-                                          top: Radius.circular(10)),
-                                      image: DecorationImage(
-                                        image: AssetImage(AppImages.background),
-                                        fit: BoxFit.fitWidth,
-                                      )),
-                                ),
-                                Row(
-                                  children: [
-                                    Icon(Icons.account_circle),
-                                    Text(
-                                      'Fanpage Name',
-                                      style: TextStyle(fontSize: 12),
-                                    ),
-                                    Icon(Icons.check_circle,
-                                        color: context.appTheme.primaryColor,
-                                        size: 16)
-                                  ],
-                                ),
-                              ]),
-                              Container(
-                                margin: const EdgeInsets.only(right: 5),
-                                height: 100,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.vertical(
-                                        bottom: Radius.circular(10)),
-                                    color: AppColor.lightGrey),
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(8, 0, 8, 8),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Tên chiến dịch",
-                                          style: TextStyle(fontSize: 10)),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text.rich(
-                                            TextSpan(
-                                              children: [
-                                                TextSpan(
-                                                  text: 'Đã đạt được ',
-                                                  style:
-                                                      TextStyle(fontSize: 10),
-                                                ),
-                                                TextSpan(
-                                                    text: '10.000',
-                                                    style: AppTypology
-                                                        .labelMedium
-                                                        .copyWith(
-                                                            color: context
-                                                                .appTheme
-                                                                .primaryColor)),
-                                              ],
-                                            ),
-                                          ),
-                                          Text(
-                                            "34%",
-                                            style: AppTypology.labelSmall,
-                                          )
-                                        ],
-                                      ),
-                                      LinearProgressIndicator(
-                                        value: 0.34,
-                                        backgroundColor: context
-                                            .appTheme.colorScheme.onPrimary,
-                                        valueColor:
-                                            AlwaysStoppedAnimation<Color>(
-                                                context.appTheme.primaryColor),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          OutlinedButton(
-                                              onPressed: () {},
-                                              child: Text(
-                                                "Tham gia",
-                                                style: TextStyle(fontSize: 10),
-                                              )),
-                                          OutlinedButton(
-                                              onPressed: () {},
-                                              child: Text("Ủng hộ",
-                                                  style:
-                                                      TextStyle(fontSize: 10)))
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
+                      return const StatusWidget(isCollapsed: true,);
                     }),
               ),
             ],

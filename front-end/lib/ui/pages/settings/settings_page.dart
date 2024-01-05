@@ -30,43 +30,45 @@ class _SettingsPageState extends State<SettingsPage> {
     _context = context;
     return BlocProvider(
       create: (_) => EditUserBloc(null),
-      child: Builder(
-        builder: (context) {
-          return SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: Column(
-                children: [
-                  UserAvatar(provider: currentUser),
-                  NavigationButton(
-                      icon: AppIcon(AppIcons.user),
-                      title: "Trang cá nhân",
-                      onPressed: _showProfile),
-                  NavigationButton(
-                      icon: AppIcon(AppIcons.edit),
-                      title: "Chỉnh sửa thông tin cá nhân",
-                      onPressed: _editProfile),
-                  NavigationButton(
-                      icon: AppIcon(AppIcons.config),
-                      title: "Cài đặt tài khoản",
-                      onPressed: _accountSettings),
-                  NavigationButton(
-                      icon: AppIcon(AppIcons.headset),
-                      title: "Trợ giúp",
-                      onPressed: _help),
-                  NavigationButton(
-                      icon: AppIcon(AppIcons.doc),
-                      title: "Điều khoản sử dụng",
-                      onPressed: _showTerms),
-                  NavigationButton(
-                      icon: AppIcon(AppIcons.lock),
-                      title: "Chính sách bảo mật",
-                      onPressed: _showPolicy),
-                ],
+      child: SafeArea(
+        child: Builder(
+          builder: (context) {
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Column(
+                  children: [
+                    UserAvatar(provider: currentUser),
+                    NavigationButton(
+                        icon: AppIcon(AppIcons.user),
+                        title: "Trang cá nhân",
+                        onPressed: _showProfile),
+                    NavigationButton(
+                        icon: AppIcon(AppIcons.edit),
+                        title: "Chỉnh sửa thông tin cá nhân",
+                        onPressed: _editProfile),
+                    NavigationButton(
+                        icon: AppIcon(AppIcons.config),
+                        title: "Cài đặt tài khoản",
+                        onPressed: _accountSettings),
+                    NavigationButton(
+                        icon: AppIcon(AppIcons.headset),
+                        title: "Trợ giúp",
+                        onPressed: _help),
+                    NavigationButton(
+                        icon: AppIcon(AppIcons.doc),
+                        title: "Điều khoản sử dụng",
+                        onPressed: _showTerms),
+                    NavigationButton(
+                        icon: AppIcon(AppIcons.lock),
+                        title: "Chính sách bảo mật",
+                        onPressed: _showPolicy),
+                  ],
+                ),
               ),
-            ),
-          );
-        }
+            );
+          }
+        ),
       ),
     );
   }

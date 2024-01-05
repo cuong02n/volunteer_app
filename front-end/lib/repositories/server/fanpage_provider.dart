@@ -1,20 +1,17 @@
 import 'package:dio/dio.dart';
-import 'package:http_parser/http_parser.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:thien_nguyen_app/configs/server_api.dart';
-import 'package:thien_nguyen_app/models/entity/user.dart';
-import 'package:thien_nguyen_app/singleton/current_info.dart';
+import 'package:thien_nguyen_app/models/entity/fanpage.dart';
 
 import 'dio.dart';
 
-abstract class UserServerRepository {
-  ///Get user information
-  static Future<User> getUser(int id) async {
+abstract class FanpageServerRepository {
+  ///Get Fanpage information
+  static Future<Fanpage> getFanpage(int id) async {
     //Call response
     try {
-      final response = await dio.get(UserApi.getUser(id));
+      final response = await dio.get(FanpageApi.getFanpage(id));
       if (response.statusCode == 200) {
-        return User.fromJson(response.data);
+        return Fanpage.fromJson(response.data);
       }
       else {
         throw response;
@@ -28,12 +25,12 @@ abstract class UserServerRepository {
     }
   }
 
-  static Future<List<User>> getAllUser() async {
+  static Future<List<Fanpage>> getAllFanpage(int userId) async {
     //Call response
     try {
-      final response = await dio.get(UserApi.getAllUsers);
+      final response = await dio.get(FanpageApi.getAllFanpages, queryParameters: {'userId': userId});
       if (response.statusCode == 200) {
-        return (response.data as List).map((e) => User.fromJson(e)).toList();
+        return (response.data as List).map((e) => Fanpage.fromJson(e)).toList();
       }
       else {
         throw response;
@@ -47,14 +44,29 @@ abstract class UserServerRepository {
     }
   }
 
-  static Future<void> editUser(User data) async {
+  static Future<void> deleteFanpage(int id) async {
     try {
-      final response = await dio.put(UserApi.putUser(CurrentInfo.user!.id!), data: data);
+      final response = await dio.get(FanpageApi.deleteFanpage(id));
+      if (response.statusCode != 200) {
+        throw response;
+      }
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 403) throw "Không được xóa";
+      throw "Lỗi kết nối";
+    }
+    catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<void> editFanpage(Fanpage data) async {
+    try {
+      final response = await dio.put(FanpageApi.putFanpage(data.id!), data: data);
       if (response.statusCode != 200) throw response;
       else {
-        CurrentInfo.user = data;
+
       }
-    } on DioException catch (e) {
+    } on DioException {
       throw "Chỉnh sửa thông tin thất bại";
     }
     catch (e) {
@@ -62,44 +74,17 @@ abstract class UserServerRepository {
     }
   }
 
-  static Future<void> uploadAvatar(XFile image) async {
+  static Future<Fanpage> createFanpage(Fanpage data) async {
     try {
-      List<int> bytes = await image.readAsBytes();
-      MultipartFile file = MultipartFile.fromBytes(bytes,
-          filename: image.name,
-          contentType: MediaType("image", image.name.split('.').last));
-      FormData formData = FormData.fromMap({'image': file});
-      final response = await dio.post(UserApi.postAvatarImage(CurrentInfo.user!.id!), data: formData,);
+      final response = await dio.post(FanpageApi.createFanpage, data: data);
       if (response.statusCode != 200) throw response;
       else {
-        CurrentInfo.user!.avatarImage = response.data;
+        return Fanpage.fromJson(response.data);
       }
-    } on DioException catch (e) {
-      throw "Cập nhật avatar thất bại";
+    } on DioException {
+      throw "Tạo fanpage thất bại";
     }
     catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
-
-  static Future<void> uploadCover(XFile image) async {
-    try {
-      List<int> bytes = await image.readAsBytes();
-      MultipartFile file = MultipartFile.fromBytes(bytes,
-          filename: image.name,
-          contentType: MediaType("image", image.name.split('.').last));
-      FormData formData = FormData.fromMap({'image': file});
-      final response = await dio.post(UserApi.postCoverImage(CurrentInfo.user!.id!), data: formData,);
-      if (response.statusCode != 200) throw response;
-      else {
-        CurrentInfo.user!.coverImage = response.data;
-      }
-    } on DioException catch (e) {
-      throw "Cập nhật avatar thất bại";
-    }
-    catch (e) {
-      print(e);
       rethrow;
     }
   }

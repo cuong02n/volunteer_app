@@ -31,7 +31,7 @@ class UserPage extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          surfaceTintColor: Colors.white10,
+          surfaceTintColor: Colors.transparent,
         ),
         extendBodyBehindAppBar: true,
         body: CustomScrollView(

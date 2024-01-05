@@ -31,8 +31,17 @@ class _AccountPageBodyState extends State<AccountPageBody> {
   void _deleteAccount() {
   }
 
-  void _logout() async {
-    await AuthLocalRepository.logout();
-    if (context.mounted) context.goNamed(RouteName.login);
+  void _logout() {
+    showDialog(context: context, builder: (context) => AlertDialog(
+      title: Text("Đăng xuất"),
+      content: Text("Bấm OK để tiếp tục"),
+      actions: [
+        TextButton(onPressed: () async {
+          await AuthLocalRepository.logout();
+          if (context.mounted) context.goNamed(RouteName.login);
+        }, child: Text("OK")),
+        TextButton(onPressed: () => context.pop(), child: Text("Cancel"))
+      ],
+    ));
   }
 }
