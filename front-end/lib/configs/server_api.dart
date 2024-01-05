@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 abstract class BaseApi {
   static String? baseUrl = (kIsWeb)? dotenv.env['BASE_WEB_URL']: dotenv.env['BASE_EMULATOR_URL'];
+  static String? bankUrl = dotenv.env['BANK_URL'];
 }
 
 abstract class AuthApi {
@@ -45,5 +46,5 @@ abstract class DonationApi {
 }
 
 abstract class BankApi {
-  static String get getAllBank => "${BaseApi.baseUrl}/api/banks";
+  static String get getAllBank => "${BaseApi.baseUrl}/banks";
 }
