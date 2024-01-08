@@ -30,7 +30,7 @@ public class UserService implements UserDetailsService {
     }
 
     public void verifiedRegister(String email) {
-        userRepository.updateStatusByEmail(User.Status.VERIFIED,email);
+        userRepository.updateStatusByEmail(User.Status.VERIFIED, email);
     }
 
     public Optional<User> findUserById(Integer userId) {
@@ -69,14 +69,25 @@ public class UserService implements UserDetailsService {
         if (userRequest.getName() != null) {
             existingUser.setName(userRequest.getName());
         }
+        if (userRequest.getDob() != null) {
+            existingUser.setDob(userRequest.getDob());
+        }
+        if (userRequest.getPhone() != null) {
+            existingUser.setPhone(userRequest.getPhone());
+        }
+        if (userRequest.getGender() != null) {
+            existingUser.setGender(userRequest.getGender());
+        }
         return userRepository.save(existingUser);
     }
 
     // @Override
-    // public User loadUserByUsername(String email) throws UsernameNotFoundException {
-    //     System.out.println("in loadUserByUsername");
-    //     return userRepository.findByEmailAndStatus(email, User.Status.VERIFIED.name())
-    //             .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    // public User loadUserByUsername(String email) throws UsernameNotFoundException
+    // {
+    // System.out.println("in loadUserByUsername");
+    // return userRepository.findByEmailAndStatus(email,
+    // User.Status.VERIFIED.name())
+    // .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
     // }
 
