@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -136,7 +137,7 @@ public class EventController {
     }
 
     // TODO: verify
-    @PostMapping("/{id}/update_image")
+    @RequestMapping( value = "/{id}/update_image",method = RequestMethod.POST,consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @Operation(summary = "Update Image for Event", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<?> updateEventImage(@PathVariable Integer id, @RequestParam("image") @ValidImage MultipartFile multipartFile) {
         try {
