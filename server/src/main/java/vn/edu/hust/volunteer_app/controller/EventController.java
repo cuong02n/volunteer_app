@@ -49,7 +49,7 @@ public class EventController {
      * @param status    : must be VERIFIED or NOT_VERIFY
      * @return : List Event (Json format) valid with that filter
      */
-    @GetMapping("/get_event")
+    @GetMapping("")
     @Operation(summary = "Get Event by Criteria", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<List<Event>> getEvent(
             @RequestParam(name = "id", required = false) Integer id,
@@ -71,7 +71,7 @@ public class EventController {
         }
     }
 
-    @PostMapping("/new_event")
+    @PostMapping("")
     @Operation(summary = "Post new event", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<Event> createEvent(@RequestBody Event.Request requestRecord) {
         System.out.println("check___");

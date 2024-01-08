@@ -47,6 +47,10 @@ public class Fanpage {
     @Column(name = "avatar_image")
     private String avatar_image;
 
+    public void setCoverImage(String url) {
+        this.cover_image = url;
+    }
+
     public enum STATUS{
         VERIFIED,
         NOT_VERIFY

@@ -3,13 +3,16 @@ package vn.edu.hust.volunteer_app.service;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import vn.edu.hust.volunteer_app.models.entity.Fanpage;
+import vn.edu.hust.volunteer_app.models.entity.User;
 import vn.edu.hust.volunteer_app.repository.FanpageRepository;
 import lombok.RequiredArgsConstructor;
 import vn.edu.hust.volunteer_app.models.entity.Fanpage;
 import vn.edu.hust.volunteer_app.repository.FanpageRepository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -18,6 +21,7 @@ public class FanpageService {
 
     private final FanpageRepository fanpageRepository;
     private final UserService userService;
+    private final CloudinaryImageService cloudinaryImageService;
 
     public List<Fanpage> getAllFanpages() {
         return fanpageRepository.findAll();
@@ -89,5 +93,23 @@ public class FanpageService {
 
     public void setFanpageStatusVerified(int fanpageId){
         fanpageRepository.setFanpageStatusById(fanpageId,Fanpage.STATUS.VERIFIED);
+    }
+
+    public String setCoverImage(Integer id, MultipartFile file) throws Exception {
+        Fanpage fanpage = fanpageRepository.findFanpageById(id).orElseThrow();
+        Map<?, ?> data = cloudinaryImageService.upload(file);
+        String url = String.valueOf(data.get("url"));
+        fanpage.setCover_image(url);
+        fanpageRepository.save(fanpage);
+        return url;
+    }
+
+    public String setAvatarImage(Integer id, MultipartFile file) throws Exception{
+        Fanpage fanpage = fanpageRepository.findFanpageById(id).orElseThrow();
+        Map<?, ?> data = cloudinaryImageService.upload(file);
+        String url = String.valueOf(data.get("url"));
+        fanpage.setAvatar_image(url);
+        fanpageRepository.save(fanpage);
+        return url;
     }
 }
