@@ -8,6 +8,7 @@ abstract class RoutePath {
   static String newPage = "new";
 
   static String specificPage = "/page/:pageID";
+  static String newEvent = "new-event";
 
   static String user = "/user";
   static String edit = "edit";
@@ -17,13 +18,14 @@ abstract class RoutePath {
   static String helpAndSupport = "/help-and-support";
   static String terms = "/terms";
   static String privacyPolicy = "/policy";
-  static String anotherUser = "/user/:userID";
+  static String anotherUser = "/user/:id";
 
   static String login = "/login";
   static String register = "new";
   static String otp = "otp";
 
-  static String status = "/status";
+  static String status = "/event/:eventId";
+  static String donation = "donate";
 
   static String forgetPassword = "reset";
   static String resetPassword = "new";
@@ -56,4 +58,6 @@ abstract class RouteName {
 
   static String otp = "otp";
   static String forgetOtp = "forgetOtp";
+  static String newEvent = "newEvent";
+  static String donation = "donation";
 }
