@@ -5,9 +5,13 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import vn.edu.hust.volunteer_app.annotation.ValidImage;
 import vn.edu.hust.volunteer_app.models.entity.Fanpage;
 import vn.edu.hust.volunteer_app.models.entity.User;
 import vn.edu.hust.volunteer_app.service.FanpageService;
@@ -136,4 +140,27 @@ public class FanpageController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @RequestMapping( value = "/{id}/update_cover_image",method = RequestMethod.POST,consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @Operation(summary = "Update Fanpage Cover Image", security = @SecurityRequirement(name = "bearerAuth"),description = "image: Multipart File, require jpg, jpeg or png extension")
+    public ResponseEntity<?> updateFanpageCoverImage(@PathVariable Integer id, @RequestParam("image") @ValidImage MultipartFile file) {
+        try {
+            String url = fanpageService.setCoverImage(id, file);
+            return ResponseEntity.ok(url);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @RequestMapping( value = "/{id}/update_avatar_image",method = RequestMethod.POST,consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @Operation(summary = "Update Fanpage Avatar Image", security = @SecurityRequirement(name = "bearerAuth"),description = "image: Multipart File, require jpg, jpeg or png extension")
+    public ResponseEntity<?> updateFanpageAvatarImage(@PathVariable Integer id, @RequestParam("image") @ValidImage MultipartFile file) {
+        try {
+            String url = fanpageService.setAvatarImage(id, file);
+            return ResponseEntity.ok(url);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
 }
