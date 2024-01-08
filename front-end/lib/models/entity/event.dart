@@ -18,7 +18,6 @@ class Event {
   String? image;
   String? bank;
   String? bankAccount;
-
   Event({this.id, this.title, this.content, this.progress, this.target, this.startTime, this.endTime, this.fanpageId, this.status, this.image, this.bank, this.bankAccount});
   factory Event.fromJson(Map<String, dynamic> json) => _$EventFromJson(json);
 

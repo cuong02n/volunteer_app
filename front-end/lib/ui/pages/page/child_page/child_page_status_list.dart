@@ -10,9 +10,14 @@ class ChildPageStatusList extends StatefulWidget {
 class _ChildPageStatusListState extends State<ChildPageStatusList> {
   @override
   Widget build(BuildContext context) {
-    return SliverAnimatedList(
-        initialItemCount: 10,
-        itemBuilder: (context, index, animation) => StatusWidget()
+    return BlocConsumer(
+      listener: (context, state) => setState(() {}),
+      bloc: context.read<EventListBloc>(),
+      builder: (context, List<Event> state) {
+        return ListView(
+            shrinkWrap: true,
+            children: state.map((e) => EventWidget(event: e)).toList());
+      }
     );
   }
 }

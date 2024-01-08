@@ -63,11 +63,18 @@ class ChildPageBody extends StatelessWidget {
         ),
         SizedBox(height: 20),
         Text("Bài đăng", style: AppTypology.titleSmall),
-        Padding(
+        (fanpage.leaderId == CurrentInfo.user?.id)? Padding(
           padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 10),
-          child: FilledButton(onPressed: () {}, child: Center(child: Text("Tạo chiến dịch mới"),)),
-        )
+          child: FilledButton(onPressed: _createEvent(context), child: Center(child: Text("Tạo chiến dịch mới"),)),
+        ) : const SizedBox()
       ],
     );
+  }
+
+  VoidCallback _createEvent(BuildContext context) {
+    return () async {
+      Event? event = await context.pushNamed(RouteName.newEvent, pathParameters: {'pageID': fanpage.id.toString()});
+      if (event != null && context.mounted) {context.read<EventListBloc>().addEvent(event);}
+    };
   }
 }

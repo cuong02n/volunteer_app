@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:thien_nguyen_app/configs/assets/app_images.dart';
+import 'package:thien_nguyen_app/models/entity/criteria_event.dart';
+import 'package:thien_nguyen_app/models/entity/event.dart';
 import 'package:thien_nguyen_app/models/entity/user.dart';
+import 'package:thien_nguyen_app/repositories/server/event_provider.dart';
 import 'package:thien_nguyen_app/repositories/server/user_provider.dart';
 import 'package:thien_nguyen_app/ui/pages/home/page_detail.dart';
 import 'package:thien_nguyen_app/ui/theme/theme.dart';
@@ -30,82 +33,124 @@ class HomePage extends StatelessWidget {
         SliverToBoxAdapter(
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Tài khoản tích cực',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  TextButton(onPressed: () {}, child: const Text('Xem tất cả'))
-                ],
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Tài khoản tích cực',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    TextButton(onPressed: () {}, child: const Text('Xem tất cả'))
+                  ],
+                ),
               ),
               SizedBox(
                 width: double.infinity,
                 height: 92,
                 child: FutureBuilder(
-                  future: UserServerRepository.getAllUser(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      List<User> users = snapshot.requireData;
-                      return ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: users.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: InkWell(
-                              onTap: () => context.push('/user/${users[index].id}'),
+                    future: UserServerRepository.getAllUser(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        List<User> users = snapshot.requireData;
+                        return ListView.builder(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          scrollDirection: Axis.horizontal,
+                          itemCount: users.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: InkWell(
+                                onTap: () =>
+                                    context.push('/user/${users[index].id}'),
                                 child: Column(
                                   children: [
                                     UserAvatar.collapsed(
                                       radius: 30,
-                                      provider: UserAvatarProvider(user: users[index]),
+                                      provider: UserAvatarProvider(
+                                          user: users[index]),
                                     ),
-                                    Text(users[index].name ?? "Người dùng", style: AppTypology.labelSmall,)
+                                    Text(
+                                      users[index].name ?? "Người dùng",
+                                      style: AppTypology.labelSmall,
+                                    )
                                   ],
                                 ),
-                          ),
+                              ),
+                            );
+                          },
                         );
-                      },
-                    );
-                    }
-                    else if (snapshot.hasError) {
-                      return Center(child: Icon(Icons.report),);
-                    }
-                    else return Center(child: CircularProgressIndicator(),);
-                  }
-                ),
+                      } else if (snapshot.hasError) {
+                        return Center(
+                          child: Icon(Icons.report),
+                        );
+                      } else
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                    }),
               ),
               SizedBox(
                 height: 20,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Chiến dịch gây quỹ nổi bật',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  TextButton(onPressed: () {}, child: Text('Xem tất cả'))
-                ],
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Chiến dịch gây quỹ nổi bật',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    TextButton(onPressed: () {}, child: const Text('Xem tất cả'))
+                  ],
+                ),
               ),
-              Container(
-                height: 200,
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 5,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return const StatusWidget(isCollapsed: true,);
-                    }),
-              ),
+              FutureBuilder(
+                  future: EventServerRepository.getAllEventByPriority(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      List<Event> events = snapshot.requireData;
+                      return SizedBox(
+                        width: double.infinity,
+                        height: 220,
+                        child: ListView.builder(
+                          padding: const EdgeInsets.all(10),
+                              scrollDirection: Axis.horizontal,
+                              itemCount: events.length,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return EventWidget(
+                                  isCollapsed: true,
+                                  event: events[index],
+                                );
+                              }
+                        ),
+                      );
+                    } else {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  }),
             ],
           ),
         ),
-        SliverAnimatedList(
-            initialItemCount: 15,
-            itemBuilder: (context, index, animation) => StatusWidget())
+        FutureBuilder(
+          future: EventServerRepository.getEvents(EventCriteria()),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return SliverAnimatedList(
+                initialItemCount: snapshot.requireData.length,
+                itemBuilder: (context, index, animation) => EventWidget(event: snapshot.requireData[index]));
+            }
+            else if (snapshot.hasError) {
+              return SliverToBoxAdapter(child: Icon(Icons.error));
+            }
+            else return SliverToBoxAdapter();
+          }
+        )
       ],
     );
   }

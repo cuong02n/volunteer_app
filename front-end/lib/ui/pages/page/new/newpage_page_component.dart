@@ -47,6 +47,7 @@ class _NewPageFormState extends State<NewPageForm> {
           TextFormField(controller: _controller.descriptionController,
               focusNode: _controller.descriptionNode,
               keyboardType: TextInputType.multiline,
+              maxLines: null,
               onTap: () => _controller.descriptionNode.requestFocus(),
               onTapOutside: (_) => _controller.descriptionNode.unfocus(),
               onFieldSubmitted: (_) => _controller.nextFocus(),

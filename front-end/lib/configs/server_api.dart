@@ -46,5 +46,5 @@ abstract class DonationApi {
 }
 
 abstract class BankApi {
-  static String get getAllBank => "${BaseApi.baseUrl}/banks";
+  static String get getAllBank => "${BaseApi.bankUrl}/banks";
 }

@@ -17,6 +17,7 @@ class FanpagePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
         create: (_) => _bloc,
+        lazy: false,
         child: FutureBuilder(future: FanpageServerRepository.getAllFanpage(CurrentInfo.user!.id!), builder: (context, snapshot) {
           if (snapshot.hasData) {
             _bloc.emit(snapshot.requireData);
@@ -77,7 +78,10 @@ class _FanpagePageState extends State<FanpageBody> {
           TextButton(onPressed: () => context.pop(), child: Text("Thoát")),
         ],
       ));
-      if (result != null && context.mounted) context.read<FanpageListBloc>().removeFanpage(result);
+      if (result != null && context.mounted) {
+        context.read<FanpageListBloc>().removeFanpage(result);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Đã xóa fanpage ${result.fanpageName}")));
+      }
     };
   }
 }

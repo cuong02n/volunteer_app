@@ -7,11 +7,22 @@ part of 'bank.dart';
 // **************************************************************************
 
 Bank _$BankFromJson(Map<String, dynamic> json) => Bank(
-      code: json['code'] as int?,
+      id: json['id'] as int?,
       name: json['name'] as String?,
-    );
+      code: json['code'] as String?,
+      bin: json['bin'] as String?,
+      shortName: json['shortName'] as String?,
+      transferSupported: json['transferSupported'] as int?,
+      lookupSupported: json['lookupSupported'] as int?,
+    )..logo = json['logo'] as String?;
 
 Map<String, dynamic> _$BankToJson(Bank instance) => <String, dynamic>{
-      'code': instance.code,
+      'id': instance.id,
       'name': instance.name,
+      'code': instance.code,
+      'bin': instance.bin,
+      'shortName': instance.shortName,
+      'logo': instance.logo,
+      'transferSupported': instance.transferSupported,
+      'lookupSupported': instance.lookupSupported,
     };

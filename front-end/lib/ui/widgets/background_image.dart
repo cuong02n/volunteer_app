@@ -35,7 +35,7 @@ class _BackgroundImageState extends State<BackgroundImage> {
             ),
           ),
           progressIndicatorBuilder: (context, _, progress) =>
-              CircularProgressIndicator(value: progress.progress),
+              Center(child: CircularProgressIndicator(value: progress.progress)),
           errorWidget: (context, _, error) => DecoratedBox(
             decoration: BoxDecoration(
               image: DecorationImage(

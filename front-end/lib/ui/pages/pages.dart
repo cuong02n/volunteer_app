@@ -22,3 +22,4 @@ export 'privacy_and_terms/terms_page.dart';
 export 'otp/otp_page.dart';
 export 'forget_password/forgot_password.dart';
 export 'home/home_page.dart';
+export 'page/new_event/new_event_page.dart';

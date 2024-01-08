@@ -3,7 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
 import 'package:thien_nguyen_app/interface/ui/i_user_avatar.dart';
 import 'package:thien_nguyen_app/interface/ui/i_user_cover.dart';
+import 'package:thien_nguyen_app/models/entity/criteria_event.dart';
+import 'package:thien_nguyen_app/models/entity/event.dart';
 import 'package:thien_nguyen_app/models/entity/user.dart';
+import 'package:thien_nguyen_app/repositories/server/event_provider.dart';
+import 'package:thien_nguyen_app/repositories/server/fanpage_provider.dart';
 import 'package:thien_nguyen_app/repositories/server/user_provider.dart';
 import 'package:thien_nguyen_app/singleton/current_info.dart';
 import 'package:thien_nguyen_app/ui/theme/theme.dart';
@@ -39,7 +43,19 @@ class UserPage extends StatelessWidget {
             SliverToBoxAdapter(
               child: UserPageBody(id: id,),
             ),
-            UserPageStatusList()
+            FutureBuilder(
+              future: FanpageServerRepository.getAllFanpage(id).then((fanpages) async {
+                List<Event> event = [];
+                for (final fanpage in fanpages) {
+                  event.addAll(await EventServerRepository.getEvents(EventCriteria(fanpageId: fanpage.id!)));
+                }
+                return event;
+              }),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) return UserPageStatusList(events: snapshot.requireData);
+                else return SliverToBoxAdapter();
+              }
+            )
           ],
         )
       ),

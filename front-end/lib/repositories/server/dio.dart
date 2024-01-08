@@ -5,6 +5,7 @@ var _dio = Dio(BaseOptions(
 ));
 
 Dio get dio => _dio;
+final bankDio = Dio();
 
 Map<String, String> _headers = {"Content-Type": "application/json"};
 
