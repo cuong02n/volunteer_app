@@ -36,6 +36,9 @@ public class AuthenticationService {
                                 .password(passwordEncoder.encode(request.getPassword()))
                                 .role(User.Role.USER)
                                 .status(User.Status.NOT_VERIFY)
+                                .gender(request.getGender())
+                                .dob(request.getDob())
+                                .phone(request.getPhone())
                                 .build();
                 userRepository.save(user);
 

@@ -31,7 +31,9 @@ public class AuthenticationController {
     @PostMapping("/register")
     @Operation(summary = "simple register, contains name, email, password")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
-        if (request.getName().isEmpty() || request.getEmail().isEmpty() || request.getPassword().isEmpty()) {
+        if (request.getName().isEmpty() || request.getEmail().isEmpty() || request.getPassword().isEmpty()
+                || request.getGender() == null || request.getPhone().isEmpty()
+                || request.getDob() == null) {
             return ResponseEntity.status(BAD_REQUEST).body("All fields must be filled in.");
         }
 
@@ -61,18 +63,19 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
 
-
     @PostMapping("/reset_password")
     @Operation(summary = "reset password, need email only, you will get your OTP")
     public ResponseEntity<?> resetPassword(@RequestParam(value = "email") @Email String email) {
-        if (!userService.existsByEmail(email)) return ResponseEntity.status(BAD_REQUEST).body("NOT EXIST ACCOUNT");
+        if (!userService.existsByEmail(email))
+            return ResponseEntity.status(BAD_REQUEST).body("NOT EXIST ACCOUNT");
         ResetPasswordOtp otp = otpService.generateAndSaveResetPasswordOTP(email);
         return ResponseEntity.ok().body(otpService.sendResetPasswordOTP(otp));
     }
 
     @PutMapping("/reset_password")
     @Operation(summary = "after receive OTP, this action change password need email, otp and new password")
-    public ResponseEntity<Boolean> resetAndChangePasswordIfVerified(@Valid @RequestBody ResetPasswordRequest resetPasswordRequest) {
+    public ResponseEntity<Boolean> resetAndChangePasswordIfVerified(
+            @Valid @RequestBody ResetPasswordRequest resetPasswordRequest) {
         if (otpService.checkResetPasswordOTP(resetPasswordRequest.getEmail(), resetPasswordRequest.getOTP())) {
             userService.setNewPassword(resetPasswordRequest.getEmail(), resetPasswordRequest.getNewPassword());
             otpService.destroyResetPasswordOTP(resetPasswordRequest.getEmail(), resetPasswordRequest.getOTP());

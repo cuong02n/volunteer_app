@@ -18,6 +18,9 @@ public class RegisterRequest {
     private String name;
     @Email
     private String email;
-    @Size(min = 6,max = 100)
+    @Size(min = 6, max = 100)
     private String password;
+    private String phone;
+    private Boolean gender;
+    private Long dob;
 }
