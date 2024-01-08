@@ -13,7 +13,7 @@ import 'package:thien_nguyen_app/singleton/current_info.dart';
 import 'package:thien_nguyen_app/ui/theme/theme.dart';
 import 'package:thien_nguyen_app/ui/widgets/avatar.dart';
 import 'package:thien_nguyen_app/ui/widgets/background_image.dart';
-import 'package:thien_nguyen_app/ui/widgets/status_widget.dart';
+import 'package:thien_nguyen_app/ui/widgets/event_widget.dart';
 import 'package:thien_nguyen_app/ui/widgets/user_avatar.dart';
 import 'package:thien_nguyen_app/utilities/bloc/edit_controller_bloc.dart';
 import 'package:thien_nguyen_app/utilities/providers/user_avatar_provider.dart';

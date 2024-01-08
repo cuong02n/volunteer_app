@@ -22,7 +22,7 @@ class AccountPage extends StatelessWidget {
         appBar: AppBar(
             backgroundColor: Colors.transparent,
             title: Text(
-              "Chỉnh sửa thông tin cá nhân",
+              "Cài đặt tài khoản",
               style: AppTypology.titleSmall,
             )),
         extendBody: true,

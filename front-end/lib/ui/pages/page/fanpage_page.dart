@@ -71,6 +71,9 @@ class _FanpagePageState extends State<FanpageBody> {
             try {
               await FanpageServerRepository.deleteFanpage(fanpage.id!);
             }
+            catch (e) {
+              print(e);
+            }
             finally {
               if (context.mounted) context.pop(fanpage);
             }

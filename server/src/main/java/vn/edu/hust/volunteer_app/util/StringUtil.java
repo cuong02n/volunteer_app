@@ -26,12 +26,12 @@ public class StringUtil {
     public static boolean isName(String name) {
         String formattedName = name.toLowerCase();
         System.out.println(formattedName);
-        for (int i = 0; i < formattedName.length(); i++) {
-            if (formattedName.charAt(i) != ' ' && (formattedName.charAt(i) < 'a' || formattedName.charAt(i) > 'z')) {
-                System.out.println("char at " + i + " = "+ formattedName.charAt(i));
-                return false;
-            }
-        }
+//        for (int i = 0; i < formattedName.length(); i++) {
+//            if (formattedName.charAt(i) != ' ' && (formattedName.charAt(i) < 'a' || formattedName.charAt(i) > 'z')) {
+//                System.out.println("char at " + i + " = "+ formattedName.charAt(i));
+//                return false;
+//            }
+//        }
         return true;
     }
 }

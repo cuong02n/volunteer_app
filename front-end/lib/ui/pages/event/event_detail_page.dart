@@ -1,9 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import 'package:thien_nguyen_app/configs/assets/app_images.dart';
+import 'package:thien_nguyen_app/configs/route_name.dart';
 import 'package:thien_nguyen_app/models/entity/event.dart';
+import 'package:thien_nguyen_app/models/entity/fanpage.dart';
 import 'package:thien_nguyen_app/repositories/server/fanpage_provider.dart';
 import 'package:thien_nguyen_app/ui/theme/theme.dart';
 
@@ -50,13 +53,11 @@ class PageDetail extends StatelessWidget {
                                   children: [
                                     Text(
                                       'Mục tiêu chiến dịch',
-                                      style: TextStyle(fontSize: 10),
+                                      style: AppTypology.titleSmall,
                                     ),
                                     Text(
                                         '${NumberFormat.decimalPattern().format(event.target!)} VNĐ',
-                                        style: TextStyle(
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.bold)),
+                                        style: AppTypology.labelMedium.copyWith(fontWeight: FontWeight.bold)),
                                   ],
                                 ),
                               ],
@@ -74,12 +75,10 @@ class PageDetail extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text('Thời gian còn lại',
-                                        style: TextStyle(fontSize: 10)),
+                                        style: AppTypology.titleSmall),
                                     Text(
                                         '${event.endTime!.difference(DateTime.now()).inDays} ngày',
-                                        style: TextStyle(
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.bold)),
+                                        style: AppTypology.labelMedium.copyWith(fontWeight: FontWeight.bold)),
                                     // Thay đổi với thời gian còn lại thực tế
                                   ],
                                 ),
@@ -125,10 +124,10 @@ class PageDetail extends StatelessWidget {
                                           : "",
                                     ),
                                   ),
-                                  Icon(
+                                  (snapshot.data?.status == FanpageStatus.VERIFIED)? Icon(
                                     Icons.check_circle,
-                                    color: Colors.red,
-                                  )
+                                    color: AppColor.orange,
+                                  ): SizedBox()
                                 ],
                               ),
                               Column(
@@ -143,13 +142,13 @@ class PageDetail extends StatelessWidget {
                                       Text.rich(
                                         TextSpan(
                                           children: [
-                                            TextSpan(
+                                            const TextSpan(
                                               text: 'Đã đạt được ',
-                                              style: TextStyle(fontSize: 10),
+                                              style: AppTypology.titleSmall,
                                             ),
                                             TextSpan(
                                                 text:
-                                                    '${NumberFormat.compact().format(event.progress ?? 0)} VNĐ',
+                                                    '${NumberFormat.decimalPattern().format(event.progress ?? 0)} VNĐ',
                                                 style: AppTypology.labelMedium
                                                     .copyWith(
                                                         color: context.appTheme
@@ -171,8 +170,7 @@ class PageDetail extends StatelessWidget {
                                             event.target == null)
                                         ? 0
                                         : (event.progress! / event.target!),
-                                    backgroundColor:
-                                        context.appTheme.colorScheme.onPrimary,
+                                    backgroundColor: AppColor.lightGrey,
                                     valueColor: AlwaysStoppedAnimation<Color>(
                                         context.appTheme.primaryColor),
                                   ),
@@ -190,7 +188,7 @@ class PageDetail extends StatelessWidget {
                                             style: TextStyle(fontSize: 10),
                                           )),
                                       OutlinedButton(
-                                          onPressed: () {},
+                                          onPressed: _donate(context),
                                           child: Text("Ủng hộ",
                                               style: TextStyle(fontSize: 10)))
                                     ],
@@ -238,4 +236,10 @@ class PageDetail extends StatelessWidget {
           }),
     );
   }
+
+  VoidCallback _donate(BuildContext context) {
+    return () {context.pushNamed(RouteName.donation, pathParameters: {
+      'eventId': event.id!.toString(),
+    }, extra: event);
+  };}
 }

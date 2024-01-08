@@ -25,6 +25,14 @@ class Event {
 
   static DateTime? _fromJson(int? int) => int != null ? DateTime.fromMillisecondsSinceEpoch(int) : null;
   static int? _toJson(DateTime? time) => time?.millisecondsSinceEpoch;
+
+  double get process {
+    if (progress == null || target == null) {
+      return 0;
+    } else {
+      return (progress! / target!).clamp(0, 1);
+    }
+  }
 }
 
 enum EventStatus {

@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:thien_nguyen_app/configs/server_api.dart';
 import 'package:thien_nguyen_app/models/entity/criteria_event.dart';
 import 'package:thien_nguyen_app/models/entity/event.dart';
-import 'package:thien_nguyen_app/models/entity/fanpage.dart';
+import 'dart:math';
 
 import 'dio.dart';
 
@@ -59,11 +59,13 @@ abstract class EventServerRepository {
       rethrow;
     }
   }
+  
+  static double process(a, b) => (a == null || b == null)?0:a/b;
 
   static Future<List<Event>> getAllEventByPriority() async {
     List<Event> events = await EventServerRepository.getEvents(EventCriteria());
-    process(a, b) => (a == null || b == null)?0:a/b;
-    events.sort((a, b) => process(a.progress, a.target) - process(b.progress, b.target));
-    return events;
+    events.removeWhere((e) => process(e.progress, e.target) >= 1);
+    events.sort((a, b) => process(b.progress, b.target).compareTo(process(a.progress, a.target)));
+    return events.sublist(0, min(events.length, 10));
   }
 }

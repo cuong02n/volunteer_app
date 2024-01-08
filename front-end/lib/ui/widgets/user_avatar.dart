@@ -59,8 +59,6 @@ class _UserAvatarState extends State<UserAvatar> {
                     image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
                   ),
                 ),
-                progressIndicatorBuilder: (context, _, progress) =>
-                    CircularProgressIndicator(value: progress.progress),
                 errorWidget: (context, _, error) => DecoratedBox(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,

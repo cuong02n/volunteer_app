@@ -7,9 +7,9 @@ import 'package:thien_nguyen_app/models/entity/event.dart';
 import 'package:thien_nguyen_app/models/entity/user.dart';
 import 'package:thien_nguyen_app/repositories/server/event_provider.dart';
 import 'package:thien_nguyen_app/repositories/server/user_provider.dart';
-import 'package:thien_nguyen_app/ui/pages/home/page_detail.dart';
+import 'package:thien_nguyen_app/ui/pages/event/event_detail_page.dart';
 import 'package:thien_nguyen_app/ui/theme/theme.dart';
-import 'package:thien_nguyen_app/ui/widgets/status_widget.dart';
+import 'package:thien_nguyen_app/ui/widgets/event_widget.dart';
 import 'package:thien_nguyen_app/ui/widgets/user_avatar.dart';
 import 'package:thien_nguyen_app/utilities/providers/user_avatar_provider.dart';
 
@@ -60,7 +60,7 @@ class HomePage extends StatelessWidget {
                           itemCount: users.length,
                           itemBuilder: (context, index) {
                             return Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
                               child: InkWell(
                                 onTap: () =>
                                     context.push('/user/${users[index].id}'),
@@ -91,9 +91,6 @@ class HomePage extends StatelessWidget {
                         );
                     }),
               ),
-              SizedBox(
-                height: 20,
-              ),
               Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: Row(
@@ -116,7 +113,7 @@ class HomePage extends StatelessWidget {
                         width: double.infinity,
                         height: 220,
                         child: ListView.builder(
-                          padding: const EdgeInsets.all(10),
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
                               scrollDirection: Axis.horizontal,
                               itemCount: events.length,
                               shrinkWrap: true,
@@ -128,10 +125,14 @@ class HomePage extends StatelessWidget {
                               }
                         ),
                       );
-                    } else {
+                    } else if (!snapshot.hasError){
                       return Center(
                         child: CircularProgressIndicator(),
                       );
+                    }
+                    else {
+                      print(snapshot.error);
+                      return SizedBox();
                     }
                   }),
             ],
@@ -155,16 +156,3 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-
-// Widget _buildAccount(String accountName) {
-//   return Container(
-//     margin: EdgeInsets.symmetric(horizontal: 8.0),
-//     child: Column(children: [
-//       Icon(Icons.account_circle),
-//       SizedBox(
-//         height: 8.0,
-//       ),
-//       Text(accountName)
-//     ]),
-//   );
-// }

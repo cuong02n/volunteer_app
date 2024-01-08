@@ -1,16 +1,14 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 import 'package:thien_nguyen_app/configs/assets/app_images.dart';
+import 'package:thien_nguyen_app/configs/route_name.dart';
 import 'package:thien_nguyen_app/models/entity/event.dart';
 import 'package:thien_nguyen_app/repositories/server/fanpage_provider.dart';
 import 'package:thien_nguyen_app/ui/theme/theme.dart';
-import 'package:thien_nguyen_app/ui/widgets/user_avatar.dart';
 
 import '../../models/entity/fanpage.dart';
-import '../pages/home/page_detail.dart';
 
 class EventWidget extends StatefulWidget {
   final Event? event;
@@ -21,10 +19,10 @@ class EventWidget extends StatefulWidget {
       {super.key, this.width, this.isCollapsed = false, this.event});
 
   @override
-  State<EventWidget> createState() => _StatusWidgetState();
+  State<EventWidget> createState() => _EventWidgetState();
 }
 
-class _StatusWidgetState extends State<EventWidget> {
+class _EventWidgetState extends State<EventWidget> {
   double get _width => widget.width ?? 100.w;
 
   double get _process {
@@ -117,11 +115,11 @@ class _StatusWidgetState extends State<EventWidget> {
                                     children: [
                                       const TextSpan(
                                         text: 'Đã đạt được ',
-                                        style: AppTypology.titleMedium,
+                                        style: AppTypology.titleSmall,
                                       ),
                                       TextSpan(
                                           text:
-                                              '${NumberFormat.compact().format(widget.event?.progress ?? 0)} VNĐ',
+                                              '${NumberFormat.decimalPattern().format(widget.event?.progress ?? 0)} VNĐ',
                                           style: AppTypology.labelMedium
                                               .copyWith(
                                                   color: context
@@ -130,14 +128,14 @@ class _StatusWidgetState extends State<EventWidget> {
                                   ),
                                 ),
                                 Text(
-                                  NumberFormat.percentPattern()
-                                      .format(_process),
+                                  NumberFormat.decimalPercentPattern(decimalDigits: 1)
+                                      .format(widget.event!.process),
                                   style: AppTypology.labelSmall,
                                 )
                               ],
                             ),
                             LinearProgressIndicator(
-                              value: _process,
+                              value: widget.event!.process,
                               backgroundColor:
                                   context.appTheme.colorScheme.onPrimary,
                               valueColor: AlwaysStoppedAnimation<Color>(
@@ -170,6 +168,15 @@ class _StatusWidgetState extends State<EventWidget> {
             Fanpage? fanpage;
             if (snapshot.hasData) fanpage = snapshot.requireData;
             List<InlineSpan> name = [
+              WidgetSpan(child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: CircleAvatar(
+                    radius: 18,
+                    backgroundImage:
+                    AssetImage(AppImages.defaultUserAvatar),
+                  ),
+              ),
+              ),
               TextSpan(
                 text: fanpage?.fanpageName ?? 'User name',
                 style: AppTypology.titleMedium,
@@ -180,7 +187,7 @@ class _StatusWidgetState extends State<EventWidget> {
                 child: Icon(Icons.check_circle,
                     color: context.appTheme.primaryColor, size: 16),
               )),
-            ].sublist(0, (fanpage?.status == FanpageStatus.VERIFIED) ? 2 : 1);
+            ].sublist(0, (fanpage?.status == FanpageStatus.VERIFIED) ? 3 : 2);
             return GestureDetector(
               onTap: () => context.push('/event/${widget.event!.id!}', extra: widget.event!),
               child: SizedBox(
@@ -195,13 +202,14 @@ class _StatusWidgetState extends State<EventWidget> {
                             borderRadius:
                                 BorderRadius.vertical(top: Radius.circular(10)),
                             image: DecorationImage(
+                              colorFilter: ColorFilter.linearToSrgbGamma(),
                               image: AssetImage(AppImages.background),
                               fit: BoxFit.fitWidth,
                             )),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                        child: Text.rich(TextSpan(children: name)),
+                        child: Text.rich(TextSpan(children: name, style: AppTypology.titleMedium), softWrap: true,),
                       )
                     ]),
                     Container(
@@ -218,7 +226,7 @@ class _StatusWidgetState extends State<EventWidget> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(widget.event!.title ?? "Chiến dịch",
-                                style: TextStyle(fontSize: 10)),
+                                style: AppTypology.titleSmall),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -227,11 +235,11 @@ class _StatusWidgetState extends State<EventWidget> {
                                     children: [
                                       const TextSpan(
                                         text: 'Đã đạt được ',
-                                        style: TextStyle(fontSize: 10),
+                                        style: AppTypology.labelSmall,
                                       ),
                                       TextSpan(
                                           text:
-                                              "${NumberFormat.compact().format(widget.event?.progress ?? 0)}đ",
+                                              "${NumberFormat.decimalPattern().format(widget.event?.progress ?? 0)}đ",
                                           style: AppTypology.labelMedium
                                               .copyWith(
                                                   color: context
@@ -240,8 +248,7 @@ class _StatusWidgetState extends State<EventWidget> {
                                   ),
                                 ),
                                 Text(
-                                  NumberFormat.percentPattern()
-                                      .format(_process),
+                                  NumberFormat.decimalPercentPattern(decimalDigits: 1).format(widget.event!.process),
                                   style: AppTypology.labelSmall,
                                 )
                               ],
@@ -283,20 +290,8 @@ class _StatusWidgetState extends State<EventWidget> {
   void _join() {}
 
   void _donate() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            content: CachedNetworkImage(
-                imageUrl: 'https://img.vietqr.io/image/${widget.event!.bank}-${widget.event!.bankAccount}-compact2.png',
-                width: 100,
-                height: 100,
-                progressIndicatorBuilder: (_, __, ___) => Container(
-                    width: 100,
-                    height: 100,
-                    alignment: Alignment.center,
-                    child: CircularProgressIndicator())),
-          );
-        });
+    context.pushNamed(RouteName.donation, pathParameters: {
+      'eventId': widget.event!.id!.toString(),
+    }, extra: widget.event);
   }
 }

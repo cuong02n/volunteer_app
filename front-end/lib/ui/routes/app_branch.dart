@@ -5,7 +5,8 @@ import 'package:thien_nguyen_app/configs/route_name.dart';
 import 'package:thien_nguyen_app/models/entity/event.dart';
 import 'package:thien_nguyen_app/repositories/mix/auth_mix_provider.dart';
 import 'package:thien_nguyen_app/singleton/current_info.dart';
-import 'package:thien_nguyen_app/ui/pages/home/page_detail.dart';
+import 'package:thien_nguyen_app/ui/pages/event/donation/donation_page.dart';
+import 'package:thien_nguyen_app/ui/pages/event/event_detail_page.dart';
 import 'package:thien_nguyen_app/ui/pages/pages.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
@@ -76,7 +77,13 @@ abstract class AppRouter {
     GoRoute(
         parentNavigatorKey: _rootKey,
         path: RoutePath.status,
-        builder: (context, state) => PageDetail(event: state.extra as Event)),
+        builder: (context, state) => PageDetail(event: state.extra as Event),
+        routes: [
+          GoRoute(path: RoutePath.donation, name: RouteName.donation,
+          pageBuilder: (context, state) => DonationPage()
+          )
+        ]
+    ),
     GoRoute(
         parentNavigatorKey: _rootKey,
         path: RoutePath.anotherUser,

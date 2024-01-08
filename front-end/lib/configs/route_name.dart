@@ -25,6 +25,7 @@ abstract class RoutePath {
   static String otp = "otp";
 
   static String status = "/event/:eventId";
+  static String donation = "donate";
 
   static String forgetPassword = "reset";
   static String resetPassword = "new";
@@ -58,4 +59,5 @@ abstract class RouteName {
   static String otp = "otp";
   static String forgetOtp = "forgetOtp";
   static String newEvent = "newEvent";
+  static String donation = "donation";
 }
