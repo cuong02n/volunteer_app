@@ -47,14 +47,14 @@ class CreateDonationController with ChangeNotifier implements BaseFunction {
         money: money,
         message: message);
     showDialog(context: context, builder: (context) => AlertDialog(
-      title: Text("QR xác nhận"),
+      title: Text("QR ủng hộ"),
       content: FutureBuilder(
         future: DonationProvider.postDonation(donation),
         builder: (context, snapshot) {
           print(snapshot);
           if (snapshot.hasData) {
             return CachedNetworkImage(
-                imageUrl: DonationProvider.donationQR(event, donation)
+                imageUrl: "" //DonationProvider.donationQR(event, donation)
             );
           }
           else if (snapshot.hasError) {

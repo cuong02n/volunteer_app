@@ -29,6 +29,8 @@ abstract class RoutePath {
 
   static String forgetPassword = "reset";
   static String resetPassword = "new";
+
+  static String editPage = "edit";
 }
 
 ///Tên các trang trong app
@@ -60,4 +62,5 @@ abstract class RouteName {
   static String forgetOtp = "forgetOtp";
   static String newEvent = "newEvent";
   static String donation = "donation";
+  static String editPage = "editPage";
 }

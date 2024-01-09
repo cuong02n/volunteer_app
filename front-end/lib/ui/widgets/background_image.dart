@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:thien_nguyen_app/interface/ui/i_user_cover.dart';
+import 'package:thien_nguyen_app/repositories/server/fanpage_provider.dart';
 import 'package:thien_nguyen_app/repositories/server/user_provider.dart';
 import 'package:thien_nguyen_app/ui/theme/theme.dart';
 import 'package:thien_nguyen_app/utilities/controllers/files/image_picker_controller.dart';
+import 'package:thien_nguyen_app/utilities/providers/fanpage_image_provider.dart';
+import 'package:thien_nguyen_app/utilities/providers/user_cover_provider.dart';
 
 class BackgroundImage extends StatefulWidget {
   final double? height;
@@ -62,7 +65,10 @@ class _BackgroundImageState extends State<BackgroundImage> {
     try {
       XFile? newCover = await coverPickerController.pickImage();
       if (newCover == null) return;
-      await UserServerRepository.uploadCover(newCover);
+      if (widget.provider is UserCoverProvider) await UserServerRepository.uploadCover(newCover);
+      else if (widget.provider is FanpageImageProvider) {
+        await FanpageServerRepository.uploadCover(newCover, (widget.provider as FanpageImageProvider).fanpage.id!);
+      }
       setState(() {});
     }
     catch (e) {

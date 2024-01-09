@@ -1,19 +1,23 @@
 part of 'newpage_page.dart';
 
 class NewPageForm extends StatefulWidget {
-  const NewPageForm({super.key});
+  final Fanpage? fanpage;
+  const NewPageForm({super.key, this.fanpage});
 
   @override
   State<NewPageForm> createState() => _NewPageFormState();
 }
 
 class _NewPageFormState extends State<NewPageForm> {
-  late final CreateFanpageController _controller;
+  late final EditFanpageController _controller;
 
   @override
   void initState() {
     super.initState();
-    _controller = CreateFanpageController(context);
+    _controller = EditFanpageController(context, fanpage: widget.fanpage);
+    _controller.addListener(() {
+      setState(() {});
+    });
     _controller.init();
   }
   @override
@@ -30,17 +34,6 @@ class _NewPageFormState extends State<NewPageForm> {
             onTapOutside: (_) => _controller.nameNode.unfocus(),
             onFieldSubmitted: (_) => _controller.nextFocus(),
             decoration: InputDecoration(errorText: _controller.nameError,
-                labelText: "Tên fanpage"),
-          ),
-          const SizedBox(height: 10),
-          TextFormField(
-            controller: _controller.organizationController,
-            focusNode: _controller.organizationNode,
-            keyboardType: TextInputType.name,
-            onTap: () => _controller.organizationNode.requestFocus(),
-            onTapOutside: (_) => _controller.organizationNode.unfocus(),
-            onFieldSubmitted: (_) => _controller.nextFocus(),
-            decoration: InputDecoration(errorText: _controller.organizationError,
                 labelText: "Tên tổ chức"),
           ),
           const SizedBox(height: 10),
@@ -58,17 +51,19 @@ class _NewPageFormState extends State<NewPageForm> {
           ImagePickerField(
             controller: _controller.avatarController,
             title: "Thêm ảnh đại diện",
+            initialUrl: widget.fanpage?.avatarImage,
           ),
           const SizedBox(height: 10),
           ImagePickerField(
             controller: _controller.coverController,
             title: "Thêm ảnh bìa",
+            initialUrl: widget.fanpage?.coverImage,
           ),
           const SizedBox(height: 10),
           FilledButton(
               onPressed: _controller.confirm,
               child: Center(
-                child: Text("Tạo Fanpage"),
+                child: Text(widget.fanpage == null? "Tạo Fanpage": "Cập nhật"),
               ))
         ],
       ),

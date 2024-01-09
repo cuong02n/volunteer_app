@@ -34,25 +34,22 @@ class CreateEventController with ChangeNotifier implements BaseFunction {
   late final TextEditingController bankAccountController;
   final ImagePickerController proofController = ImagePickerController();
 
-  final List<FocusNode> _nodes = List.generate(8, (index) => FocusNode());
+  final List<FocusNode> _nodes = List.generate(7, (index) => FocusNode());
 
   FocusNode get nameNode => _nodes[0];
 
   FocusNode get descriptionNode => _nodes[1];
 
-  FocusNode get organizationNode => _nodes[2];
+  FocusNode get startDateNode => _nodes[2];
 
-  FocusNode get startDateNode => _nodes[3];
+  FocusNode get targetNode => _nodes[3];
 
-  FocusNode get targetNode => _nodes[4];
+  FocusNode get bankNode => _nodes[4];
 
-  FocusNode get bankNode => _nodes[5];
-
-  FocusNode get bankAccountNode => _nodes[6];
+  FocusNode get bankAccountNode => _nodes[5];
 
   String get name => nameController.text;
 
-  String get organization => organizationController.text;
 
   String get description => descriptionController.text;
   DateTime? startDate;
@@ -68,10 +65,9 @@ class CreateEventController with ChangeNotifier implements BaseFunction {
     return segments;
   }
 
-  List<XFile?> get proofs => proofController.images;
+  XFile? get proofs => proofController.image;
 
   String? nameError;
-  String? organizationError;
   String? descriptionError;
   String? startDateError;
   String? endDateError;
@@ -82,7 +78,6 @@ class CreateEventController with ChangeNotifier implements BaseFunction {
   bool get isValid =>
       [
         nameError,
-        organizationError,
         descriptionError,
         startDateError,
         endDateError,
@@ -104,7 +99,6 @@ class CreateEventController with ChangeNotifier implements BaseFunction {
   }
 
   Future<void> changeTime() async {
-    print("Called");
     DateTimeRange? result = await showDateRangePicker(context: context,
         firstDate: DateTime.now(),
         lastDate: DateTime.now().add(Duration(days: 100*365)),
@@ -130,7 +124,7 @@ class CreateEventController with ChangeNotifier implements BaseFunction {
     try {
       Navigator.of(context).push(LoadingOverlay());
       final Event request = Event(title: name, content: description, target: target, startTime: startDate, endTime: endDate, fanpageId: fanpageId, bank: bank!.bin, bankAccount: bankAccount);
-      Event response = await EventServerRepository.createEvent(request);
+      Event response = await EventServerRepository.createEvent(request, image: proofs);
       if (context.mounted) {
         context.pop();
         context.pop(response);
@@ -161,12 +155,12 @@ class CreateEventController with ChangeNotifier implements BaseFunction {
     notifyListeners();
   }
 
-  void validateOrganization() {
-    if (organization.isNotEmpty) {
-      organizationError = null;
+  void validateBankAccount() {
+    if (bankAccount.isNotEmpty && bank != null) {
+      bankAccountError = null;
     }
     else {
-      organizationError = "Tên người dùng không được để trống";
+      bankAccountError = "Vui lòng điền thông tin ngân hàng";
     }
     notifyListeners();
   }
@@ -183,11 +177,11 @@ class CreateEventController with ChangeNotifier implements BaseFunction {
   @override
   void validateForm() {
     validateFanpageName();
-    validateOrganization();
+    validateBankAccount();
   }
 
   void addProof() async {
-    await proofController.pickMultiImage();
+    await proofController.pickImage();
     notifyListeners();
   }
 }

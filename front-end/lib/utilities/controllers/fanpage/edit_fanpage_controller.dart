@@ -10,42 +10,37 @@ import 'package:thien_nguyen_app/ui/pages/loading/loading_page.dart';
 import 'package:thien_nguyen_app/utilities/controllers/files/image_picker_controller.dart';
 import 'package:thien_nguyen_app/utilities/functions/base_function.dart';
 
-class CreateFanpageController with ChangeNotifier implements BaseFunction {
-  CreateFanpageController(this.context);
+class EditFanpageController with ChangeNotifier implements BaseFunction {
+  Fanpage? fanpage;
+  EditFanpageController(this.context, {this.fanpage});
 
   final BuildContext context;
 
   bool edited = false;
 
   late final TextEditingController nameController;
-  late final TextEditingController organizationController;
   late final TextEditingController descriptionController;
   final ImagePickerController avatarController = ImagePickerController();
   final ImagePickerController coverController = ImagePickerController();
 
-  final List<FocusNode> _nodes = List.generate(3, (index) => FocusNode());
+  final List<FocusNode> _nodes = List.generate(2, (index) => FocusNode());
 
   FocusNode get nameNode => _nodes[0];
-  FocusNode get organizationNode => _nodes[1];
-  FocusNode get descriptionNode => _nodes[2];
+  FocusNode get descriptionNode => _nodes[1];
 
   String get name => nameController.text;
-  String get organization => organizationController.text;
   String get description => descriptionController.text;
-  XFile? avatar;
-  XFile? cover;
+  XFile? get avatar => avatarController.image;
+  XFile? get cover => coverController.image;
 
   String? nameError;
-  String? organizationError;
   String? descriptionError;
 
-  bool get isValid => [nameError, organizationError, descriptionError].every((element) => element == null);
+  bool get isValid => [nameError, descriptionError].every((element) => element == null);
 
   void init() {
-    nameController = TextEditingController(text: "");
-    organizationController = TextEditingController(
-        text: "");
-    descriptionController = TextEditingController(text: "");
+    nameController = TextEditingController(text: fanpage?.fanpageName ?? "");
+    descriptionController = TextEditingController(text: fanpage?.description ?? "");
   }
 
   void confirm() async {
@@ -53,12 +48,18 @@ class CreateFanpageController with ChangeNotifier implements BaseFunction {
     if (!isValid) return;
     try {
       Navigator.of(context).push(LoadingOverlay());
-      final Fanpage request = Fanpage(fanpageName: name);
-      Fanpage response = await FanpageServerRepository.createFanpage(request);
+      final Fanpage request = Fanpage(fanpageName: name, description: description);
+      Fanpage response;
+      if (fanpage == null) {
+        response = await FanpageServerRepository.createFanpage(request, avatar: avatar, cover: cover);
+      } else {
+        response = await FanpageServerRepository.editFanpage(fanpage!.id!, request, avatar: avatar, cover: cover);
+      }
       if (context.mounted) {
         context.pop();
         context.pop(response);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Thêm fanpage thành công")));
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text((fanpage == null)? "Thêm fanpage thành công": "Chỉnh sửa thông tin thành công")));
       }
     } catch (e) {
       if (context.mounted) context.pop();
@@ -75,21 +76,11 @@ class CreateFanpageController with ChangeNotifier implements BaseFunction {
   }
 
   void validateFanpageName() {
-    if (name.isNotEmpty) {
+    if (name.length > 4 && name.length < 100) {
       nameError = null;
     }
     else {
-      nameError = "Tên người dùng không được để trống";
-    }
-    notifyListeners();
-  }
-
-  void validateOrganization() {
-    if (organization.isNotEmpty) {
-      organizationError = null;
-    }
-    else {
-      organizationError = "Tên người dùng không được để trống";
+      nameError = "Tên tổ chức không được để trống";
     }
     notifyListeners();
   }
@@ -105,20 +96,5 @@ class CreateFanpageController with ChangeNotifier implements BaseFunction {
   @override
   void validateForm() {
     validateFanpageName();
-    validateOrganization();
-  }
-
-  void changeAvatar() async {
-      XFile? newAvatar = await avatarController.pickImage();
-      if (newAvatar == null) return;
-      avatar = newAvatar;
-      notifyListeners();
-  }
-
-  void changeCover() async {
-    XFile? newCover = await avatarController.pickImage();
-    if (newCover == null) return;
-    cover = newCover;
-    notifyListeners();
   }
 }

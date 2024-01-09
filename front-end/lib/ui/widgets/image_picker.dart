@@ -8,9 +8,10 @@ class ImagePickerField extends StatefulWidget {
   final BoxDecoration? style;
   final String title;
   final ImagePickerController? controller;
+  final String? initialUrl;
 
   const ImagePickerField(
-      {super.key, this.style, this.title = "", this.controller});
+      {super.key, this.style, this.title = "", this.controller, this.initialUrl});
 
   @override
   State<ImagePickerField> createState() => _ImagePickerFieldState();
@@ -26,9 +27,12 @@ class _ImagePickerFieldState extends State<ImagePickerField> {
   );
 
   Widget get imagePreview {
-    if (_image == null)
+    if (_image == null) {
+      if (widget.initialUrl != null) {
+        return ImagePreview.fromWeb(widget.initialUrl!);
+      }
       return const SizedBox();
-    else {
+    } else {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 5),
         child: ImagePreview.fromPath(_image!.path),

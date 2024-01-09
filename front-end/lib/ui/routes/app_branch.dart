@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:thien_nguyen_app/configs/route_name.dart';
 import 'package:thien_nguyen_app/models/entity/event.dart';
+import 'package:thien_nguyen_app/models/entity/fanpage.dart';
 import 'package:thien_nguyen_app/repositories/mix/auth_mix_provider.dart';
 import 'package:thien_nguyen_app/singleton/current_info.dart';
 import 'package:thien_nguyen_app/ui/pages/event/donation/donation_page.dart';
@@ -63,11 +64,19 @@ abstract class AppRouter {
             ChildPagePage(id: int.parse(state.pathParameters['pageID']!)),
         routes: [
           GoRoute(
+              parentNavigatorKey: _rootKey,
+              path: RoutePath.editPage,
+              name: RouteName.editPage,
+              pageBuilder: (context, state) {
+                return NewPagePage(fanpage: state.extra as Fanpage);
+              }),
+          GoRoute(
             parentNavigatorKey: _rootKey,
               path: RoutePath.newEvent,
               name: RouteName.newEvent,
               pageBuilder: (context, state) => NewEventPage(
-                  fanpageId: int.parse(state.pathParameters['pageID']!)))
+                  fanpageId: int.parse(state.pathParameters['pageID']!))),
+
         ]),
     GoRoute(
         parentNavigatorKey: _rootKey,

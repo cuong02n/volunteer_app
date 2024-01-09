@@ -9,23 +9,25 @@ part of 'fanpage.dart';
 Fanpage _$FanpageFromJson(Map<String, dynamic> json) => Fanpage(
       id: json['id'] as int?,
       fanpageName: json['fanpageName'] as String?,
+      description: json['description'] as String?,
       leaderId: json['leaderId'] as int?,
       status: $enumDecodeNullable(_$FanpageStatusEnumMap, json['status']),
       createTime: Fanpage._fromJson(json['createTime'] as int?),
       subscriber: json['subscriber'] as int?,
-      coverImage: json['coverImage'] as String?,
-      avatarImage: json['avatarImage'] as String?,
+      coverImage: json['cover_image'] as String?,
+      avatarImage: json['avatar_image'] as String?,
     );
 
 Map<String, dynamic> _$FanpageToJson(Fanpage instance) => <String, dynamic>{
       'id': instance.id,
       'fanpageName': instance.fanpageName,
+      'description': instance.description,
       'leaderId': instance.leaderId,
       'status': _$FanpageStatusEnumMap[instance.status],
       'createTime': Fanpage._toJson(instance.createTime),
       'subscriber': instance.subscriber,
-      'coverImage': instance.coverImage,
-      'avatarImage': instance.avatarImage,
+      'cover_image': instance.coverImage,
+      'avatar_image': instance.avatarImage,
     };
 
 const _$FanpageStatusEnumMap = {

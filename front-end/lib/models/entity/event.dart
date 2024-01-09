@@ -33,6 +33,10 @@ class Event {
       return (progress! / target!).clamp(0, 1);
     }
   }
+
+  String? qrCode(int userId) => Uri.https('img.vietqr.io', '/image/$bank-$bankAccount-compact2.png', {
+    'addInfo': "Ung ho chien dich $id id $userId"
+  }).toString();
 }
 
 enum EventStatus {
