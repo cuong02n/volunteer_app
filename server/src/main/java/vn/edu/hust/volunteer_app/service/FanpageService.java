@@ -72,6 +72,9 @@ public class FanpageService {
         if (fanpageRequest.getCover_image() != null) {
             existingFanpage.setCover_image(fanpageRequest.getCover_image());
         }
+        if (fanpageRequest.getDescription() != null) {
+            existingFanpage.setDescription(fanpageRequest.getDescription());
+        }
         // Cập nhật các trường khác nếu cần
 
         // Lưu Fanpage đã cập nhật

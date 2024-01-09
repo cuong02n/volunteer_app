@@ -67,6 +67,7 @@ public class FanpageController {
                     .leaderId(leaderId)
                     .status(Fanpage.STATUS.NOT_VERIFY)
                     .createTime(System.currentTimeMillis())
+                    .description(fanpageRequest.getDescription())
                     .build();
 
             Fanpage fanpage = fanpageService.saveFanpage(newFanpage);

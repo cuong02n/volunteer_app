@@ -38,11 +38,18 @@ public class User implements UserDetails {
     private String name;
     @Column(name = "email")
     private String email;
+
+    @Column(name = "phone")
+    private String phone;
+    @Column(name = "gender")
+    private Boolean gender;
+    @Column(name = "dob")
+    private Long dob;
+
     @Column(name = "password")
     private String password;
     @Column(name = "cover_image", length = 255)
     private String coverImage;
-
     @Column(name = "avatar_image", length = 255)
     private String avatarImage;
     @Column(name = "role")
@@ -51,6 +58,7 @@ public class User implements UserDetails {
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private User.Status status;
+
 
     @JsonIgnore
     @Override
