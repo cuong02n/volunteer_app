@@ -44,6 +44,9 @@ public class Fanpage {
     @Column(name = "cover_image")
     private String cover_image;
 
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "avatar_image")
     private String avatar_image;
 
