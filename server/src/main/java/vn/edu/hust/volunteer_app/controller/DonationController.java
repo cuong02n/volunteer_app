@@ -74,7 +74,11 @@ public class DonationController {
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete donation by ID", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<Void> deleteDonation(@PathVariable Integer id) {
+        Donation donation = donationService.getDonationById(id).orElseThrow();
+        Event event = eventService.getEventById(donation.getEventId()).orElseThrow();
+        event.setProgress(event.getProgress() == null ? 0 : event.getProgress() - donation.getMoney());
         donationService.deleteDonation(id);
+        eventService.updateEvent(event, event);
         return ResponseEntity.noContent().build();
     }
 }
