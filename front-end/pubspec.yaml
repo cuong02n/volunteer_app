@@ -40,6 +40,16 @@ dependencies:
   flutter_markdown: ^0.6.18+2
   image_picker: ^1.0.4
   flutter_bloc: ^8.1.3
+  flutter_dotenv: ^5.1.0
+  dio: ^5.4.0
+  flutter_secure_storage: ^9.0.0
+  json_annotation: ^4.8.1
+  json_serializable: ^6.7.1
+  build_runner: ^2.4.7
+  http: ^1.1.2
+  cached_network_image: ^3.3.1
+  intl: ^0.19.0
+  http_parser: ^4.0.2
 
 dev_dependencies:
   flutter_test:
@@ -63,6 +73,7 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
+    - .env
     - assets/images/
     - assets/logo/
     - assets/icons/
