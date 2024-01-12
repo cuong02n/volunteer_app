@@ -81,4 +81,7 @@ public class EventService {
         eventRepository.deleteById(eventId);
     }
 
+    public void deleteEventByFanpageId(Integer id) {
+        eventRepository.deleteAllByFanpageId(id);
+    }
 }
