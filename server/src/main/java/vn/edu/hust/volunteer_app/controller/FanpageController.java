@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import vn.edu.hust.volunteer_app.annotation.ValidImage;
 import vn.edu.hust.volunteer_app.models.entity.Fanpage;
 import vn.edu.hust.volunteer_app.models.entity.User;
+import vn.edu.hust.volunteer_app.service.EventService;
 import vn.edu.hust.volunteer_app.service.FanpageService;
 import vn.edu.hust.volunteer_app.service.UserService;
 
@@ -28,6 +29,7 @@ public class FanpageController {
     private final FanpageService fanpageService;
     private final UserService userService;
     private final HttpServletRequest request;
+    final EventService eventService;
 
     @GetMapping
     @Operation(summary = "Get fanpages", security = @SecurityRequirement(name = "bearerAuth"))
@@ -57,7 +59,7 @@ public class FanpageController {
         try {
             String leaderIdStr = request.getAttribute("user_id").toString();
             Integer leaderId = Integer.valueOf(leaderIdStr);
-
+            System.out.println(leaderId);
             if (fanpageService.isExistByNameAndStatus(fanpageRequest.getFanpageName(), Fanpage.STATUS.VERIFIED)) {
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Name must be unique");
             }
@@ -114,7 +116,9 @@ public class FanpageController {
             }
 
             fanpageService.deleteFanpage(id);
+            eventService.deleteEventByFanpageId(id);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
 
