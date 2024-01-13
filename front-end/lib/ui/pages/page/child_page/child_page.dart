@@ -45,9 +45,10 @@ class ChildPagePage extends StatelessWidget {
                     appBar: AppBar(
                       backgroundColor: Colors.transparent,
                       elevation: 0,
-                      surfaceTintColor: Colors.white10,
+                      surfaceTintColor: Colors.transparent,
                     ),
                     body: ListView(
+                      padding: EdgeInsets.zero,
                       children: [
                         ChildPageBody(fanpage: snapshot.requireData),
                         FutureBuilder(

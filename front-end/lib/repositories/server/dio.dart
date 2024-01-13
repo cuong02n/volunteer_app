@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 
 var _dio = Dio(BaseOptions(
     headers: _headers,
+    connectTimeout: const Duration(seconds: 10),
 ));
 
 Dio get dio => _dio;

@@ -11,7 +11,7 @@ class ImagePickerController with ChangeNotifier {
   List<XFile> get images => _files;
 
   Future<XFile?> pickImage() async {
-    XFile? image = await _picker.pickImage(source: ImageSource.camera);
+    XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
       _files = [image];
       notifyListeners();

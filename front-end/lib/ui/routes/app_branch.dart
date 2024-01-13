@@ -21,7 +21,10 @@ abstract class AppRouter {
       routes: _route,
       initialLocation: RoutePath.home,
       redirect: (context, state) async {
-        if (CurrentInfo.user == null) await AuthMixRepository.tryLogin();
+        if (CurrentInfo.user == null) {
+          var result = await AuthMixRepository.tryLogin();
+          if (!result) return RoutePath.login;
+        }
         return null;
       },
       navigatorKey: _rootKey);
