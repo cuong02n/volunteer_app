@@ -20,13 +20,6 @@ abstract class AppRouter {
   static final router = GoRouter(
       routes: _route,
       initialLocation: RoutePath.home,
-      redirect: (context, state) async {
-        if (CurrentInfo.user == null) {
-          var result = await AuthMixRepository.tryLogin();
-          if (!result) return RoutePath.login;
-        }
-        return null;
-      },
       navigatorKey: _rootKey);
 
   static final _rootKey = navigatorKey;
@@ -139,6 +132,13 @@ abstract class AppRouter {
       GoRoute(
           name: RouteName.notification,
           path: RoutePath.notification,
+          redirect: (context, state) async {
+            if (CurrentInfo.user == null) {
+              var result = await AuthMixRepository.tryLogin();
+              if (!result) return RoutePath.login;
+            }
+            return null;
+          },
           pageBuilder: (context, state) =>
               _getPage(child: NotificationPage(), state: state))
     ]),
@@ -146,6 +146,13 @@ abstract class AppRouter {
       GoRoute(
           name: RouteName.page,
           path: RoutePath.page,
+          redirect: (context, state) async {
+            if (CurrentInfo.user == null) {
+              var result = await AuthMixRepository.tryLogin();
+              if (!result) return RoutePath.login;
+            }
+            return null;
+          },
           pageBuilder: (context, state) =>
               _getPage(child: FanpagePage(), state: state),
           routes: [
@@ -160,11 +167,25 @@ abstract class AppRouter {
       GoRoute(
           name: RouteName.settings,
           path: RoutePath.settings,
+          redirect: (context, state) async {
+            if (CurrentInfo.user == null) {
+              var result = await AuthMixRepository.tryLogin();
+              if (!result) return RoutePath.login;
+            }
+            return null;
+          },
           pageBuilder: (context, state) =>
               _getPage(child: SettingsPage(), state: state)),
       GoRoute(
           name: RouteName.user,
           path: RoutePath.user,
+          redirect: (context, state) async {
+            if (CurrentInfo.user == null) {
+              var result = await AuthMixRepository.tryLogin();
+              if (!result) return RoutePath.login;
+            }
+            return null;
+          },
           pageBuilder: (context, state) {
             int id = CurrentInfo.user!.id!;
             return _getPage(child: UserPage(id: id), state: state);
@@ -173,6 +194,13 @@ abstract class AppRouter {
             GoRoute(
                 parentNavigatorKey: _rootKey,
                 path: RoutePath.edit,
+                redirect: (context, state) async {
+                  if (CurrentInfo.user == null) {
+                    var result = await AuthMixRepository.tryLogin();
+                    if (!result) return RoutePath.login;
+                  }
+                  return null;
+                },
                 builder: (context, state) => EditUserPage())
           ])
     ]),

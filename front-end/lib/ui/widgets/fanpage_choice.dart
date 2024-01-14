@@ -49,7 +49,7 @@ class FanpageChoice extends StatelessWidget {
                   width: 120,
                   padding: const EdgeInsets.fromLTRB(1, 1, 5, 1),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.horizontal(left: Radius.circular(10)),
+                    borderRadius: const BorderRadius.horizontal(left: Radius.circular(10)),
                     image: DecorationImage(
                       image: provider.coverProvider,
                       fit: BoxFit.cover,
@@ -82,7 +82,7 @@ class FanpageChoice extends StatelessWidget {
                               style: AppTypology.titleSmall,
                             ),
                             Text(
-                              "Giới thiệu: ",
+                              "Giới thiệu:\n${fanpage.description ?? "Không có giới thiệu"}",
                               maxLines: 5,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.justify,
