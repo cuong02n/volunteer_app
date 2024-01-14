@@ -8,7 +8,8 @@ abstract class DonationProvider {
     final response = await dio.get(DonationApi.getAllDonations,
         queryParameters: {'eventId': eventId});
     if (response.statusCode == 200) {
-      return response.data.map((e) => Donation.fromJson(e)).toList();
+      List<Donation> donations = (response.data as List).map((e) => Donation.fromJson(e)).toList();
+      return donations;
     }
     else {
       throw response;
@@ -29,11 +30,11 @@ abstract class DonationProvider {
   }
 
   static Future<void> deleteDonation(int id) async {
-    final response = await dio.delete(DonationApi.deleteDonation(id));
-    if (response.statusCode != 200) throw response;
-  }
-
-  static String donationQR(Event event, Donation donation) {
-    return 'https://img.vietqr.io/image/${event.bank}-${event.bankAccount}-compact2.png?amount=${donation.money}&addInfo=${event.title}';
+    try {
+      final response = await dio.delete(DonationApi.deleteDonation(id));
+      if (response.statusCode != 204) throw response;
+    } on Exception catch (e) {
+      print(e);
+    }
   }
 }

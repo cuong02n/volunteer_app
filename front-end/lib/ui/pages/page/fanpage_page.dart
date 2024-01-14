@@ -11,17 +11,28 @@ import 'package:thien_nguyen_app/utilities/bloc/fanpage_list_bloc.dart';
 
 part 'fanpage_page_appbar.dart';
 
-class FanpagePage extends StatelessWidget {
+class FanpagePage extends StatefulWidget {
+  @override
+  State<FanpagePage> createState() => _FanpagePageState();
+}
+
+class _FanpagePageState extends State<FanpagePage> {
+  GlobalKey<RefreshIndicatorState> _refreshKey = GlobalKey();
   final _bloc = FanpageListBloc(null);
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
         create: (_) => _bloc,
         lazy: false,
-        child: FutureBuilder(future: FanpageServerRepository.getAllFanpage(CurrentInfo.user!.id!), builder: (context, snapshot) {
+        child: FutureBuilder(
+            future: FanpageServerRepository.getAllFanpage(CurrentInfo.user!.id!), builder: (context, snapshot) {
           if (snapshot.hasData) {
             _bloc.emit(snapshot.requireData);
-            return const FanpageBody();
+            return RefreshIndicator(
+                key: _refreshKey,
+                onRefresh: _refresh,
+            child: FanpageBody());
           }
           else if (snapshot.hasError) {
             return Container();
@@ -33,16 +44,22 @@ class FanpagePage extends StatelessWidget {
     );
   }
 
+  Future<void> _refresh() async {
+    final fanpages = await FanpageServerRepository.getAllFanpage(CurrentInfo.user!.id!);
+    setState(() {
+      _bloc.emit(fanpages);
+    });
+  }
 }
 
 class FanpageBody extends StatefulWidget {
   const FanpageBody({super.key});
 
   @override
-  State<FanpageBody> createState() => _FanpagePageState();
+  State<FanpageBody> createState() => _FanpageBodyState();
 }
 
-class _FanpagePageState extends State<FanpageBody> {
+class _FanpageBodyState extends State<FanpageBody> {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
@@ -52,9 +69,9 @@ class _FanpagePageState extends State<FanpageBody> {
             bloc: context.read<FanpageListBloc>(),
             listener: (context, state) => setState(() {}),
             builder: (context, state) {
-              List _fanpages = state as List<Fanpage>;
+              List fanpages = state as List<Fanpage>;
               return SliverList.list(
-                  children: _fanpages.map((e) => FanpageChoice(fanpage: e, delete: _delete(context, e),)).toList());
+                  children: fanpages.map((e) => FanpageChoice(fanpage: e, delete: _delete(context, e),)).toList());
             }
           ),
       ],

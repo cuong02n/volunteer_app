@@ -55,7 +55,7 @@ class _MainPageState extends State<MainPage>
 
   void _switchTab(int index) {
     setState(() {
-      widget.navigationShell.goBranch(index);
+      widget.navigationShell.goBranch(index, initialLocation: false);
       _controller.animateTo(index);
     });
   }

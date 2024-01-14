@@ -39,7 +39,10 @@ class _RegisterFormState extends State<RegisterForm> {
               focusNode: _controller.emailNode,
               onTap: () => _controller.emailNode.requestFocus(),
               onTapOutside: (_) => _controller.emailNode.unfocus(),
-              onFieldSubmitted: (_) => _controller.nextFocus(),
+              onFieldSubmitted: (_) {
+                _controller.validateEmail();
+                if (_controller.emailError == null) _controller.nextFocus();
+              },
               decoration: InputDecoration(
                   errorText: _controller.emailError,
                   prefixIcon: AppIcon(AppIcons.username),
@@ -65,7 +68,10 @@ class _RegisterFormState extends State<RegisterForm> {
               focusNode: _controller.passwordNode,
               onTap: () => _controller.passwordNode.requestFocus(),
               onTapOutside: (_) => _controller.passwordNode.unfocus(),
-              onFieldSubmitted: (_) => _controller.nextFocus(),
+              onFieldSubmitted: (_) {
+                _controller.validatePassword();
+                if (_controller.passwordError == null) _controller.nextFocus();
+              },
               obscureText: !_controller.isShowPassword,
               decoration: InputDecoration(
                 errorText: _controller.passwordError,
@@ -81,7 +87,10 @@ class _RegisterFormState extends State<RegisterForm> {
               focusNode: _controller.retypePasswordNode,
               onTap: () => _controller.retypePasswordNode.requestFocus(),
               onTapOutside: (_) => _controller.retypePasswordNode.unfocus(),
-              onFieldSubmitted: (_) => _controller.nextFocus(),
+              onFieldSubmitted: (_) {
+                _controller.validateRetypePassword();
+                if (_controller.retypePasswordError == null) _controller.nextFocus();
+              },
               obscureText: !_controller.isShowRetypePassword,
               decoration: InputDecoration(
                 errorText: _controller.retypePasswordError,

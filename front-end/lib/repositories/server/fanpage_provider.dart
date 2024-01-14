@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:thien_nguyen_app/configs/server_api.dart';
 import 'package:thien_nguyen_app/models/entity/fanpage.dart';
 
@@ -30,7 +32,9 @@ abstract class FanpageServerRepository {
     try {
       final response = await dio.get(FanpageApi.getAllFanpages, queryParameters: {'userId': userId});
       if (response.statusCode == 200) {
-        return (response.data as List).map((e) => Fanpage.fromJson(e)).toList();
+        List<Fanpage> fanpages = (response.data as List).map((e) => Fanpage.fromJson(e)).toList();
+        print(fanpages.map((e) => e.toJson()));
+        return fanpages;
       }
       else {
         throw response;
@@ -46,7 +50,7 @@ abstract class FanpageServerRepository {
 
   static Future<void> deleteFanpage(int id) async {
     try {
-      final response = await dio.get(FanpageApi.deleteFanpage(id));
+      final response = await dio.delete(FanpageApi.deleteFanpage(id));
       if (response.statusCode != 200) {
         throw response;
       }
@@ -59,12 +63,17 @@ abstract class FanpageServerRepository {
     }
   }
 
-  static Future<void> editFanpage(Fanpage data) async {
+  static Future<Fanpage> editFanpage(int id, Fanpage data, {XFile? avatar, XFile? cover}) async {
     try {
-      final response = await dio.put(FanpageApi.putFanpage(data.id!), data: data);
+      final response = await dio.put(FanpageApi.putFanpage(id), data: data);
       if (response.statusCode != 200) throw response;
       else {
-
+        Fanpage fanpage = Fanpage.fromJson(response.data);
+        print(avatar);
+        print(cover);
+        if (avatar != null) await FanpageServerRepository.uploadAvatar(avatar, fanpage.id!).onError((error, stackTrace) => null);
+        if (cover != null) await FanpageServerRepository.uploadCover(cover, fanpage.id!).onError((error, stackTrace) => null);
+        return await FanpageServerRepository.getFanpage(fanpage.id!);
       }
     } on DioException {
       throw "Chỉnh sửa thông tin thất bại";
@@ -74,17 +83,58 @@ abstract class FanpageServerRepository {
     }
   }
 
-  static Future<Fanpage> createFanpage(Fanpage data) async {
+  static Future<Fanpage> createFanpage(Fanpage data, {XFile? avatar, XFile? cover}) async {
     try {
       final response = await dio.post(FanpageApi.createFanpage, data: data);
       if (response.statusCode != 200) throw response;
       else {
-        return Fanpage.fromJson(response.data);
+        Fanpage fanpage = Fanpage.fromJson(response.data);
+        print(avatar);
+        print(cover);
+        if (avatar != null) await FanpageServerRepository.uploadAvatar(avatar, fanpage.id!).onError((error, stackTrace) => null);
+        if (cover != null) await FanpageServerRepository.uploadCover(cover, fanpage.id!).onError((error, stackTrace) => null);
+        return await FanpageServerRepository.getFanpage(fanpage.id!);
       }
     } on DioException {
       throw "Tạo fanpage thất bại";
     }
     catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<void> uploadAvatar(XFile image, int fanpageId) async {
+    try {
+      List<int> bytes = await image.readAsBytes();
+      MultipartFile file = MultipartFile.fromBytes(bytes,
+          filename: image.name,
+          contentType: MediaType("image", image.name.split('.').last));
+      FormData formData = FormData.fromMap({'image': file});
+      final response = await dio.post(FanpageApi.postAvatarImage(fanpageId), data: formData,);
+      if (response.statusCode != 200) throw response;
+    } on DioException catch (e) {
+      throw "Cập nhật avatar thất bại";
+    }
+    catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  static Future<void> uploadCover(XFile image, int fanpageId) async {
+    try {
+      List<int> bytes = await image.readAsBytes();
+      MultipartFile file = MultipartFile.fromBytes(bytes,
+          filename: image.name,
+          contentType: MediaType("image", image.name.split('.').last));
+      FormData formData = FormData.fromMap({'image': file});
+      final response = await dio.post(FanpageApi.postCoverImage(fanpageId), data: formData,);
+      if (response.statusCode != 200) throw response;
+    } on DioException catch (e) {
+      throw "Cập nhật avatar thất bại";
+    }
+    catch (e) {
+      print(e);
       rethrow;
     }
   }

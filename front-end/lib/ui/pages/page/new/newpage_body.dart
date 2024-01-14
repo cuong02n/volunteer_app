@@ -1,7 +1,8 @@
 part of 'newpage_page.dart';
 
 class NewPageBody extends StatelessWidget {
-  const NewPageBody({super.key});
+  final Fanpage? fanpage;
+  const NewPageBody({super.key, this.fanpage});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class NewPageBody extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text("Tạo fanpage", style: AppTypology.titleMedium),
+                Text(fanpage != null ? "Sửa fanpage": "Tạo fanpage", style: AppTypology.titleMedium),
                 Container(
                   height: 10,
                   width: 40.w,
@@ -38,7 +39,7 @@ class NewPageBody extends StatelessWidget {
                         behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
                         child: SingleChildScrollView(child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: NewPageForm(),
+                          child: NewPageForm(fanpage: fanpage),
                         )))),
                 const SizedBox(height: 10),
               ],

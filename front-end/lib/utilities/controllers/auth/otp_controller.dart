@@ -38,6 +38,8 @@ class OtpController with ChangeNotifier implements BaseFunction {
 
   void confirmOtp() async {
     try {
+      otpError = null;
+      notifyListeners();
       Navigator.of(context).push(LoadingOverlay());
       OtpRequest request = OtpRequest(email: email, otp: otp);
       await AuthServerRepository.verifyRegister(request);
@@ -75,8 +77,8 @@ class OtpController with ChangeNotifier implements BaseFunction {
     else {
       otpError = e.toString();
     }
-    // TODO: implement returnError
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+    otpError = "OTP không chính xác hoặc lỗi kết nối";
+    notifyListeners();
   }
 
   @override

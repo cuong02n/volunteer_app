@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:thien_nguyen_app/configs/route_name.dart';
 import 'package:thien_nguyen_app/models/entity/event.dart';
+import 'package:thien_nguyen_app/models/entity/fanpage.dart';
 import 'package:thien_nguyen_app/repositories/mix/auth_mix_provider.dart';
 import 'package:thien_nguyen_app/singleton/current_info.dart';
 import 'package:thien_nguyen_app/ui/pages/event/donation/donation_page.dart';
@@ -19,10 +20,6 @@ abstract class AppRouter {
   static final router = GoRouter(
       routes: _route,
       initialLocation: RoutePath.home,
-      redirect: (context, state) async {
-        if (CurrentInfo.user == null) await AuthMixRepository.tryLogin();
-        return null;
-      },
       navigatorKey: _rootKey);
 
   static final _rootKey = navigatorKey;
@@ -63,11 +60,19 @@ abstract class AppRouter {
             ChildPagePage(id: int.parse(state.pathParameters['pageID']!)),
         routes: [
           GoRoute(
+              parentNavigatorKey: _rootKey,
+              path: RoutePath.editPage,
+              name: RouteName.editPage,
+              pageBuilder: (context, state) {
+                return NewPagePage(fanpage: state.extra as Fanpage);
+              }),
+          GoRoute(
             parentNavigatorKey: _rootKey,
               path: RoutePath.newEvent,
               name: RouteName.newEvent,
               pageBuilder: (context, state) => NewEventPage(
-                  fanpageId: int.parse(state.pathParameters['pageID']!)))
+                  fanpageId: int.parse(state.pathParameters['pageID']!))),
+
         ]),
     GoRoute(
         parentNavigatorKey: _rootKey,
@@ -127,6 +132,13 @@ abstract class AppRouter {
       GoRoute(
           name: RouteName.notification,
           path: RoutePath.notification,
+          redirect: (context, state) async {
+            if (CurrentInfo.user == null) {
+              var result = await AuthMixRepository.tryLogin();
+              if (!result) return RoutePath.login;
+            }
+            return null;
+          },
           pageBuilder: (context, state) =>
               _getPage(child: NotificationPage(), state: state))
     ]),
@@ -134,6 +146,13 @@ abstract class AppRouter {
       GoRoute(
           name: RouteName.page,
           path: RoutePath.page,
+          redirect: (context, state) async {
+            if (CurrentInfo.user == null) {
+              var result = await AuthMixRepository.tryLogin();
+              if (!result) return RoutePath.login;
+            }
+            return null;
+          },
           pageBuilder: (context, state) =>
               _getPage(child: FanpagePage(), state: state),
           routes: [
@@ -148,11 +167,25 @@ abstract class AppRouter {
       GoRoute(
           name: RouteName.settings,
           path: RoutePath.settings,
+          redirect: (context, state) async {
+            if (CurrentInfo.user == null) {
+              var result = await AuthMixRepository.tryLogin();
+              if (!result) return RoutePath.login;
+            }
+            return null;
+          },
           pageBuilder: (context, state) =>
               _getPage(child: SettingsPage(), state: state)),
       GoRoute(
           name: RouteName.user,
           path: RoutePath.user,
+          redirect: (context, state) async {
+            if (CurrentInfo.user == null) {
+              var result = await AuthMixRepository.tryLogin();
+              if (!result) return RoutePath.login;
+            }
+            return null;
+          },
           pageBuilder: (context, state) {
             int id = CurrentInfo.user!.id!;
             return _getPage(child: UserPage(id: id), state: state);
@@ -161,6 +194,13 @@ abstract class AppRouter {
             GoRoute(
                 parentNavigatorKey: _rootKey,
                 path: RoutePath.edit,
+                redirect: (context, state) async {
+                  if (CurrentInfo.user == null) {
+                    var result = await AuthMixRepository.tryLogin();
+                    if (!result) return RoutePath.login;
+                  }
+                  return null;
+                },
                 builder: (context, state) => EditUserPage())
           ])
     ]),

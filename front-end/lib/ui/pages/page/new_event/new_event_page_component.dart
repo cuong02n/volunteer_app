@@ -68,16 +68,19 @@ class _NewEventFormState extends State<NewEventForm> {
                 labelText: "Chi tiết hoàn cảnh"),
           ),
           const SizedBox(height: 10),
-          TextFormField(
-              controller: _controller.organizationController,
-              focusNode: _controller.organizationNode,
-              keyboardType: TextInputType.name,
-              onTap: () => _controller.organizationNode.requestFocus(),
-              onTapOutside: (_) => _controller.organizationNode.unfocus(),
-              onFieldSubmitted: (_) => _controller.nextFocus(),
-              decoration: InputDecoration(
-                  errorText: _controller.organizationError,
-                  labelText: "Tên tổ chức")),
+          FutureBuilder(
+            future: FanpageServerRepository.getFanpage(context.read<FanpageCubit>().state),
+            builder: (context, snapshot) {
+              _controller.organizationController.text = snapshot.data?.fanpageName ?? "";
+              return TextFormField(
+                  controller: _controller.organizationController,
+                  keyboardType: TextInputType.name,
+                  onFieldSubmitted: (_) => _controller.nextFocus(),
+                  decoration: InputDecoration(
+                    enabled: false,
+                      labelText: "Tên tổ chức"));
+            }
+          ),
           const SizedBox(height: 10),
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Flexible(

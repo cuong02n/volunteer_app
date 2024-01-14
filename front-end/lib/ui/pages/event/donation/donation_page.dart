@@ -4,7 +4,7 @@ import 'package:sizer/sizer.dart';
 import 'package:thien_nguyen_app/ui/theme/theme.dart';
 import 'package:thien_nguyen_app/ui/widgets/image_picker.dart';
 import 'package:thien_nguyen_app/utilities/controllers/donation/create_donation_controller.dart';
-import 'package:thien_nguyen_app/utilities/controllers/fanpage/create_fanpage_controller.dart';
+import 'package:thien_nguyen_app/utilities/controllers/fanpage/edit_fanpage_controller.dart';
 
 part 'donation_body.dart';
 part 'donation_form.dart';

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -6,7 +7,9 @@ import 'package:thien_nguyen_app/configs/assets/app_images.dart';
 import 'package:thien_nguyen_app/configs/route_name.dart';
 import 'package:thien_nguyen_app/models/entity/event.dart';
 import 'package:thien_nguyen_app/repositories/server/fanpage_provider.dart';
+import 'package:thien_nguyen_app/singleton/current_info.dart';
 import 'package:thien_nguyen_app/ui/theme/theme.dart';
+import 'package:thien_nguyen_app/utilities/providers/event_image_provider.dart';
 
 import '../../models/entity/fanpage.dart';
 
@@ -34,6 +37,7 @@ class _EventWidgetState extends State<EventWidget> {
 
   @override
   Widget build(BuildContext context) {
+    EventImageProvider provider = EventImageProvider(event: widget.event!);
     if (widget.isCollapsed == false) {
       return FutureBuilder(
           future: FanpageServerRepository.getFanpage(widget.event!.fanpageId!),
@@ -85,11 +89,11 @@ class _EventWidgetState extends State<EventWidget> {
                     Container(
                       height: 160,
                       margin: const EdgeInsets.only(top: 5),
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                           borderRadius:
-                              BorderRadius.vertical(top: Radius.circular(10)),
+                              const BorderRadius.vertical(top: Radius.circular(10)),
                           image: DecorationImage(
-                            image: AssetImage(AppImages.background),
+                            image: provider.coverProvider,
                             fit: BoxFit.fitWidth,
                           )),
                     ),
@@ -198,12 +202,12 @@ class _EventWidgetState extends State<EventWidget> {
                       Container(
                         height: 100,
                         margin: const EdgeInsets.only(right: 5),
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                             borderRadius:
-                                BorderRadius.vertical(top: Radius.circular(10)),
+                                const BorderRadius.vertical(top: Radius.circular(10)),
                             image: DecorationImage(
-                              colorFilter: ColorFilter.linearToSrgbGamma(),
-                              image: AssetImage(AppImages.background),
+                              colorFilter: const ColorFilter.linearToSrgbGamma(),
+                              image: provider.coverProvider,
                               fit: BoxFit.fitWidth,
                             )),
                       ),
@@ -290,8 +294,17 @@ class _EventWidgetState extends State<EventWidget> {
   void _join() {}
 
   void _donate() {
-    context.pushNamed(RouteName.donation, pathParameters: {
-      'eventId': widget.event!.id!.toString(),
-    }, extra: widget.event);
+    showDialog(context: context, builder: (context) => AlertDialog(
+      title: Text("QR ủng hộ"),
+      content: CachedNetworkImage(
+        imageUrl: widget.event?.qrCode(CurrentInfo.user!.id!) ?? "",
+      ),
+      actions: [
+        TextButton(onPressed: () {
+          context.pop();
+          context.pop();
+        }, child: const Text("Thoát"))
+      ],
+    ));
   }
 }

@@ -8,7 +8,10 @@ import 'package:thien_nguyen_app/configs/route_name.dart';
 import 'package:thien_nguyen_app/models/entity/event.dart';
 import 'package:thien_nguyen_app/models/entity/fanpage.dart';
 import 'package:thien_nguyen_app/repositories/server/fanpage_provider.dart';
+import 'package:thien_nguyen_app/singleton/current_info.dart';
+import 'package:thien_nguyen_app/ui/pages/event/event_admin_function.dart';
 import 'package:thien_nguyen_app/ui/theme/theme.dart';
+import 'package:thien_nguyen_app/utilities/providers/event_image_provider.dart';
 
 class PageDetail extends StatelessWidget {
   final Event event;
@@ -17,6 +20,7 @@ class PageDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    EventImageProvider provider = EventImageProvider(event: event);
     return Scaffold(
       body: FutureBuilder(
           future: FanpageServerRepository.getFanpage(event.fanpageId!),
@@ -29,8 +33,8 @@ class PageDetail extends StatelessWidget {
                   pinned: true,
                   flexibleSpace: FlexibleSpaceBar(
                     // title: Text(fanpageName),
-                    background: Image.asset(
-                      AppImages.background,
+                    background: Image(
+                      image: provider.coverProvider,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -219,14 +223,10 @@ class PageDetail extends StatelessWidget {
                             ),
                           ],
                         ),
-                        CachedNetworkImage(
-                            imageUrl:
-                                'https://img.vietqr.io/image/${event.bank}-${event.bankAccount}-compact2.png',
-                            progressIndicatorBuilder: (_, __, ___) => Container(
-                                width: 150,
-                                height: 150,
-                                alignment: Alignment.center,
-                                child: CircularProgressIndicator())),
+                        Image(
+                          image: provider.coverProvider,
+                        ),
+                        (CurrentInfo.user!.id == (snapshot.data?.leaderId ?? 0))? EventAdminFunction(eventId: event.id!,): SizedBox()
                       ],
                     ),
                   ),
@@ -238,8 +238,17 @@ class PageDetail extends StatelessWidget {
   }
 
   VoidCallback _donate(BuildContext context) {
-    return () {context.pushNamed(RouteName.donation, pathParameters: {
-      'eventId': event.id!.toString(),
-    }, extra: event);
+    return () {
+      showDialog(context: context, builder: (context) => AlertDialog(
+        title: Text("QR ủng hộ"),
+        content: CachedNetworkImage(
+                  imageUrl: event.qrCode(CurrentInfo.user!.id!) ?? ""
+              ),
+        actions: [
+          TextButton(onPressed: () {
+            context.pop();
+          }, child: const Text("Thoát"))
+        ],
+      ));
   };}
 }

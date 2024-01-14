@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
@@ -8,17 +9,20 @@ import 'package:thien_nguyen_app/models/entity/fanpage.dart';
 import 'package:thien_nguyen_app/repositories/server/fanpage_provider.dart';
 import 'package:thien_nguyen_app/repositories/server/user_provider.dart';
 import 'package:thien_nguyen_app/ui/theme/theme.dart';
+import 'package:thien_nguyen_app/utilities/providers/fanpage_image_provider.dart';
 
 typedef Json = Map<String, dynamic>;
 
 class FanpageChoice extends StatelessWidget {
+  late final FanpageImageProvider provider;
   final Fanpage fanpage;
   final bool canDelete;
   final VoidCallback? delete;
-  const FanpageChoice({super.key, required this.fanpage, this.canDelete = true, this.delete});
+  FanpageChoice({super.key, required this.fanpage, this.canDelete = true, this.delete});
 
   @override
   Widget build(BuildContext context) {
+    provider = FanpageImageProvider(fanpage: fanpage);
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5.w),
       height: 180,
@@ -44,10 +48,10 @@ class FanpageChoice extends StatelessWidget {
                 Container(
                   width: 120,
                   padding: const EdgeInsets.fromLTRB(1, 1, 5, 1),
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.horizontal(left: Radius.circular(10)),
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.horizontal(left: Radius.circular(10)),
                     image: DecorationImage(
-                      image: AssetImage(AppImages.background),
+                      image: provider.coverProvider,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -78,7 +82,7 @@ class FanpageChoice extends StatelessWidget {
                               style: AppTypology.titleSmall,
                             ),
                             Text(
-                              "Giới thiệu: ",
+                              "Giới thiệu:\n${fanpage.description ?? "Không có giới thiệu"}",
                               maxLines: 5,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.justify,
@@ -103,8 +107,8 @@ class FanpageChoice extends StatelessWidget {
   }
 
   VoidCallback _goToFanpage(BuildContext context) {
-    return () {
-      context.push("/page/${fanpage.id!}");
+    return () async {
+      await context.push("/page/${fanpage.id!}");
     };
   }
 }

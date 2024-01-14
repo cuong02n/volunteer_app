@@ -1,15 +1,17 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:thien_nguyen_app/models/entity/fanpage.dart';
 import 'package:thien_nguyen_app/ui/theme/theme.dart';
 import 'package:thien_nguyen_app/ui/widgets/image_picker.dart';
-import 'package:thien_nguyen_app/utilities/controllers/fanpage/create_fanpage_controller.dart';
+import 'package:thien_nguyen_app/utilities/controllers/fanpage/edit_fanpage_controller.dart';
 
 part 'newpage_body.dart';
 part 'newpage_page_component.dart';
 
 class NewPagePage extends Page {
-  NewPagePage({super.key});
+  Fanpage? fanpage;
+  NewPagePage({super.key, this.fanpage});
 
   @override
   Route createRoute(BuildContext context) {
@@ -17,7 +19,7 @@ class NewPagePage extends Page {
         context: context,
         barrierColor: AppColor.white.withOpacity(0.75),
         settings: this,
-        builder: (_) => const NewPageBody(),
+        builder: (_) => NewPageBody(fanpage: fanpage),
     );
   }
 

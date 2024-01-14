@@ -17,6 +17,10 @@ class ImagePreview extends StatelessWidget {
     }
   }
 
+  ImagePreview.fromWeb(String path, {super.key, this.width, this.height}) {
+    child = Image.network(path);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(

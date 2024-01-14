@@ -28,14 +28,16 @@ abstract class FanpageApi {
   static String get getAllFanpages => "${BaseApi.baseUrl}/api/fanpages";
   static String get createFanpage => "${BaseApi.baseUrl}/api/fanpages";
   static String verifyFanpage(int id) => "${BaseApi.baseUrl}/api/fanpages/admin/verify/$id";
+  static String postAvatarImage(int fanpageId) => "${BaseApi.baseUrl}/api/fanpages/$fanpageId/update_avatar_image";
+  static String postCoverImage(int fanpageId) => "${BaseApi.baseUrl}/api/fanpages/$fanpageId/update_cover_image";
 }
 
 abstract class EventApi {
   static String putEvent(int id) => "${BaseApi.baseUrl}/api/events/$id";
   static String updateEventImage(int id) => "${BaseApi.baseUrl}/api/events/$id/update_image";
-  static String get postNewEvent => "${BaseApi.baseUrl}/api/events/new_event";
+  static String get postNewEvent => "${BaseApi.baseUrl}/api/events";
   static String verifyEvent(int id) => "${BaseApi.baseUrl}/api/events/admin/verify/$id";
-  static String get getSpecificEvent => "${BaseApi.baseUrl}/api/events/get_event";
+  static String get getSpecificEvent => "${BaseApi.baseUrl}/api/events";
 }
 
 abstract class DonationApi {
